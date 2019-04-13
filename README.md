@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 =======
 >>>>>>> b347353dd1b5dd0b64aefc8e4476b79f0dce05c4
 # 技术栈
@@ -37,15 +36,7 @@ npm run tep `文件名`
 
 ## 注意
 
-<<<<<<< HEAD
 需要将pages中各个model.js引入 ./src/models/index中
-=======
-# alih5_x
-
-#### 介绍
-{**以下是码云平台说明，您可以替换此简介**
-码云是开源中国推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用码云实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
 
 #### 软件架构
 软件架构说明
@@ -78,8 +69,12 @@ npm run tep `文件名`
 3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
 4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
 5. 码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
+<<<<<<< HEAD
 6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
 >>>>>>> 322c430b143edc17e9bdb8bbbd2aa8bc17f30420
 =======
 需要将pages中各个model.js引入 ./src/models/index中
 >>>>>>> b347353dd1b5dd0b64aefc8e4476b79f0dce05c4
+=======
+6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+>>>>>>> 85fb22e8466d065027ff242751b1bd4c3a4b8967
