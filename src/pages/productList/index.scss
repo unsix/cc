@@ -1,0 +1,208 @@
+@import "../../styles/mixin";
+
+page {
+  background-color: #f7f7f7;
+}
+
+.productList-page {
+  @include wh(100%, 100%);
+  @mixin img($url, $width: 24px, $height: 33px) {
+    background: url($url) no-repeat;
+    background-size: $width $height;
+    width: $width;
+    height: $height;
+  }
+
+  .popup-right {
+    background: #fff;
+    display: flex;
+    width: 578px;
+    height: 100%;
+    border-top: 1px #E1E1E1 solid;
+    .filter-info {
+      padding: 0 30px;
+      width: 100%;
+      .price {
+        margin-top: 50px;
+        border-bottom: 1px #E4E4E4 solid;
+        color: #333;
+        font-size: 28px;
+        width: 100%;
+        .sort-info {
+          margin: 30px 0 40px;
+          @include fj(space-between);
+          
+        }
+      }
+      .lease-term {
+        margin-top: 48px;
+        color: #333;
+        font-size: 28px;
+        border-bottom: 1px #E4E4E4 solid;
+        .term-info {
+          margin-top: 30px;
+          padding-bottom: 20px;
+          .terms {
+            @include fj(space-between);
+            margin-bottom: 20px;
+          }
+        }
+      }
+      .filter-botton {
+        flex-grow: 1;
+        height: 68px;
+        line-height: 68px;
+        text-align: center;
+        color: #333;
+        font-size: 24px;
+        background-color: #F3F3F3;
+        border: 2px solid #F3F3F3;
+        border-radius: 6px;
+      }
+      .filter-action {
+        border: 2px solid #FC766B;
+        color: #FC766B;
+      }
+      .left-margin {
+        margin-left: 10px;
+      }
+      .right-margin {
+        margin-right: 10px;
+      }
+    }
+    
+    .popup-bottom {
+      position: fixed;
+      bottom: 0;
+      width: 578px;
+      @include fj(space-between);
+      border-top: 1px #ddd solid;
+      .bottom-info {
+        flex-grow: 1;
+        height: 88px;
+        line-height: 88px;
+        text-align: center;
+        font-size: 28px;
+        color: #999;
+      }
+      .bottom-confirm {
+        color: #fff;
+        background-color: #FF6262;
+      }
+    }
+  }
+
+  .top-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 87px;
+    background-color: #fff;
+    @include fj(space-around);
+    .menu-item {
+      flex-grow: 1;
+      margin: auto 0;
+      text-align: center;
+      @include fj(center);
+      align-items: center;
+      .new-cat {
+        margin-left: 10px;
+        @include img('../../images/productList/triangle.png', 20px, 12px);
+      }
+      .default {
+        margin-left: 10px;
+        @include img('../../images/productList/new.png', 26px, 24px);
+      }
+      .new {
+        margin-left: 10px;
+        @include img('../../images/productList/new.png', 26px, 24px);
+      }
+      .old {
+        margin-left: 10px;
+        @include img('../../images/productList/old.png', 26px, 24px);
+      }
+      .filter {
+        margin-left: 10px;
+        @include img('../../images/productList/filter.png', 20px, 20px);
+      }
+      .filter-action {
+        margin-left: 10px;
+        @include img('../../images/productList/filter-action.png', 20px, 20px);
+      }
+    }
+  }
+
+  .top-space {
+    height: 87px;
+    background-color: #f7f7f7;
+  }
+
+  .products-area {
+    @include fj();
+    flex-wrap: wrap;
+    margin: auto 30px;
+    padding-top: 31px;
+    
+    .itme {
+      padding: 40px 20px 30px;
+      background-color: #fff;
+      text-align: center;
+      margin-bottom: 16px;
+      border-radius: 8px;
+      height: 480px;
+      .img {
+        width: 257px;
+        height: 260px;
+      }
+      .info {
+        margin-top: 50px;
+        width: 297px;
+        text-align: left;
+        .title {
+          height: 55px;
+          color: #333;
+          font-size: 26px;
+          margin-bottom: 16px;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          overflow: hidden;
+        }
+        .rent-info {
+          color: #999;
+          font-size: 20px;
+          margin-bottom: 12px;
+        }
+        .price-info {
+          color: #FC766B;
+          font-size: 30px;
+          .decimal {
+            font-size: 24px;
+          }
+          .unit {
+            font-size: 20px;
+          }
+        }
+      }
+    }
+  }
+
+  .bottom-button {
+    @include fj(space-around);
+    font-size: 28px;
+    .reset {
+      flex-grow: 1;
+      margin: auto 0;
+      text-align: center;
+      color: #999;
+    }
+    .confirm {
+      flex-grow: 1;
+      margin: auto 0;
+      text-align: center;
+      color: #fff;
+      background-color: #E4E4E4;
+    }
+  }
+}

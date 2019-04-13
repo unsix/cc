@@ -1,0 +1,21 @@
+@import "../../styles/mixin";
+
+page {
+  background-color: #ffffff;
+}
+
+.classify-page {
+  @include wh(100%, 100vh);
+  display: flex;
+  &-left {
+    width: 172px;
+    height: 100%;
+    background: #f7f7f7;
+  }
+  &-right {
+    box-sizing: border-box;
+    padding: 10px 0;
+    flex-grow: 1;
+    width: 578px;
+  }
+}

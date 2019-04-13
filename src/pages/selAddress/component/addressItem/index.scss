@@ -1,0 +1,41 @@
+@import '../../../../styles/mixin.scss';
+
+%text-style {
+  font-family: PingFangSC-Regular;
+  font-size: 28px;
+  color: #4A4A4A;
+}
+
+.address-item {
+  background-color: #ffffff;
+  @include fj(space-between);
+  align-items: center;
+  padding: 28px 30px;
+  margin-bottom: 20px;
+  .text {
+    @extend %text-style;
+    &.right {
+      margin-left: 36px;
+    }
+  }
+  .info {
+    margin-top: 22px;
+    .address {
+      font-family: PingFangSC-Regular;
+      font-size: 24px;
+      color: #717171;
+    }
+  }
+  .at-checkbox__icon--selected {
+    background-color: #fc766b!important;
+  }
+  .at-checkbox__icon {
+    border-color: #cccccc!important;
+    margin-right: 0!important;
+    width: 32px!important;
+    height: 32px!important;
+  }
+  .at-checkbox__option_wrap {
+    padding: 20px 0!important;
+  }
+}

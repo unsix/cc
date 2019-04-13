@@ -1,0 +1,31 @@
+@import '../../styles/mixin.scss';
+
+.cancelOrder {
+  .text {
+    color: #999;
+    margin-bottom: 30px;
+  }
+  .radioGroup {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    .label {
+      margin-bottom: 20px;
+      .radio {
+        margin-right: 20px;
+      }
+      .radioText {
+        color: #666;
+      }
+    }
+  }
+
+  .modailAction {
+    color: #333;
+    font-size: 34px;
+    .conform {
+      color: #0199FE;
+    }
+  }
+}

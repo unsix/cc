@@ -1,0 +1,86 @@
+@import '../../../../styles/mixin.scss';
+.at-checkbox__icon--selected {
+  background-color: #fc766b!important;
+}
+.at-checkbox__icon {
+  border-color: #cccccc!important;
+  margin-right: 0!important;
+  width: 46px!important;
+  height: 46px!important;
+}
+.at-checkbox__option_wrap {
+  padding: 10px 0!important;
+}
+
+.payment {
+  box-sizing: border-box;
+  padding: 0 30px;
+  background: #ffffff;
+  margin-bottom: 20px;
+  &-info {
+    padding: 34px 0 28px;
+    @include fj(space-between);
+    align-items: center;
+    &-num {
+      .num {
+        font-family: PingFangSC-Regular;
+        font-size: 28px;
+        color: #666666;
+      }
+      .numNote {
+        color: #FC766B;
+      }
+      .box {
+        margin-top: 10px;
+        color: #333333;
+        .text-symbol {
+          font-family: DINPro-Bold;
+          font-size: 22px;
+        }
+        .text-num {
+          font-family: DINPro-Bold;
+          font-size: 40px;
+        }
+        .text-other {
+          font-family: PingFangSC-Regular;
+          font-size: 24px;
+          color: #FC766B;
+        }
+      }
+      .boxNote {
+        color: #FC766B;
+      }
+    }
+  }
+  &-border {
+    @include wh(100%, 2px);
+    background: #E4E4E4;
+  }
+  &-time {
+    @include wh(100%, 86px);
+    @include fj(space-between);
+    align-items: center;
+    .time {
+      font-family: PingFangSC-Regular;
+      font-size: 24px;
+      color: #999999;
+    }
+    .timeNote {
+      color: #FC766B;
+    }
+    .status {
+      font-family: PingFangSC-Regular;
+      font-size: 24px;
+      color: #666666;
+    }
+    .statusNote {
+      color: #FC766B;
+    }
+  }
+}
+
+.notePayment {
+  border-top: 1px solid #FC766B;
+  border-bottom: 1px solid #FC766B;
+  color: #FC766B;
+}

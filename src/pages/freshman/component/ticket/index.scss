@@ -1,0 +1,62 @@
+@import '../../../../styles/mixin.scss';
+$ticketW: 335px;
+$ticketH: 212px;
+
+.ticket {
+  @include wh($ticketW, $ticketH);
+  box-sizing: border-box;
+  padding: 0 26px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  background: url('../../../../images/freshman/bg.png') no-repeat;
+  background-size:100% 100%;
+  &-money {
+    height: 105px;
+    @include fj(center);
+    align-items: center;
+    .num {
+      font-family: PingFangHK-Regular;
+      font-size: 30px;
+      color: #FF6262;
+      .big {
+        font-size: 50px;
+      }
+    }
+    .text {
+      margin-left: 18px;
+      font-family: PingFangSC-Regular;
+      font-size: 24px;
+      color: #666666;
+    }
+  }
+  &-border {
+    height: 0px;
+    border-bottom: 2px dotted #DF4B39;
+  }
+  &-title {
+    @include fj(flex-start);
+    align-items: center;
+    height: 105px;
+    .title {
+      .name {
+        font-family: PingFangSC-Regular;
+        font-size: 24px;
+        color: #666666;
+        overflow : hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        word-break: break-all;
+      }
+      .time {
+        margin-top: 14px;
+      }
+      .content {
+        font-family: PingFangHK-Regular;
+        font-size: 22px;
+        color: #999999;
+      }
+    }
+  }
+}

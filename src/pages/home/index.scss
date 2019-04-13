@@ -1,0 +1,126 @@
+@import "../../styles/mixin";
+
+page {
+  background-color: #f7f7f7;
+}
+
+.home-page {
+  @include wh(100%, 100%);
+  .home-top {
+    height: 342px; 
+    background: #EAD2B7;
+    padding: 14px 30px 0;
+    .swiper {
+      .item {
+        margin-top: 24px;
+        height: 320px;
+        text-align: center;
+      }
+      .img {
+        height: 310px;
+        width: 667px;
+      }
+    }
+    &-banner {
+      position: relative;
+      margin-top: 24px;
+      height: 320px;
+      background: #eaddcf;
+    }
+  }
+
+  .home-flow {
+    padding: 0 30px;
+    background: #ffffff;
+    &::before{
+      content: '';
+      display: block;
+      overflow: hidden;
+    }
+    &-box {
+      margin-top: 88px;
+      border-bottom: 1Px solid #e4e4e4;
+      &-img {
+        display: block;
+        width: 100%;
+        height: 59px;
+      }
+    }
+  }
+
+  .home-menu {
+    background: #ffffff;
+    height: 165px;
+    padding: 0 30px;
+    @include fj();
+    &-view {
+      width: 20%;
+      @include fj(center);
+      align-items: center;
+      flex-direction: column;
+      margin-bottom: 15px;
+      &-box {
+        text-align: center;
+        padding: 20px 0;
+        &-img {
+          display: block;
+          width: 60px;
+          height: 60px;
+        }
+      }
+      &-text {
+        font-family: PingFangSC-Regular;
+        font-size: 22px;
+      }
+    }
+  }
+
+  .home-freshman {
+    &-img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    background: #ffffff;
+    margin: 20px 0;
+    height: 176px;
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    color: #AA6654;
+    &-box {
+      height: 93px;
+      width: 90px;
+    }
+    &-content {
+      font-size: 32px;
+      font-family: PingFangSC-Regular;
+      &-bold {
+        font-family: PingFangSC-Semibold;
+      }
+      &-new {
+        font-size: 24px;
+      }
+    }
+    &-button {
+      background-color: #F87D60;
+      border-radius: 34px;
+      padding: 22px 24px;
+      color: #fff;
+      font-family: PingFangSC-Medium;
+      font-size: 24px;
+    }
+  }
+
+  .home-bottom {
+    padding: 30px 0;
+    text-align: center;
+    margin-top: -20px;
+    .text {
+      font-family: PingFangSC-Regular;
+      font-size: 26px;
+      color: #909090;
+      text-align: center;
+    }
+  }
+}

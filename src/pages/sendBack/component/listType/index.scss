@@ -1,0 +1,46 @@
+@import '../../../../styles/mixin.scss';
+
+.list-type {
+  background-color: #ffffff;
+  @include fj(space-between);
+  align-items: center;
+  padding: 22px 30px;
+  transition: background-color .3s;
+  &:active {
+    background-color: #f0f0f0;
+  }
+  &-left {
+    .title {
+      font-family: PingFangSC-Regular;
+      font-size: 32px;
+      color: #333333;
+      line-height: 42px;
+    }
+    .info {
+      margin-top: 18px;
+    }
+    .text {
+      font-family: PingFangSC-Regular;
+      font-size: 28px;
+      color: #999999;
+      overflow : hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      word-break: break-all;
+    }
+  }
+  &-right {
+    @include fj(flex-start);
+    align-items: center;
+    .title {
+      flex-grow: 1;
+      .text {
+        font-family: PingFangSC-Regular;
+        font-size: 32px;
+        color: #999999;
+      }
+    }
+  }
+}

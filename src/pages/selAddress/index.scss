@@ -1,0 +1,9 @@
+@import "../../styles/mixin";
+
+page {
+  background-color: #f7f7f7;
+}
+
+.selAddress-page {
+  @include wh(100%, 100%);
+}

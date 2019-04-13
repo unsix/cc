@@ -1,0 +1,23 @@
+@import "../../styles/mixin";
+
+page {
+  background-color: #ffffff;
+}
+
+.address-page {
+  @include wh(100%, 100%);
+  &-btn {
+    padding: 0 30px;
+    margin-top: 60px;
+    box-sizing: border-box;
+    .btn {
+      background: #0199FE;
+      border-radius: 40px;
+      height: 80px;
+      line-height: 80px;
+      font-family: PingFangSC-Regular;
+      font-size: 28px;
+      color: #FFFFFF;
+    }
+  }
+}

@@ -1,0 +1,46 @@
+@import '../../../../styles/mixin.scss';
+
+.bill {
+  box-sizing: border-box;
+  padding: 0 30px;
+  margin-bottom: 20px;
+  &-list {
+    @include wh(100%, 148px);
+    @include fj(space-between);
+    align-items: center;
+
+    &-num {
+      .num {
+        font-family: PingFangSC-Regular;
+        font-size: 28px;
+        color: #666666;
+        &.text {
+          font-size: 24px;
+        }
+      }
+      .right-text {
+        text-align: right;
+      }
+      .time {
+        margin-top: 20px;
+      }
+      .box {
+        margin-top: 18px;
+        .text-symbol {
+          font-family: DINPro-Bold;
+          font-size: 22px;
+          color: #333333;
+        }
+        .text-num {
+          font-family: DINPro-Bold;
+          font-size: 40px;
+          color: #333333;
+        }
+      }
+    }
+  }
+  &-border {
+    @include wh(100%, 1Px);
+    background: #DDDDDD;
+  }
+}

@@ -1,0 +1,70 @@
+@import '../../../../styles/mixin.scss';
+$headerHeight: 90px;
+
+$imgWH: 140px;
+
+.list-item {
+  background: #ffffff;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  &-header {
+    height: $headerHeight;
+    border-bottom: 1Px solid #E4E4E4;
+    padding: 0 30px;
+    @include fj();
+    align-items: center;
+    .text {
+      font-family: PingFangSC-Regular;
+      font-size: 28px;
+      color: #333333;
+    }
+  }
+  &-content {
+    padding: 40px 30px;
+    &-info {
+      @include fj(flex-start);
+      .img {
+        @include wh($imgWH, $imgWH);
+      }
+      &-box {
+        @include fj();
+        margin-left: 20px;
+        flex-grow: 1;
+        align-items: center;
+        .title-info {
+          .device-type {
+            margin: 20px 0 16px;
+          }
+          .name {
+            font-family: PingFangSC-Regular;
+            font-size: 28px;
+            color: #333333;
+            &.type {
+              font-size: 24px;
+              color: #999999;
+            }
+          }
+        }
+      }
+    }
+    &-btn {
+      margin-top: 32px;
+      @include fj(flex-end);
+      .btn {
+        margin-left: 20px;
+        padding: 12px 32px;
+        border: 1px solid #9F9F9F;
+        border-radius: 24px;
+        height: auto;
+        line-height: inherit;
+        font-family: PingFangSC-Regular;
+        font-size: 24px;
+        color: #4A4A4A;
+      }
+      .careful {
+        color: #FC766B;
+        border: 1px solid #FC766B;
+      }
+    }
+  }
+}

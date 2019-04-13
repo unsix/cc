@@ -1,0 +1,122 @@
+@import '../../../../styles/mixin.scss';
+
+%color {
+  &.red {
+    color: #FC7768;;
+  }
+  &.yellow {
+    color: #DB9350;
+  }
+}
+%backgroundColor {
+  &.red {
+    background: #FC7768;
+  }
+  &.yellow {
+    background: #DB9350;
+  }
+}
+.card {
+  box-sizing: border-box;
+  margin-bottom: 26px;
+  &-info {
+    box-sizing: border-box;
+    @include wh(100%, 180px);
+    padding: 70px 50px 36px 32px;
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    .tag {
+      position: absolute;
+      @include wh(130px, 38px);
+      background: #fc7768;
+      left: -8px;
+      top: 25px;
+      @include fj(center);
+      align-items: center;
+      border-radius: 0 4px 4px 0;
+      .arrow {
+        position: absolute;
+        left: 0;
+        bottom: 100%;
+        box-sizing: border-box;
+        border: 4px solid #cb5458;
+        border-top-color: transparent;
+        border-left-color: transparent;
+      }
+      .text {
+        font-family: PingFangSC-Regular;
+        font-size: 22px;
+        color: #FFFFFF;
+      }
+    }
+    &.red {
+      background: #ffe4e1;
+    }
+    &.yellow {
+      background: #fff3db;
+    }
+    &-detail {
+      @include fj(space-between);
+      .left {
+        @include fj(flex-start);
+        align-items: baseline;
+        .num {
+          font-family: DINPro-Bold;
+          font-size: 58px;
+          @extend %color;
+        }
+        .text {
+          font-family: PingFangSC-Regular;
+          font-size: 24px;
+          margin-left: 4px;
+          @extend %color;
+        }
+      }
+      .middle {
+        .name {
+          .text {
+            font-family: PingFangHK-Regular;
+            font-size: 24px;
+            @extend %color;
+          }
+          &.time {
+            margin-top: 18px;
+          }
+        }
+      }
+      .right {
+        .btn {
+          @include wh(136px, 42px);
+          font-family: PingFangSC-Regular;
+          font-size: 22px;
+          color: #FFFFFF;
+          line-height: 42px;
+          border-radius: 4px;
+          @extend %backgroundColor;
+        }
+      }
+    }
+  }
+
+  &-type {
+    box-sizing: border-box;
+    @include wh(100%, 80px);
+    @extend %backgroundColor;
+    @include fj(flex-start);
+    align-items: center;
+    padding-left: 36px;
+    border-radius:  0 0 8px 8px;
+
+    .text {
+      font-family: PingFangSC-Regular;
+      font-size: 24px;
+      color: #FFFFFF;
+    }
+    &.red {
+      border-top: 1px dotted #FC7768;
+    }
+    &.yellow {
+      border-top: 1px dotted #DB9350;
+    }
+  }
+}

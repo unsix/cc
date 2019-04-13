@@ -1,0 +1,209 @@
+@import "../../styles/mixin";
+
+// 椭圆形按钮
+@mixin ob($radius, $borderColor, $padding, $fontColor) {
+  @include rb($radius, $borderColor);
+  padding: $padding;
+  color: $fontColor;
+}
+page {
+  background-color: #f7f7f7;
+}
+.orderDetail-page {
+  @include wh(100%, 100%);
+  .order-status {
+    padding: 40px 40px 30px 40px;
+    background-color: #FA4E62;
+    color: #fff;
+    @include fj(space-between);
+    align-items: center;
+    .status {
+      @mixin img($url) {
+        background: url($url) no-repeat;
+        background-size: 33px 40px;
+        width: 33px;
+        height: 40px;
+      }
+      @include fj(flex-start);
+      align-items: center;
+      .paid-img {
+        @include img('../../images/order/to-be-paid.png');
+      }
+      .text {
+        font-size: 36px;
+        margin-left: 20px;
+      }
+      margin-bottom: 22px;
+    }
+    .midd-content {
+      font-size: 28px;
+      margin-bottom: 62px;
+    }
+    .bott-content {
+      font-size: 28px;
+    }
+  }
+
+  .address-area {
+    background-color: #fff;
+    padding: 40px 30px;
+    .contact-num {
+      color: #0A0A0A;
+      font-size: 32px;
+      margin-bottom: 10px;
+      .name {
+        margin-right: 40px;
+      }
+    }
+    .content {
+      color: #888;
+      font-size: 28px;
+      @include fj(flex-start);
+      .location-img {
+        background: url(../../images/order/loction.png) no-repeat 0px 7px;
+        background-size: 16px 20px;
+        width: 25px;
+        height: 27px;
+        margin-right: 10px;
+      }
+    }
+  }
+  .address-bottom {
+    height: 10px;
+    background-color: #FA4E62;
+    margin-bottom: 20px;
+  }
+  .goods-area {
+    background-color: #fff;
+    .shop-info {
+      padding: 19px 28px;
+      color: #4A4A4A;
+      font-size: 28px;
+      @include fj(flex-start);
+      align-items: center;
+      border-bottom: 1px #E4E4E4 solid;
+      .img {
+        width: 50px;
+        height: 50px;
+      }
+      .name {
+        margin-left: 20px;
+      }
+    }
+    .goods-info {
+      background-color: #fff;
+      padding: 40px 30px;
+      @include fj(flex-start);
+      align-items: center;
+      margin-bottom: 20px;
+      .img {
+        width: 160px;
+        height: 160px;
+        margin-right: 20px;
+      }
+      .goods {
+        .title {
+          color: #333;
+          font-size: 28px;
+          margin-bottom: 20px;
+        }
+        .spec {
+          color: #999;
+          font-size: 24px;
+          margin-bottom: 16px;
+        }
+        .rent {
+          color: #333;
+          font-size: 28px;
+          .price {
+            color: #151515;
+            font-size: 30px;
+            font-weight: bold;
+          }
+        }
+      }
+    } 
+  }
+
+  @mixin lp($color: #999999, $rightSize: 28px, $rightWeight:bold, $leftSize: 28px){
+    @include fj(space-between);
+    color: $color;
+    .left-text {
+      font-size: $leftSize;
+      text-align: center;
+    }
+    .right-text {
+      font-size: $rightSize;
+      font-weight: $rightWeight;
+    }
+  }
+  .margin-bottom-37 {
+    margin-bottom: 37px;
+  }
+  .margin-bottom-36 {
+    margin-bottom: 36px;
+  }
+  .margin-bottom-30 {
+    margin-bottom: 30px;
+  }
+  .margin-bottom-25 {
+    margin-bottom: 25px;
+  }
+
+  .price-area {
+    background-color: #fff;
+    margin-bottom: 20px;
+    padding: 30px;
+    .gray-info {
+      @include lp(#999, 30px);
+    }
+    .black-info {
+      @include lp(#333333, 30px);
+    }
+    
+    .dividing {
+      height: 1px;
+      border-bottom: 1px #E4E4E4 solid;
+    }
+  }
+
+  .order-info {
+    background-color: #fff;
+    margin-bottom: 20px;
+    padding: 30px;
+    .gray-info {
+      @include lp(#999, 28px, 400);
+    }
+    .copy-button {
+      @include ob(100px, #999, 2px 26px, #999);
+      margin-left: 16px;
+      font-size: 24px;
+    }
+  }
+  .bottom-space {
+    height: 100px;
+    background-color: #f7f7f7;
+  }
+
+  .end-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background-color: #fff;
+    padding: 0 10px;
+    border-top: 1px #ddd solid;
+    font-size: 24px;
+    @include fj(flex-end);
+    align-items: center;
+    .button-bar {
+      @include ob(100px, #bbb, 12px 32px, #4A4A4A);
+      margin-right: 20px;
+    }
+    .button-bar-active {
+      @include ob(100px, #FC766B, 12px 32px, #FC766B);
+      margin-right: 20px;
+    }
+  }
+}

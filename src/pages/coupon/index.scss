@@ -1,0 +1,11 @@
+@import "../../styles/mixin";
+
+page {
+  background-color: #f7f7f7;
+}
+
+.coupon-page {
+  @include wh(100%, 100%);
+  box-sizing: border-box;
+  padding: 30px 30px 30px 40px;
+}

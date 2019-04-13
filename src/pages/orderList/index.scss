@@ -1,0 +1,39 @@
+@import "../../styles/mixin";
+
+page {
+  background-color: #f7f7f7;
+}
+
+.order-list {
+  @include wh(100%, 100%);
+  &-nav {
+    padding: 0 30px;
+    height: 86px;
+    background: #fff;
+    border-bottom: 1Px solid #eee;
+    @include fj(flex-start);
+    box-sizing: border-box;
+    // width: 100%;
+    white-space: nowrap;
+    &-container {
+      flex-shrink: 0;
+      position: relative;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      .text {
+        padding: 0 26px;
+        font-family: PingFangSC-Regular;
+        font-size: 32px;
+        color: #333333;
+      }
+      .border-bottom {
+        @include cl();
+        bottom: 0;
+        width: 100px;
+        height: 4px;
+        background: #FC766B;
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+@import "../../styles/mixin";
+
+page {
+  background-color: #f7f7f7;
+}
+
+.freshman-page {
+  @include wh(100%, 100%);
+  padding: 0 30px 40px;
+  box-sizing: border-box;
+  background: #FE4d22 url('../../images/freshman/invite.png') no-repeat;
+  background-size: 100% auto;
+  background-position: 0 -50px;
+
+  &-ticket {
+    padding-top: 464px;
+    @include fj(space-between);
+    flex-wrap: wrap;
+  }
+
+  &-btn {
+    background: #FFD100;
+    margin-top: 20px;
+    @include wh(100%, 88px);
+    line-height: 88px;
+    font-family: PingFangSC-Regular;
+    font-size: 36px;
+    color: #8B572A;
+    border-radius: 50px;
+    text-align: center;
+  }
+}

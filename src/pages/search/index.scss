@@ -1,0 +1,55 @@
+@import "../../styles/mixin";
+
+page {
+  background-color: #ffffff;
+}
+
+.search-page {
+  @include wh(100%, 100%);
+
+  .search-top {
+    padding: 16px 32px 0;
+    background: #ffffff;
+    @include fj();
+    .search-cancel {
+      font-family: PingFangSC-Regular;
+      font-size: 32px;
+      color: #333333;
+      @include fj();
+      align-items: center;
+    }
+  }
+
+  .search-page-input {
+    position: relative;
+    width: 86%;
+    .search-icon {
+      position: absolute;
+      top: 50%;
+      left: 26px;
+      transform: translate(0,-50%);
+      &.cancel {
+        padding: 10px;
+        left: auto;
+        right: 26px;
+      }
+    }
+    .search-input {
+      display: block;
+      width: 100%;
+      height: 64px;
+      line-height: 64px;
+      border-radius: 64px;
+      padding: 10px 30px;
+      box-sizing: border-box;
+      padding-left: 70px;
+      font-size: 14Px;
+      background: #F5F5F5;
+    }
+  }
+
+  .search-border {
+    background: #f7f7f7;
+    @include wh(100%, 20px);
+  }
+}

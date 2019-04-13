@@ -1,0 +1,28 @@
+@import "../../styles/mixin";
+
+page {
+  background-color: #fff;
+}
+
+.serviceProtocol-page {
+  @include wh(100%, 100%);
+  .at-article {
+    padding: 40px;
+    .at-article__h1 {
+      font-size: 40px;
+      color: #000;
+      margin-bottom: 20px;
+    }
+    .at-article__h3 {
+      font-size: 32px;
+      color: #000;
+      margin-top: 50px;
+      margin-bottom: 26px;
+    }
+    .at-article__p {
+      font-size: 28px;
+      color: #666;
+      margin-bottom: 30px;
+    }
+  }
+}

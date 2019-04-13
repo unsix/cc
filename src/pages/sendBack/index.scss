@@ -1,0 +1,107 @@
+@import "../../styles/mixin";
+
+page {
+  background-color: #f7f7f7;
+}
+
+.send-back {
+  @include wh(100%, 100%);
+  &-phone {
+    @include fj(flex-start);
+    align-items: center;
+    padding: 40px 30px;
+    background: #ffffff;
+    .img {
+      @include wh(80px, 80px);
+      margin-right: 20px;
+    }
+    &-title {
+      .title-margin {
+        margin-top: 20px;
+      }
+      .title {
+        font-family: PingFangSC-Regular;
+        font-size: 28px;
+        color: #333333;
+        &.text {
+          font-size: 24px;
+          color: #999999;
+        }
+      }
+    }
+  }
+  &-type {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    &-text {
+      .at-list__item {
+        padding: 20px 30px;
+      }
+      .at-list__item .item-content__info-title {
+        font-family: PingFangSC-Regular;
+        font-size: 32px;
+        color: #333333;
+      }
+      .at-list__item .item-extra__info {
+        font-family: PingFangSC-Regular;
+        font-size: 32px;
+        color: #999999;
+        padding-right: 0;
+      }
+    }
+  }
+  &-sel {
+    margin-top: 1Px;
+    background-color: #ffffff;
+    transition: background-color .3s;
+    &:active {
+      background-color: #f0f0f0;
+    }
+    &-picker {
+      @include fj(space-between);
+      align-items: center;
+      padding: 22px 30px;
+      .title {
+        font-family: PingFangSC-Regular;
+        font-size: 32px;
+        color: #333333;
+      }
+      .sel-text {
+        @include fj(flex-start);
+        align-items: center;
+        .text {
+          font-family: PingFangSC-Regular;
+          font-size: 32px;
+          color: #333333;
+          padding-right: 22px;
+        }
+      }
+    }
+  }
+  &-input {
+    margin-top: 1Px;
+    .at-input__title {
+      padding-left: 30px;
+    }
+  }
+  &-footer {
+    padding: 30px;
+    font-family: PingFangHK-Regular;
+    font-size: 24px;
+    color: #FF6262;
+    line-height: 42px;
+  }
+  &-bottom {
+    padding: 0 30px;
+    &-btn {
+      background: #FF6262;
+      margin-top: 20px;
+      @include wh(100%, 88px);
+      line-height: 88px;
+      font-family: PingFangSC-Regular;
+      font-size: 36px;
+      color: #ffffff;
+      border-radius: 50px;
+    }
+  }
+}

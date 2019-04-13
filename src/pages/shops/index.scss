@@ -1,0 +1,103 @@
+@import "../../styles/mixin";
+
+page {
+  background-color: #f7f7f7;
+}
+
+.shops-page {
+  @include wh(100%, 100%);
+  @mixin img($url, $width: 24px, $height: 33px) {
+    background: url($url) no-repeat;
+    background-size: $width $height;
+    width: $width;
+    height: $height;
+  }
+
+  .banner {
+    margin-bottom: 5px;
+    height: 244px;
+    .background-img {
+      height: 244px;
+      width: 100%;
+      position: absolute;
+    }
+    .info {
+      height: 244px;
+      width: 100%;
+      position: absolute;
+      @include fj(space-between);
+      align-items: center;
+      .shop-info {
+        @include fj(space-between);
+        align-items: center;
+        margin-left: 30px;
+        color: #fff;
+        font-size: 32px;
+        .header-img {
+          height: 100px;
+          width: 100px;
+          margin-right: 30px;
+          border-radius: 5px;
+        }
+        .text {
+          font-size: 24px;
+          margin-top: 15px;
+          color: #f3f3fe;
+          @include fj(flex-start);
+          align-items: center;
+          .text-img {
+            margin-right: 10px;
+            @include img('../../images/shops/yes.png', 23px, 23px);
+          }
+        }
+      }
+      .contact {
+        margin-right: 30px;
+        @include img('../../images/shops/contact.png', 64px, 64px);
+      }
+    }
+  }
+
+  .products-area {
+    @include fj();
+    flex-wrap: wrap;
+    margin: auto 30px;
+    padding-top: 25px;
+    .itme {
+      padding: 40px 20px 30px;
+      background-color: #fff;
+      text-align: center;
+      margin-bottom: 16px;
+      border-radius: 8px;
+      .img {
+        width: 257px;
+        height: 260px;
+      }
+      .info {
+        margin-top: 50px;
+        width: 297px;
+        text-align: left;
+        .title {
+          color: #333;
+          font-size: 26px;
+          margin-bottom: 16px;
+        }
+        .rent-info {
+          color: #999;
+          font-size: 20px;
+          margin-bottom: 12px;
+        }
+        .price-info {
+          color: #FC766B;
+          font-size: 30px;
+          .decimal {
+            font-size: 24px;
+          }
+          .unit {
+            font-size: 20px;
+          }
+        }
+      }
+    }
+  }
+}

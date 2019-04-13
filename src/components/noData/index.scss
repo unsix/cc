@@ -1,0 +1,21 @@
+@import '../../styles/mixin.scss';
+
+.no-data {
+  .img {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 58px;
+    margin-top: 60px;
+    width: 227px;
+    height: 168px;
+  }
+  .text-center {
+    text-align: center;
+    .text {
+      font-family: PingFangSC-Regular;
+      font-size: 32px;
+      color: #666666;
+      line-height: 48px;
+    }
+  }
+}

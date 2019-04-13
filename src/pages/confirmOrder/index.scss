@@ -1,0 +1,219 @@
+@import "../../styles/mixin";
+
+page {
+  background-color: #f7f7f7;
+}
+
+.confirmOrder-page {
+  @include wh(100%, 100%);
+  .tip-wx{
+    text-align: center;
+    background: rgb(250, 78, 98);
+    color: #fff;
+    font-size: 0.25rem;
+    padding: 5px 0;
+    position: relative;
+  }
+  .top {
+    border-bottom: 10px #FA4E62 solid;
+    margin-bottom: 20px;
+    .empty-address {
+      background-color: #fff;
+      padding: 30px;
+      @include fj(space-between);
+      align-items: center;
+      .location {
+        background: url(../../images/order/loction.png) no-repeat 0px 7px;
+        background-size: 28px 35px;
+        padding-left: 50px;
+        padding-top: 5px;
+        font-size: 32px;
+        color: #333;
+      }
+    }
+    .address {
+      background-color: #fff;
+      // border-top: 1px #ddd solid;
+      padding: 30px;
+      .contact-num {
+        font-size: 32px;
+        color: #0A0A0A;
+        margin-bottom: 10px;
+        .name {
+          padding-right: 40px;
+        }
+      }
+      .content {
+        color: #888;
+        font-size: 28px;
+        @include fj(flex-start);
+        .location-img {
+          background: url(../../images/order/loction.png) no-repeat 0px 7px;
+          background-size: 16px 20px;
+          width: 25px;
+          height: 30px;
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+
+  .goods-info {
+    background-color: #fff;
+    padding: 40px 30px;
+    @include fj(flex-start);
+    align-items: flex-start;
+    margin-bottom: 20px;
+    .img {
+      width: 160px;
+      height: 160px;
+      margin-right: 20px;
+    }
+    .goods {
+      .title {
+        color: #333;
+        font-size: 28px;
+        margin-bottom: 20px;
+      }
+      .spec {
+        color: #999;
+        font-size: 24px;
+        margin-bottom: 16px;
+      }
+      .rent {
+        color: #333;
+        font-size: 28px;
+        margin-bottom: 20px;
+        .price {
+          color: #333;
+          font-size: 28px;
+        }
+      }
+      .deposit-free {
+        font-size: 20px;
+        color: #1CCFC9;
+        border: 1px #1CCFC9 solid;
+        padding: 5px 10px;
+      }
+    }
+  }
+
+  .order-info {
+    background-color: #fff;
+    padding: 30px;
+    margin-bottom: 20px;
+    .item {
+      @include fj(space-between);
+      color: #999;
+      margin-bottom: 30px;
+      .text {
+        font-size: 28px;
+      }
+      .price {
+        font-size: 30px;
+      }
+    }
+    .save-server {
+      @include fj(flex-start);
+      color: #999;
+      font-size: 26px;
+      .server-item {
+        margin-right: 50px;
+      }
+    }
+  }
+  .deposit-info {
+    background-color: #fff;
+    padding: 30px;
+    border-bottom: 1px #E4E4E4 solid;
+    .item {
+      @include fj(space-between);
+      color: #333;
+      font-size: 28px;
+      .price {
+        font-weight: 600;
+      }
+    }
+  }
+  .deposit-des {
+    background-color: #fff;
+    padding: 30px;
+    color: #0199FE;
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+
+  .real-name {
+    background-color: #fff;
+    border-top: 1px #FFC1C1 solid;
+    @include fj(space-between);
+    margin-bottom: 20px;
+    padding: 30px;
+    font-size: 28px;
+    color: #333;
+    box-shadow: 0 5px 10px #FFC1C1;
+    .auth {
+      color: #FF6262;
+      font-size: 28px;
+    }
+  }
+
+  .message {
+    background-color: #fff;
+    padding: 10px 30px;
+    @include fj(flex-start);
+    align-items: center;
+    .input-mess {
+      font-size: 28px;
+      width: 70%;
+    }
+  }
+  .protocol {
+    padding: 30px;
+    font-size: 26px;
+    color: #999;
+    .text {
+      color: #0199FE;
+    }
+  }
+  .bottom-space {
+    height: 110px;
+  }
+  .bottom-info {
+    background-color: #fff;
+    padding: 15px 30px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    @include fj(space-between);
+    .info {
+      line-height: 80px;
+      .info-item {
+        font-size: 26px;
+        color: #FF6262;
+        .text {
+          color: #333;
+          padding-right: 15px;
+        }
+        .price {
+          font-size: 42px;
+          font-weight: 600;
+        }
+      }
+      .info-text {
+        font-size: 24px;
+        color: #999;
+      }
+    }
+    .pay-button {
+      @include rrb();
+      color: #fff;
+      font-size: 32px;
+      padding: 24px 77px;
+    }
+    .disabled {
+      opacity: 0.25;
+    }
+  }
+}

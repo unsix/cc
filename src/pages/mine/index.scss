@@ -1,0 +1,142 @@
+@import "../../styles/mixin";
+
+page {
+  background-color: #f7f7f7;
+}
+
+.mine-page {
+  @include wh(100%, 100%);
+  &-info {
+    box-sizing: border-box;
+    @include wh(100%, 290px);
+    background: url('../../images/mine/my_bg.png') no-repeat;
+    background-size: 100% auto;
+    padding-top: 50px;
+    .box {
+      @include fj(flex-start);
+      align-items: center;
+      .text {
+        font-family: PingFangSC-Semibold;
+        font-size: 36px;
+        color: #FFFFFF;
+      }
+    }
+    &-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin-left: 60px;
+      margin-right: 24px;
+    }
+  }
+  &-order {
+    padding: 0 30px;
+    &-info {
+      position: relative;
+      box-sizing: border-box;
+      margin-top: -74px;
+      @include wh(100%, 366px);
+      background: #FFFFFF;
+      border-radius: 16px;
+      padding: 0 30px;
+      .title {
+        @include fj();
+        align-items: center;
+        @include wh(100%, 88px);
+        border-bottom: 1Px solid #E4E4E4;
+        .text {
+          font-family: PingFangSC-Medium;
+          font-size: 32px;
+          color: #333333;
+          line-height: 32px;
+        }
+        .right {
+          @include fj();
+          align-items: center;
+          .right-text {
+            font-family: PingFangSC-Regular;
+            font-size: 28px;
+            color: #909090;
+          }
+        }
+      }
+      .menu {
+        @include fj(flex-start);
+        flex-wrap: wrap;
+        padding-top: 30px;
+        &-view {
+          width: 25%;
+          @include fj(center);
+          align-items: center;
+          flex-direction: column;
+          margin-bottom: 24px;
+          &-img {
+            display: block;
+            width: 52px;
+            height: 50px;
+          }
+          &-text {
+            font-family: PingFangSC-Regular;
+            font-size: 24px;
+            color: #999999;
+            margin-top: 14px;
+          }
+        }
+      }
+    }
+
+    &-other {
+      @include wh(100%, 110px);
+      background: #FFFFFF;
+      margin-top: 20px;
+      border-radius: 16px;
+      padding: 0 30px;
+      @include fj();
+      align-items: center;
+      box-sizing: border-box;
+      .text {
+        font-family: PingFangSC-Regular;
+        font-size: 30px;
+        color: #333333;
+      }
+    }
+  }
+  &-recommend {
+    padding: 0 30px;
+    margin-top: 58px;
+    .header {
+      text-align: center;
+      .text {
+        font-family: STSongti-SC-Black;
+        font-size: 28px;
+        color: #666666;
+        text-align: center;
+      }
+    }
+    .subhead {
+      text-align: center;
+      .text {
+        font-family: PingFangSC-Regular;
+        font-size: 18px;
+        color: #909090;
+        text-align: center;
+      }
+    }
+    .container {
+      margin-top: 30px;
+      @include fj();
+      flex-wrap: wrap;
+    }
+  }
+  &-bottom {
+    padding: 30px 0;
+    text-align: center;
+    margin-top: -20px;
+    .text {
+      font-family: PingFangSC-Regular;
+      font-size: 26px;
+      color: #909090;
+      text-align: center;
+    }
+  }
+}

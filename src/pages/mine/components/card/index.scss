@@ -1,0 +1,68 @@
+@import '../../../../styles/mixin.scss';
+$itemWidth: 338px;
+
+$imgWidth: 258px;
+$imgHeight: 260px;
+
+.card {
+  width: $itemWidth;
+  background: #ffffff;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  padding: 40px 18px 26px;
+  box-sizing: border-box;
+  &-img {
+    @include wh(100%, $itemWidth);
+    text-align: center;
+    .img {
+      width: 257px;
+      height: 260px;
+    }
+  }
+  &-title {
+    margin-top: 14px;
+    .title {
+      margin-bottom: 12px;
+      .name {
+        font-family: PingFangSC-Regular;
+        font-size: 26px;
+        color: #333333;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        height: 55px;
+      }
+    }
+    .desc {
+      margin-top: 12px;
+      .content {
+        font-family: PingFangSC-Regular;
+        font-size: 26px;
+        color: #333333;
+        line-height: 26px;
+      }
+    }
+    .other {
+      margin-top: 16px;
+      .text {
+        font-family: PingFangSC-Regular;
+        font-size: 20px;
+        color: #999999;
+        line-height: 20px;
+      }
+    }
+    .price {
+      margin-top: 12px;
+      .box {
+        font-family: PingFangSC-Regular;
+        font-size: 20px;
+        color: #FC766B;
+        line-height: 30px;
+        .num {
+          font-size: 30px;
+        }
+      }
+    }
+  }
+}

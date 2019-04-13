@@ -1,0 +1,11 @@
+.bill-title {
+  padding: 40px 30px 22px;
+  &.last {
+    padding: 20px 30px 22px;
+  }
+  .text {
+    font-family: PingFangSC-Medium;
+    font-size: 32px;
+    color: #333333;
+  }
+}

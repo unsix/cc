@@ -1,0 +1,76 @@
+@import '../../../../styles/mixin.scss';
+
+.address-item {
+  .am-swipe-content {
+    background: #ffffff;
+  }
+  .am-swipe-btn-edit {
+    background-color: #F6F6F6;
+    color: #333333;
+  }
+  .am-swipe-btn-delete {
+    background-color: #FC766B;
+  }
+  &-normal {
+    box-sizing: border-box;
+    width: 100%;
+    @include fj();
+    // border-bottom: 1Px solid ;
+    padding: 30px;
+    position: relative;
+
+    .addr-user {
+      width: 85%;
+      .top {
+        @include fj(flex-start);
+        align-items: center;
+        .text {
+          font-family: PingFangSC-Medium;
+          font-size: 32px;
+          color: #333333;
+          &.num {
+            margin-left: 68px;
+          }
+        }
+        .tag {
+          margin-left: 22px;
+          background: #FC766B;
+          border-radius: 4px;
+          color: #ffffff;
+          font-family: PingFangSC-Regular;
+          font-size: 20px;
+          color: #FFFFFF;
+          padding: 4px 8px;
+        }
+      }
+      .bottom {
+        width: 100%;
+        margin-top: 20px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        .text {
+          font-family: PingFangSC-Regular;
+          font-size: 28px;
+          color: #666666;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+    }
+    .addr-info {
+      flex-grow: 1;
+      box-sizing: border-box;
+      @include fj(center);
+      align-items: center;
+      border-left: 2Px solid #E4E4E4;
+    }
+    .border-bottom {
+      @include cl();
+      bottom: 0;
+      @include wh(92%, 2px);
+      background: #E4E4E4;
+    }
+  }
+}
