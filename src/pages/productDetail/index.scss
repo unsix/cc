@@ -111,6 +111,57 @@ page {
       }
     }
   }
+  .swiper-info{
+    box-shadow: border-box;
+    margin-bottom: 20px;
+    background-color: #fff;
+    .img {
+      height: 102px;
+      width: 100%;
+    }
+  }
+  .store-info{
+    margin-bottom: 5px;
+    background-color: #fff;
+    padding:30px 30px 10px 30px;
+    .channel-top {
+        display:flex;
+        -webkit-box-pack:justify;
+        justify-content:space-between;
+        .right-text{
+          color:#FC766B;
+          font-size: 28px;
+          .at-icon{
+            color:#FC766B!important;
+          }
+        }
+    }
+  }
+  .other-commodities{
+    background-color: #fff;
+    padding: 50px 0 0 10px;
+    display:flex;
+    -webkit-box-pack:justify;
+    justify-content:space-around;
+    flex-wrap: wrap;
+    .commodities-img{
+      width:200px;
+      height: 200px;
+      // background: #EE7B7A;
+    }
+    .commodities-name{
+      font-family: PingFangSC-Regular;
+      font-size: 25px;
+      color: #333333;
+      padding:30px 0;
+    }
+    .commodities-price{
+      font-family: Helvetica;
+      font-size: 27px;
+      color: #FC766B;
+      padding:0 0 30px 0;
+    }
+  }
   .spot {
     @include img('../../images/product/spot.png', 32px, 8px);
   }

@@ -49,11 +49,11 @@ export default (options = { method: 'GET', data: {} }) => {
     }
   }
   let requesturl;
-  // if(options.test == 'userSubmitOrder'){
-  //   requesturl = 'http://192.168.1.100:8071/aliPay/order/userSubmitOrder'
-  // }else{
+  if(options.test == 'recommendproducts'){
+    requesturl = 'http://192.168.1.100:8071/'+options.url
+  }else{
     requesturl = baseUrl + options.url
-  // }
+  }
   return Taro.request({
     url: requesturl,
     data,

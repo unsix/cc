@@ -15,6 +15,8 @@ export default {
     startDay: null,    // 选中的起租日期
     oldNewDegreeList: ['全新', '99新', '95新', '9成新', '8成新', '7成新'],
     serviceMarkList: ['包邮', '免押金', '免赔', '随租随还', '全新品', '分期支付'],
+    // 为你推荐列表
+    recommendproductsList:[]
   },
 
   effects: {
@@ -23,6 +25,18 @@ export default {
       if (res) {
         yield put({
           type: 'saveDetail',
+          payload: res.data,
+        });
+      }
+    },
+    // itemid商品详情其他接口
+    * recommendproducts({ payload }, { call, put }) {
+      console.log(payload ,productDetailApi.recommendproducts)
+      const res = yield call(productDetailApi.recommendproducts, payload);
+      console.log(res,'===>')
+      if (res) {
+        yield put({
+          type: 'saveRecommend',
           payload: res.data,
         });
       }
@@ -142,6 +156,14 @@ export default {
         saveServers: newServers,
       };
     },
+    // 为你推荐
+    saveRecommend (state, { payload }){
+      console.log(payload,'sjhfdghursfgyu')
+      return {
+        ...state,
+        recommendproductsList:payload
+      };
+    }
   },
 
 };

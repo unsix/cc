@@ -45,6 +45,11 @@ class Productdetail extends Component {
       type: 'productDetail/fetchProductDetail',
       payload: { itemId },
     });
+    // productid就是itemid
+    dispatch({
+      type: 'productDetail/recommendproducts',
+      payload: { productid:this.$router.params.itemId }
+    });
   };
 
   onShowSKUClick = () => {
@@ -216,6 +221,11 @@ class Productdetail extends Component {
   onShowPhoneModal = () => {
     this.setState({ showServicePhone: true });
   }
+  onEnvelope = () =>{
+    Taro.navigateTo({
+      url:'/pages/freshman/index'
+    })
+  }
 
   connectService = (number) => {
     my.makePhoneCall({ number });
@@ -233,7 +243,8 @@ class Productdetail extends Component {
   // 根据用户芝麻信用情况给予押金减免。
   render() {
     const { showzimServicePopup, showSKUPopup, showServicePopup, showServicePhone, showCoupons, showAdditionalPopup, mainActive, editRentDays, daysValue } = this.state;
-    const { loading, orderLoading, mineLoading, detail, currentSku, oldNewDegreeList, serviceMarkList, currentDays, advancedDays, startDay, saveServers } = this.props;
+    const { loading, orderLoading, mineLoading, detail, currentSku, oldNewDegreeList, serviceMarkList, currentDays, advancedDays, startDay, saveServers,recommendproductsList } = this.props;
+    // console.log(recommendproductsList,'limingsb')
     let totelRentPrice = 0
     if (currentSku.currentCyclePrice.days && currentSku.currentCyclePrice.price) {
       totelRentPrice = (currentDays * currentSku.currentCyclePrice.price).toFixed(2);
@@ -314,6 +325,53 @@ class Productdetail extends Component {
           </View>
           <View className='spot' />
         </View>
+        <View className='swiper-info'>
+            <swiper
+              // circular
+              indicator-dots
+              indicator-active-color='#DBDBDB'
+              // autoplay='{{false}}'
+              // interval='{{3000}}'
+            >
+                <swiper-item >
+                  <View className='item' onClick={this.onEnvelope.bind()}>
+                    <Image className='img' mode='aspectFit' src='../../images/home/yffresh.png' />
+                  </View>
+                </swiper-item>
+            </swiper>
+        </View>
+        <View className='store-info'>
+            <View className='channel-top'>
+              <View className='channel-top-title'>
+                <Text className='left-text'>为你推荐</Text>
+              </View>
+              <View className='channel-top-more'>
+                <Text className='right-text'>查看全部</Text>
+                <AtIcon value='chevron-right' size='20' color='#999'></AtIcon>
+              </View>
+            </View> 
+        </View>
+        <View className='other-commodities'>
+        {
+          !!recommendproductsList && recommendproductsList.map(item =>(
+                <View>
+                  <View className="commodities-img">
+                    <Image style="width:100%;height:100%;" mode='aspectFit' src='http://jbkj-res.oss-cn-hangzhou.aliyuncs.com/1d4552d0e4e8413e987a2dba5600564d.png' />
+                  </View>
+                  <View className="commodities-name">
+                    手机坚果锤子 P20 
+                  </View>
+                  <View className="commodities-price">
+                    <Text style="font-size: 15px;">¥</Text>
+                    <Text style="font-size: 17px;">
+                    159
+                    </Text>
+                    <Text style="font-size: 10px;">/天</Text>
+                  </View>
+                </View>
+          ))
+        }
+         </View>
         <View className='main-area'>
           <View className='tab'>
             <View className={`item ${mainActive === 'detail' && 'active-item'}`} onClick={this.onMainTabActive.bind(this, 'detail')}>
@@ -573,8 +631,8 @@ class Productdetail extends Component {
           onModalClose={this.onClosePhoneModal}
         >
           <View slot='header'>联系客服</View>
-          <View style={{ textAlign: 'left', marginBottom: '10px', paddingLeft: '15px' }}>商家客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectService.bind(this, customerServiceTel)}>{customerServiceTel}</Text></View>
-          <View style={{ textAlign: 'left', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectService.bind(this, detail.shop.serviceTel)}>{detail.shop.serviceTel}</Text></View>
+          <View style={{ textAlign: 'left', marginBottom: '10px', paddingLeft: '15px' }}>商家客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectService.bind(this, customerServiceTel)}>{detail.shop.serviceTel}</Text></View>
+          <View style={{ textAlign: 'left', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectService.bind(this, detail.shop.serviceTel)}>{customerServiceTel}</Text></View>
           <View slot='footer'>取消拨打</View>
         </modal>
 
