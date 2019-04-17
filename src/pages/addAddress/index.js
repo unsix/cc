@@ -15,12 +15,14 @@ class Addaddress extends Component {
     navigationBarTitleText: '设置地址',
     usingComponents: {
       "am-icon": "../../npm/mini-antui/es/am-icon/index",
+      "notice": "../../npm/mini-antui/es/notice/index"
     }
   };
 
   state = {
     currentAddress: [], 
-    isshow:true
+    isshow:true,
+    marquee:{loop: true, leading: 2000, trailing: 100, fps: 18 }
   }
 
   componentDidMount = () => {
@@ -152,8 +154,8 @@ class Addaddress extends Component {
       params.area = 999;
     }else{
       params.province = currentAddress[0].value;
-      params.city = currentAddress[0].value;
-      params.area = currentAddress[0].value;
+      params.city = currentAddress[1].value;
+      params.area = currentAddress[2].value;
     }
     // console.log(params,'rererrereturn')
     // return;
@@ -199,17 +201,10 @@ class Addaddress extends Component {
     (loading) ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
     return (
       <View className='addAddress-page'>
-        {this.state.isshow && (
-          <View onClick={this.ddOrder} className='bill-detail-broadcast tip-wx'>
-          {/* <Text style="position: absolute;left: 19px;bottom: 0.05rem;">
-            <AtIcon value='volume-plus' size='15' color='#FFFFFF' />
-          </Text> */}
-            <Text className='text' >若所在省市无法选择,请在省市区选择其他,在详细地址输入即可</Text>
-          {/* <Text  style="position: absolute;right: 19px;bottom: 0.05rem;">
-            <AtIcon value='close' size='14' color='#FFFFFF' />
-          </Text> */}
-          </View>
-        )}
+        {/* {loop: false, leading: 500, trailing: 800, fps: 40 } */}
+        <View onClick={this.ddOrder}> 
+          <notice show={isshow} class="loslos" marqueeProps={marquee} enableMarquee={true} actionCls="closeable" mode="closable">若所在省市无法选择,请在省市区选择其他,在详细地址输入即可！！！！！</notice>
+        </View>
         <Form onSubmit={this.formSubmit}>
           <View className='info'>
             <View className='item'>

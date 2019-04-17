@@ -4,7 +4,7 @@ import { connect } from '@tarojs/redux';
 import Search from './component/search/index';
 import Channel from './component/channel/index';
 import flowImg from '../../images/home/flow.png';
-
+// import Rolling from '../../components/rolling/rolling';
 import './index.scss';
 
 @connect(({ home, loading }) => ({

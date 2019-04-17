@@ -34,6 +34,7 @@ export default {
     * getNewPackage({ payload }, { call }) {
       const res = yield call(freshmanApi.getNewPackage, { ...payload, uid: getUid() });
       if (res) {
+        Taro.switchTab({ url: '/pages/home/index' })
         Taro.showToast({
           title: '领取成功',
           icon: 'none',

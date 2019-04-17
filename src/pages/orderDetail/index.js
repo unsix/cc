@@ -20,7 +20,8 @@ class Orderdetail extends Component {
     'usingComponents': {
       "am-icon": "../../npm/mini-antui/es/am-icon/index",
       "popover": "../../npm/mini-antui/es/popover/index",
-      "popover-item": "../../npm/mini-antui/es/popover/popover-item/index"
+      "popover-item": "../../npm/mini-antui/es/popover/popover-item/index",
+      "modal": "../../npm/mini-antui/es/modal/index"
     }
   };
 
@@ -28,6 +29,7 @@ class Orderdetail extends Component {
     cancelOrderDisplay: false, //取消订单模块显示
     receiveDoodsDisplay: false, // 确认收货模块显示
     modifySettlementDisplay: false, // 确认修改结算单模块显示
+    showServicePhone: false,//model客服
   }
 
   componentDidMount = () => {
@@ -143,8 +145,12 @@ class Orderdetail extends Component {
   }
 
   connectService = () => {
+    this.setState({
+      showServicePhone: true
+    })
     // eslint-disable-next-line no-undef
-    my.makePhoneCall({ number: customerServiceTel });
+    // console.log(customerServiceTel)
+    // my.makePhoneCall({ number: customerServiceTel });
     // my.confirm({
     //   title: '联系客服',
     //   content: '服务时间9:00 - 20:00 ' + { customerServiceTel },
@@ -154,6 +160,9 @@ class Orderdetail extends Component {
     //     my.makePhoneCall({ number: customerServiceTel });
     //   },
     // });
+  }
+  connectServices = () => {
+    my.makePhoneCall({ number: customerServiceTel });
   }
 
   handleHelpDJ = () => {
@@ -181,6 +190,10 @@ class Orderdetail extends Component {
         });
       }
     }
+  }
+
+  onClosePhoneModal = () => {
+    this.setState({ showServicePhone: false });
   }
 
   render() {
@@ -434,6 +447,17 @@ class Orderdetail extends Component {
             <Button onClick={this.handleOkModifySettlement.bind(this, userOrders.orderId)}>确认申请</Button>
           </AtModalAction>
         </AtModal>
+        <modal
+          show={showServicePhone}
+          showClose={false}
+          onModalClick={this.onClosePhoneModal}
+          onModalClose={this.onClosePhoneModal}
+        >
+          <View slot='header'>联系客服</View>
+          <View style={{ textAlign: 'left', marginBottom: '10px', paddingLeft: '15px' }}>商家客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectServices.bind(this, product.shop.serviceTel)}>{product.shop.serviceTel}</Text></View>
+          <View style={{ textAlign: 'left', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectServices.bind(this, customerServiceTel)}>{customerServiceTel}</Text></View>
+          <View slot='footer'>取消拨打</View>
+        </modal>
       </View >
     )
   }

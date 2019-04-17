@@ -1,4 +1,4 @@
-export const customerServiceTel = 15158129875; // 客服电话
+export const customerServiceTel = '15158129875'; // 客服电话
 export const orderStatus = {
   WAITING_PAYMENT: '待付款',
   USER_OVERTIME_PAYMENT_CLOSED: '支付超时取消',

@@ -65,7 +65,8 @@ class Shops extends Component {
   }
 
   connectService = (number) => {
-    my.makePhoneCall({ number });
+    let num = String(number);
+    my.makePhoneCall({ number:num });
   }
 
 
@@ -125,8 +126,8 @@ class Shops extends Component {
           onModalClose={this.onClosePhoneModal}
         >
           <View slot='header'>联系客服</View>
-          <View style={{ textAlign: 'left', marginBottom: '10px', paddingLeft: '15px' }}>商家客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectService.bind(this, customerServiceTel)}>{customerServiceTel}</Text></View>
-          <View style={{ textAlign: 'left', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectService.bind(this, shop.serviceTel)}>{shop.serviceTel}</Text></View>
+          <View style={{ textAlign: 'left', marginBottom: '10px', paddingLeft: '15px' }}>商家客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectService.bind(this, shop.serviceTel)}>{shop.serviceTel}</Text></View>
+          <View style={{ textAlign: 'left', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectService.bind(this,customerServiceTel )}>{customerServiceTel}</Text></View>
           <View slot='footer'>取消拨打</View>
         </modal>
       </View>

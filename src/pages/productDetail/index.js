@@ -45,6 +45,11 @@ class Productdetail extends Component {
       type: 'productDetail/fetchProductDetail',
       payload: { itemId },
     });
+    // productid就是itemid
+    dispatch({
+      type: 'productDetail/recommendproducts',
+      payload: { productid:this.$router.params.itemId }
+    });
   };
 
   onShowSKUClick = () => {
@@ -91,7 +96,7 @@ class Productdetail extends Component {
 
   handleSkuClick = (valueId, preId) => {
     if (valueId === preId) {
-      return
+      return 
     }
     const { dispatch } = this.props;
     dispatch({
@@ -183,6 +188,8 @@ class Productdetail extends Component {
       logisticForm: '1',
       from: '1',
     };
+    // console.log()
+    Taro.setStorageSync(`isShow`, 0);
     dispatch({
       type: 'mine/fetchAuthCode',
       callback: () => {
@@ -216,9 +223,27 @@ class Productdetail extends Component {
   onShowPhoneModal = () => {
     this.setState({ showServicePhone: true });
   }
-
+  onEnvelope = () =>{
+    Taro.navigateTo({
+      url:'/pages/freshman/index'
+    })
+  }
+  goInmeddiate = () =>{
+    Taro.switchTab({
+      url:'/pages/home/index'
+    })
+  }
+  gotodetail = (id) =>{
+    console.log(id,'shjkhd')
+    
+    Taro.navigateTo({
+      url:`/pages/productDetail/index?itemId=${id}`
+    })
+  }
   connectService = (number) => {
-    my.makePhoneCall({ number });
+    let num = String(number)
+    // console.log(num)
+    my.makePhoneCall({ number: num });
   }
 
 
@@ -233,7 +258,9 @@ class Productdetail extends Component {
   // 根据用户芝麻信用情况给予押金减免。
   render() {
     const { showzimServicePopup, showSKUPopup, showServicePopup, showServicePhone, showCoupons, showAdditionalPopup, mainActive, editRentDays, daysValue } = this.state;
-    const { loading, orderLoading, mineLoading, detail, currentSku, oldNewDegreeList, serviceMarkList, currentDays, advancedDays, startDay, saveServers } = this.props;
+    const { loading, orderLoading, mineLoading, detail, currentSku, oldNewDegreeList, serviceMarkList, currentDays, advancedDays, startDay, saveServers,recommendproductsList,images_ismain } = this.props;
+    
+    // console.log(recommendproductsList,'limingsb')
     let totelRentPrice = 0
     if (currentSku.currentCyclePrice.days && currentSku.currentCyclePrice.price) {
       totelRentPrice = (currentDays * currentSku.currentCyclePrice.price).toFixed(2);
@@ -254,7 +281,7 @@ class Productdetail extends Component {
             indicator-dots
             indicator-active-color='#DBDBDB'
           >
-            {!!detail.images && !!detail.images.length && detail.images.map(img => (
+            {!!images_ismain && !!images_ismain.length && images_ismain.map(img => (
               <swiper-item key={img.src}>
                 <View className='item'>
                   <Image className='img' mode='aspectFit' src={img.src} />
@@ -314,6 +341,63 @@ class Productdetail extends Component {
           </View>
           <View className='spot' />
         </View>
+        <View className='swiper-info'>
+            {/* <swiper
+              indicator-dots
+              indicator-active-color='#DBDBDB'
+            >
+                <swiper-item >
+                  <View className='item' onClick={this.onEnvelope.bind()}>
+                    <Image className='img' mode='aspectFit' src='http://jbkj-res.oss-cn-hangzhou.aliyuncs.com/79249b80547a4d9e9a8519ec47d420cf.png' />
+                  </View>
+                </swiper-item>
+            </swiper> */}
+             <View className='item' onClick={this.onEnvelope.bind()}>
+                <Image className='img' mode='aspectFit' src='http://jbkj-res.oss-cn-hangzhou.aliyuncs.com/79249b80547a4d9e9a8519ec47d420cf.png' />
+              </View>
+        </View>
+        <View className='store-info' onClick={this.goInmeddiate.bind()}>
+            <View className='channel-top'>
+              <View className='channel-top-title'>
+                <Text className='left-text'>为你推荐</Text>
+              </View>
+              <View className='channel-top-more'>
+                <Text className='right-text'>查看全部</Text>
+                <AtIcon value='chevron-right' size='20' color='#ec2111c4'></AtIcon>
+              </View>
+            </View> 
+        </View>
+        <View className='other-commodities'>
+        {
+          !!recommendproductsList && recommendproductsList.map(item =>(
+                <View onClick={this.gotodetail.bind(this,item.productId)}>
+                  <View className="commodities-img">
+                    <Image style="width:100%;height:100%;" mode='aspectFit' src={item.detail} />
+                  </View>
+                  <View className="commodities-name">
+                    {item.name}
+                  </View>
+                  <View className="commodities-price">
+                    <Text style="font-size: 12px;">¥</Text>
+                    <Text style="font-size: 17px;line-height: 30px;">
+                    {
+                      Number(item.sale).toFixed(2).toString().split('.')[0]  
+                    }
+                    </Text>
+                    <Text style="font-size: 10px;margin-top:10px;">
+                    .
+                    </Text>
+                    <Text style="font-size: 10px;">
+                    {
+                      Number(item.sale).toFixed(2).toString().split('.')[1]  
+                    }
+                    </Text>
+                    <Text style="font-size: 10px;"> /天</Text>
+                  </View>
+                </View>
+          ))
+        }
+         </View>
         <View className='main-area'>
           <View className='tab'>
             <View className={`item ${mainActive === 'detail' && 'active-item'}`} onClick={this.onMainTabActive.bind(this, 'detail')}>
@@ -573,8 +657,8 @@ class Productdetail extends Component {
           onModalClose={this.onClosePhoneModal}
         >
           <View slot='header'>联系客服</View>
-          <View style={{ textAlign: 'left', marginBottom: '10px', paddingLeft: '15px' }}>商家客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectService.bind(this, customerServiceTel)}>{customerServiceTel}</Text></View>
-          <View style={{ textAlign: 'left', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectService.bind(this, detail.shop.serviceTel)}>{detail.shop.serviceTel}</Text></View>
+          <View style={{ textAlign: 'left', marginBottom: '10px', paddingLeft: '15px' }}>商家客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectService.bind(this, detail.shop.serviceTel)}>{detail.shop.serviceTel}</Text></View>
+          <View style={{ textAlign: 'left', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectService.bind(this, customerServiceTel)}>{customerServiceTel}</Text></View>
           <View slot='footer'>取消拨打</View>
         </modal>
 

@@ -20,7 +20,9 @@ class Address extends Component {
       type: 'address/getUserAllAddressList',
     });
   };
-
+  componentWillUnmount  () {
+    Taro.setStorageSync(`isShow`, 1);//1为显示
+  }
   gotoAdd = () => {
     Taro.navigateTo({ url: '/pages/addAddress/index' });
   }

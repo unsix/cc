@@ -15,7 +15,7 @@ class Mine extends Component {
     navigationBarTitleText: '我的',
   };
 
-  componentDidMount = () => {
+  componentDidShow = () => {
     const { dispatch } = this.props;
     dispatch({
       type: 'mine/recommendPoductList'
