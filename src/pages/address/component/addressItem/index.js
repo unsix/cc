@@ -33,9 +33,13 @@ class AddressItem extends Component {
     }
   ]
 
-  handleClick = (id) => {
-    const { onEditAddress } = this.props;
-    onEditAddress(id);
+  handleClick = (e) => {
+    e.stopPropagation();
+    const { onEditAddress,data } = this.props;
+    Taro.navigateTo({
+      url:`/pages/addAddress/index?id=${data.id}`
+    })
+    // onEditAddress(id);
   }
 
   handleSwipeClick = (e) => {
@@ -69,7 +73,7 @@ class AddressItem extends Component {
                 <Text className='text'>{data.provinceStr}{data.cityStr}{data.areaStr}{data.street}</Text>
               </View>
             </View>
-            <View onClick={this.handleClick.bind(this, data.id)} className='addr-info'>
+            <View onClick={this.handleClick.bind(this)} className='addr-info'>
               <Text>编辑</Text>
             </View>
             <View className='border-bottom'></View>

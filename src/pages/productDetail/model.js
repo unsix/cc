@@ -17,7 +17,8 @@ export default {
     serviceMarkList: ['包邮', '免押金', '免赔', '随租随还', '全新品', '分期支付'],
     // 为你推荐列表
     recommendproductsList:[],
-    images_ismain:[]
+    images_ismain:[],
+    minRentCycleday: null
   },
 
   effects: {
@@ -96,6 +97,7 @@ export default {
           currentCyclePrice: payload.skus[0].cyclePrices[0],
         },
         currentDays: payload.skus[0].cyclePrices[0].days,
+        minRentCycleday:payload.minRentCycle,
         advancedDays,
         startDay: startTime,
         saveServers,
@@ -105,7 +107,7 @@ export default {
     setCurrentSku(state, { payload }) {
       const { currentSku } = state;
       const { skus } = state.detail;
-      const specIds = currentSku.values.map(value => value.id === payload.preId ? payload.valueId : value.id);
+      const specIds = currentSku.values.map(value => value.id === payload.preId ? payload.valueId : value.id); 
       let newCurrentSku = {}
       if (skus.length) {
         newCurrentSku = skus.find(sku => {
@@ -132,6 +134,7 @@ export default {
     setCurrentDays(state, { payload }) {
       const { currentSku } = state;
       const newCurrentCyclePrice = currentSku.cyclePrices.find(cycle => cycle.days <= payload);
+      console.log(payload,'sososoosososo=========================soos')
       return {
         ...state,
         currentSku: {
@@ -139,6 +142,7 @@ export default {
           currentCyclePrice: { ...newCurrentCyclePrice },
         },
         currentDays: payload,
+        minRentCycleday:payload
       };
     },
 

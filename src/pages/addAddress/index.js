@@ -169,8 +169,8 @@ class Addaddress extends Component {
   }
 
   handleDelete = () => {
-    const { id } = this.$router.params;
-    const { dispatch } = this.props;
+    const { id } = this.$router.params; 
+    const { dispatch,list } = this.props;
     if (id) {
       my.confirm({
         title: '确认',

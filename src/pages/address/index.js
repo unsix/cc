@@ -13,7 +13,9 @@ class Address extends Component {
   config = {
     navigationBarTitleText: '收货地址',
   };
-
+  componentDidShow () {
+    Taro.setStorageSync(`isShow_s`, 1);
+  }
   componentDidMount = () => {
     const { dispatch } = this.props;
     dispatch({
@@ -21,18 +23,28 @@ class Address extends Component {
     });
   };
   componentWillUnmount  () {
-    Taro.setStorageSync(`isShow`, 1);//1为显示
+    if(Taro.getStorageSync(`isShow_s`) == 1 ){
+      Taro.setStorageSync(`isShow`, 1);//1为显示
+    }
   }
   gotoAdd = () => {
     Taro.navigateTo({ url: '/pages/addAddress/index' });
   }
 
   onEditAddress = (id) => {
-    Taro.navigateTo({ url: `/pages/addAddress/index?id=${id}` });
+    
   }
 
   onDelete = (id) => {
-    const { dispatch } = this.props;
+    const { dispatch ,list } = this.props;
+    console.log(list,'listshangchu')
+    if(list.length==1){
+      Taro.setStorageSync(`isShow_s`,1) 
+      Taro.setStorageSync(`isShow`, 1);
+    }else{
+      Taro.setStorageSync(`isShow_s`, 2);
+      Taro.setStorageSync(`isShow`, 0);//1为显示
+    }
     dispatch({
       type: 'addAddress/deleteAddress',
       payload: { id },
@@ -50,6 +62,15 @@ class Address extends Component {
   handleSelect = (index) => {
     const { dispatch, list } = this.props;
     const { type } = this.$router.params;
+    
+    console.log(list,'dewrf')
+    if(list.length==1){
+      Taro.setStorageSync(`isShow_s`,1) 
+      Taro.setStorageSync(`isShow`, 1);
+    }else{
+      Taro.setStorageSync(`isShow_s`, 2);
+      Taro.setStorageSync(`isShow`, 0);//1为显示
+    }
     if (type === 'select') {
       dispatch({
         type: 'confirmOrder/setDefaultUserAddress',
