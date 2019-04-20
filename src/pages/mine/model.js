@@ -34,7 +34,7 @@ export default {
             user_id: exeRes.data.userId,
             mobile_no: exeRes.data.telephone || 'null',
           })
-          // console.lo'img('=====', apRes);
+          console.log('=====', apRes);
         }
         if (callback) {
           callback();

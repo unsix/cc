@@ -168,13 +168,14 @@ class Orderlist extends Component {
     this.setState({ receiveDoodsDisplay: false });
   }
 
-  handleOkGoods = (orderId) => {
+  handleOkGoods = () => {
+    const { clickedOrderId } = this.state;
     const { dispatch } = this.props;
     dispatch({
       type: 'orderDetail/userConfirmReceipt',
-      payload: { orderId },
+      payload: { orderId: clickedOrderId },
     });
-    this.setState({ receiveDoodsDisplay: false });
+    this.setState({ receiveDoodsDisplay: false, clickedOrderId: null });
   }
 
   render() {
