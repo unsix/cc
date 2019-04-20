@@ -60,10 +60,10 @@ class Search extends Component {
 
   render() {
     const { value } = this.state;
-    const { recommend, history, loading } = this.props;
+    const { recommend, history } = this.props;
 
     // eslint-disable-next-line no-undef
-    loading ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
+    // loading ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
 
     return (
       <View className='search-page'>
