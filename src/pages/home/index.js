@@ -29,12 +29,13 @@ class Home extends Component {
   }
 
 
-  skip = () => {
-    console.log('skip');
+  skip = (loinBanner) => {
     // 测试跳转到账单
-    Taro.navigateTo({
-      url: '/pages/freshman/index',
-    })
+    if (loinBanner && loinBanner.length) {
+      Taro.navigateTo({
+        url: loinBanner[0].jumpUrl,
+      })
+    }
   }
 
   onGotoProduct = (itemId) => {
@@ -58,7 +59,7 @@ class Home extends Component {
   }
 
   render() {
-    const { bannerList, iconList, tabList, oldNewDegreeList, loading } = this.props;
+    const { bannerList, iconList, tabList, oldNewDegreeList, loinBanner, loading } = this.props;
     // eslint-disable-next-line no-undef
     loading ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
     return (
@@ -107,8 +108,8 @@ class Home extends Component {
           }
         </View>
 
-        <View className='home-freshman' onClick={this.skip}>
-          <Image className='home-freshman-img' mode='aspectFit' src='../../images/home/freshman.png' />
+        <View className='home-freshman' onClick={this.skip.bind(this, loinBanner)}>
+          <Image className='home-freshman-img' mode='aspectFit' src={loinBanner && loinBanner.length && loinBanner[0].imgSrc} />
           {/* <View className='home-freshman-box'></View>
           <View className='home-freshman-content'>
             <View style={{ marginBottom: '5px' }}>
