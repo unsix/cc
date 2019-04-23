@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro';
 import { View, Input, Textarea, Form, Button, Switch } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import addressList from '../../assets/address.json';
-import citys from '../../assets/citysJson';
+import citys from '../../assets/citys.json';
 import './index.scss';
 
 
@@ -70,20 +70,21 @@ class Addaddress extends Component {
   }
 
   getAddressValues(result) {
-    // const provinceInfo = addressList.find( info => info.name === result[0].name);
-    // const cityInfo = provinceInfo.subList.find(info => info.name === result[1].name);
-    // const areaInfo = cityInfo.subList.find(info => info.name === result[2].name);
-    // return [
-    //   { name: provinceInfo.name, value: provinceInfo.value },
-    //   { name: cityInfo.name, value: cityInfo.value },
-    //   { name: areaInfo.name, value: areaInfo.value },
-    // ];
-    if(result[0].name == '其它'){
-      return [
-        { name: '其它地区请填写详细地址', value: '其它' }
-      ];
-    }
     const provinceInfo = addressList.find( info => info.name === result[0].name);
+
+    const cityInfo = provinceInfo.subList.find(info => info.name === result[1].name);
+    const areaInfo = cityInfo.subList.find(info => info.name === result[2].name);
+    return [
+      { name: provinceInfo.name, value: provinceInfo.value },
+      { name: cityInfo.name, value: cityInfo.value },
+      { name: areaInfo.name, value: areaInfo.value },
+    ];
+    // if(result[0].name == '其它'){
+    //   return [
+    //     { name: '其它地区请填写详细地址', value: '其它' }
+    //   ];
+    // }
+    // const provinceInfo = addressList.find( info => info.name === result[0].name);
 
     // console.log(provinceInfo,'====呃呃呃>')
     // return
@@ -92,29 +93,29 @@ class Addaddress extends Component {
     //     { name: '请填写详细地址', value: '其它' }
     //   ];
     // }
-    const cityInfo = provinceInfo.subList.find(info => info.name === result[1].name);
+    // const cityInfo = provinceInfo.subList.find(info => info.name === result[1].name);
     // console.log(cityInfo,'<=====>')
-    if(result.length<3){
-      return [
-        { name: provinceInfo.name, value: provinceInfo.value },
-        { name: cityInfo.name, value: cityInfo.value }
-      ];
-    }else{
-      const areaInfo = cityInfo.subList.find(info => info.name === result[2].name);
-      // console.log(areaInfo,'===')
-      if(areaInfo){
-        return [
-          { name: provinceInfo.name, value: provinceInfo.value },
-          { name: cityInfo.name, value: cityInfo.value },
-          { name: areaInfo.name, value: areaInfo.value },
-        ];
-      }else{
-        return [
-          { name: provinceInfo.name, value: provinceInfo.value },
-          { name: cityInfo.name, value: cityInfo.value }
-        ];
-      }
-    }
+    // if(result.length<3){
+    //   return [
+    //     { name: provinceInfo.name, value: provinceInfo.value },
+    //     { name: cityInfo.name, value: cityInfo.value }
+    //   ];
+    // }else{
+    //   // const areaInfo = cityInfo.subList.find(info => info.name === result[2].name);
+    //   // console.log(areaInfo,'===')
+    //   if(areaInfo){
+    //     return [
+    //       { name: provinceInfo.name, value: provinceInfo.value },
+    //       { name: cityInfo.name, value: cityInfo.value },
+    //       { name: areaInfo.name, value: areaInfo.value },
+    //     ];
+    //   }else{
+    //     return [
+    //       { name: provinceInfo.name, value: provinceInfo.value },
+    //       { name: cityInfo.name, value: cityInfo.value }
+    //     ];
+    //   }
+    // }
   }
 
   formSubmit = (e) => {
