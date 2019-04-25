@@ -10,7 +10,7 @@ export default {
   },
 
   effects: {
-    * getIndexList(_, { call, put }) {
+    *getIndexList(action, { call, put }) {
       const res = yield call(homeApi.IndexList, { channel: 1 });
       if (res) {
         yield put({
@@ -26,5 +26,4 @@ export default {
       return { ...state, ...payload };
     },
   },
-
 };
