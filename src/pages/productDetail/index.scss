@@ -12,6 +12,17 @@ page {
     width: $width;
     height: $height;
   }
+  .red_envelopes{
+    position:fixed;
+    top:690px;
+    right: 30px;
+    .envelopes{
+      width: 132px;
+      height: 154.6px;
+
+    }
+  }
+
   .swiper {
     border-top: 1px #f7f7f7 solid;
     background-color: #fff;
@@ -31,7 +42,7 @@ page {
   }
   .info-area {
     background-color: #fff;
-    padding: 30px;
+    padding: 30px 30px 20px 0;
     .title {
       font-size: 32px;
       color: #ccc;
@@ -47,7 +58,8 @@ page {
     }
     .price-info {
       @include fj(space-between);
-      align-items: flex-end;
+      //align-items: flex-end;
+      padding-top: 15px;
       .price {
         color: #FC766B;
         font-size: 48px;
@@ -63,6 +75,24 @@ page {
       .volume {
         color: #999;
         font-size: 24px;
+        line-height: 32px;
+      }
+    }
+  }
+  .integral{
+    background-color:#fff ;
+    display: flex;
+    .grade{
+      flex: 1;
+      color: #999;
+      font-size: 24px;
+      line-height: 40px;
+      border: 1px #ddd solid;
+      text-align: center;
+      border-right: none;
+      border-bottom: none;
+      .grade_price{
+        padding-left: 15px;
       }
     }
   }

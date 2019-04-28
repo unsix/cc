@@ -26,7 +26,7 @@ class Freshman extends Component {
       type: 'mine/fetchAuthCode',
       callback: () => {
         dispatch({
-          type: 'freshman/getNewPackage',
+          type: 'freshman/getNewPackage', //领红包
           payload: { type: 1 },
         });
       },
