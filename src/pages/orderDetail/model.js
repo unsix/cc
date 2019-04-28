@@ -13,7 +13,7 @@ export default {
   },
 
   effects: {
-    * selectUserOrderDetail({ payload }, { call, put }) {
+    *selectUserOrderDetail({ payload }, { call, put }) {
       const res = yield call(orderDetailApi.selectUserOrderDetail, payload);
       if (res) {
         yield put({
@@ -23,7 +23,7 @@ export default {
       }
     },
 
-    * userCancelOrder({ payload, callback }, { call, put }) {
+    *userCancelOrder({ payload, callback }, { call, put }) {
       const res = yield call(orderDetailApi.userCancelOrder, payload);
       if (res) {
         const nextStatus = 'USER_CANCELED_CLOSED';
