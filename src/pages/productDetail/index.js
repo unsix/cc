@@ -307,8 +307,8 @@ class Productdetail extends Component {
             ))}
           </swiper>
         </View>
-        <View className='zima-Xy'>
-            <Image style='width:750rpx;height:88rpx;' mode='aspectFit' src={homeImg} />
+        <View className='sesame_credit'>
+            <Image className='sesame_credit_img' mode='aspectFit' src={homeImg} />
         </View>
         <View className='swiper-space' />
         <View className='info-area'>
@@ -322,7 +322,10 @@ class Productdetail extends Component {
               <Text className='unit'> 元/天</Text>
             </View>
             <View>
-              <View className='volume'>官方售价：¥{detail.salesVolume}笔</View>
+              <View className='dec_situation'>{detail.skus.map((skus, i)=>(
+                <View className='volume'> 官方售价：¥{skus.marketPrice}</View>
+              ))}
+              </View>
               <View className='volume'>月销：{detail.salesVolume}笔</View>
             </View>
           </View>
@@ -546,8 +549,32 @@ class Productdetail extends Component {
             </View>
             <View className='service-popup-content'>
               <View className='service-popup-content-item' >
-                <View className='service-po·  pup-content-item-type'>芝麻信用免押金</View>
-                <View>根据用户芝麻信用情况给予押金减免</View>
+                <View className='service-po·  pup-content-item-type'>正品保障</View>
+                <View>商品支持正品保障服务</View>
+              </View>
+              {!!detail.serviceMarks && !!detail.serviceMarks.length && detail.serviceMarks.map(service => (
+                <View className='service-popup-content-item' key={service.id}>
+                  <View className='service-popup-content-item-type'>{serviceMarkList[service.type]}</View>
+                  <View>{service.description}</View>
+                </View>
+              ))}
+            </View>
+            <View className='service-popup-content'>
+              <View className='service-popup-content-item' >
+                <View className='service-po·  pup-content-item-type'>7天无理由退货</View>
+                <View>消费者在满足7天无理由退换货申请条件下的前提下，可以提出"7天无理由退换货"的申请</View>
+              </View>
+              {!!detail.serviceMarks && !!detail.serviceMarks.length && detail.serviceMarks.map(service => (
+                <View className='service-popup-content-item' key={service.id}>
+                  <View className='service-popup-content-item-type'>{serviceMarkList[service.type]}</View>
+                  <View>{service.description}</View>
+                </View>
+              ))}
+            </View>
+            <View className='service-popup-content'>
+              <View className='service-popup-content-item' >
+                <View className='service-po·  pup-content-item-type'>免修服务</View>
+                <View>质量问题，不为修，直接换新</View>
               </View>
               {!!detail.serviceMarks && !!detail.serviceMarks.length && detail.serviceMarks.map(service => (
                 <View className='service-popup-content-item' key={service.id}>
