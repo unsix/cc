@@ -11,7 +11,7 @@ import { baseUrl, noConsole } from '../config';
 
 export default (options = { method: 'GET', data: {} }) => {
   if (!noConsole) {
-    console.log(`${new Date().toLocaleString()}【 M=${options.url} 】P=${JSON.stringify(options.data)}`);
+    // console.log(`${new Date().toLocaleString()}【 M=${options.url} 】P=${JSON.stringify(options.data)}`);
   }
   let data = {
     // ...request_data,
@@ -72,7 +72,7 @@ export default (options = { method: 'GET', data: {} }) => {
       return;
     }
     if (!noConsole) {
-      console.log(`${new Date().toLocaleString()}【 M=${options.url} 】【接口响应：】`, res);
+      // console.log(`${new Date().toLocaleString()}【 M=${options.url} 】【接口响应：】`, res);
     }
     if (res.data.code !== 1) {
       if (res.data.code === 403) {

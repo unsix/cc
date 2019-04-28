@@ -54,7 +54,9 @@ class Productdetail extends Component {
       payload: { productid:this.$router.params.itemId }
     });
   };
-
+  gotoRed = () => {
+    Taro.navigateTo({ url: '/pages/active_pages/unclaimed/index' });
+  }
   onShowSKUClick = () => {
     this.setState({ showSKUPopup: true });
   }
@@ -110,7 +112,7 @@ class Productdetail extends Component {
 
   handleDayChange = (days) => {
     const { dispatch } = this.props;
-    console.log(days)
+    // console.log(days)
     dispatch({
       type: 'productDetail/setCurrentDays',
       payload: days,
@@ -195,7 +197,7 @@ class Productdetail extends Component {
       logisticForm: '1',
       from: '1',
     };
-    console.log(obj)
+    // console.log(obj)
     // return false;
     Taro.setStorageSync(`isShow`, 0);
     dispatch({
@@ -242,7 +244,7 @@ class Productdetail extends Component {
     })
   }
   gotodetail = (id) =>{
-    console.log(id,'shjkhd')
+    // console.log(id,'shjkhd')
     
     Taro.navigateTo({
       url:`/pages/productDetail/index?itemId=${id}`
@@ -290,7 +292,7 @@ class Productdetail extends Component {
     return (
       <View className='productDetail-page'>
         <View className='red_envelopes'>
-          <Image  className='envelopes'  src={productRed} />
+          <Image onClick={this.gotoRed} className='envelopes'  src={productRed} />
         </View>
         <View className='swiper'>
           <swiper
@@ -323,7 +325,7 @@ class Productdetail extends Component {
             </View>
             <View>
               <View className='dec_situation'>{detail.skus.map((skus, i)=>(
-                <View className='volume'> 官方售价：¥{skus.marketPrice}</View>
+                <View className='volume'> 官方售价¥{skus.marketPrice}</View>
               ))}
               </View>
               <View className='volume'>月销：{detail.salesVolume}笔</View>

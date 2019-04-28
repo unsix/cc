@@ -33,9 +33,9 @@ export default {
     },
     // itemid商品详情其他接口
     * recommendproducts({ payload }, { call, put }) {
-      console.log(payload ,productDetailApi.recommendproducts)
+      // console.log(payload ,productDetailApi.recommendproducts)
       const res = yield call(productDetailApi.recommendproducts, payload);
-      console.log(res,'===>')
+      // console.log(res,'===>')
       if (res) {
         yield put({
           type: 'saveRecommend',
@@ -134,7 +134,7 @@ export default {
     setCurrentDays(state, { payload }) {
       const { currentSku } = state;
       const newCurrentCyclePrice = currentSku.cyclePrices.find(cycle => cycle.days <= payload);
-      console.log(payload,'sososoosososo=========================soos')
+      // console.log(payload,'sososoosososo=========================soos')
       return {
         ...state,
         currentSku: {
@@ -169,7 +169,7 @@ export default {
     },
     // 为你推荐
     saveRecommend (state, { payload }){
-      console.log(payload,'sjhfdghursfgyu')
+      // console.log(payload,'sjhfdghursfgyu')
       return {
         ...state,
         recommendproductsList:payload

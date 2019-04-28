@@ -11,7 +11,7 @@ class AddressItem extends Component {
     // } else {
     //   onClick(-data.currentPeriodsRent);
     // }
-    console.log('check-box->', value);
+    // console.log('check-box->', value);
     this.setState({
       checkedList: value
     })

@@ -129,7 +129,7 @@ export default {
       if (res && res.data !== '2') {
         try {
           const payres = yield tradePay('tradeNO', res.data)
-          console.log('====', payres);
+          // console.log('====', payres);
           const nextStatus = 'ORDER_FINISH';
           yield put({
             type: 'setOrderStatus',

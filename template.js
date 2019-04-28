@@ -8,8 +8,6 @@ const fs = require('fs');
 const dirName = process.argv[2];
 
 if (!dirName) {
-  console.log('文件夹名称不能为空！');
-  console.log('示例：npm run tep test');
   process.exit(0);
 }
 
@@ -108,7 +106,7 @@ fs.writeFileSync('index.scss', scssTep);
 fs.writeFileSync('model.js', modelTep);
 fs.writeFileSync('service.js', serviceTep);
 
-console.log(`模版${dirName}已创建,请手动增加models`);
+// console.log(`模版${dirName}已创建,请手动增加models`);
 
 function titleCase(str) {
   const array = str.toLowerCase().split(' ');

@@ -34,7 +34,7 @@ export default {
             user_id: exeRes.data.userId,
             mobile_no: exeRes.data.telephone || 'null',
           })
-          console.log('=====', apRes);
+          // console.log('=====', apRes);
         }
         if (callback) {
           callback();
