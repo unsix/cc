@@ -49,14 +49,16 @@ export default (options = { method: 'GET', data: {} }) => {
     }
   }
   let requesturl;
-  // if(options.test == 'recommendproducts'){
-  //   requesturl = 'http://192.168.1.100:8071/'+options.url
-  // }else{
+  if(options.test == 'getOneUserPlatformCoupon'){
+    requesturl = 'http://192.168.132.100:8071/'+options.url   //本地联调
+  }
+  // else{
   // if(options.test == 'userConfirmOrder'){
   //   requesturl = 'http://192.168.1.106:8071/'+options.url
-  // }else{
-    requesturl = baseUrl + options.url
   // }
+  else{
+    requesturl = baseUrl + options.url
+  }
   return Taro.request({
     url: requesturl,
     data,

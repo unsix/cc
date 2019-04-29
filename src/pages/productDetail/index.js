@@ -55,7 +55,13 @@ class Productdetail extends Component {
     });
   };
   gotoRed = () => {
-    Taro.navigateTo({ url: '/pages/active_pages/unclaimed/index' });
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'productDetail/conuponSearch',
+      payload:{
+        couponid:'PL123AADSK'
+      }
+    });
   }
   onShowSKUClick = () => {
     this.setState({ showSKUPopup: true });
