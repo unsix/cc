@@ -45,7 +45,7 @@ class App extends Component {
       'pages/sendBack/index',
       'pages/selAddress/index',
       'pages/active_pages/unclaimed/index',
-      'pages/active_pages/claimed/index'
+
     ],
     window: {
       titleBarColor: '#fff',

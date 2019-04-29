@@ -55,12 +55,16 @@ class Productdetail extends Component {
     });
   };
   gotoRed = () => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'productDetail/conuponSearch',
-      payload:{
-        couponid:'PL123AADSK'
-      }
+    // const { dispatch } = this.props;
+    //     dispatch({
+    //       type: 'productDetail/conuponSearch',
+    //       payload:{
+    //         couponid:'PL123AADSK'
+    //       },
+    //     });
+    my.navigateToMiniProgram({
+      appId: '2018122562686742',
+      path: 'pages/index/index?originAppId=2019011162880259&newUserTemplate=20190428000000168854'
     });
   }
   onShowSKUClick = () => {
@@ -365,24 +369,6 @@ class Productdetail extends Component {
                 <View className='item'  key={service.id}><View className='item-img' />{serviceMarkList[service.type]}</View>
               )
               )}
-              <View className='item' ><View className='item-img' />正品保证</View>
-              {
-                !!detail.serviceMarks && !!detail.serviceMarks.length &&  detail.serviceMarks.map(service => (
-                    <View className='item'  key={service.id}><View className='item-img' />{serviceMarkList[service.type]}</View>
-                  )
-                )}
-              <View className='item' ><View className='item-img' />7天无理由退货</View>
-              {
-                !!detail.serviceMarks && !!detail.serviceMarks.length &&  detail.serviceMarks.map(service => (
-                    <View className='item'  key={service.id}><View className='item-img' />{serviceMarkList[service.type]}</View>
-                  )
-                )}
-              <View className='item' ><View className='item-img' />赠送免修服务</View>
-              {
-                !!detail.serviceMarks && !!detail.serviceMarks.length &&  detail.serviceMarks.map(service => (
-                    <View className='item'  key={service.id}><View className='item-img' />{serviceMarkList[service.type]}</View>
-                  )
-                )}
               </View>
             <View className='spot' />
           </View>

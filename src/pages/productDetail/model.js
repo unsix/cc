@@ -60,13 +60,9 @@ export default {
     },
     * conuponSearch({payload},{call,put}){
       const res =  yield call(productDetailApi.conuponSearch, { ...payload, uid: getUid() });
-      if(res.code == 1){
-        Taro.navigateTo({ url: '/pages/active_pages/claimed/index' });
+      if(res){
+        Taro.navigateTo({ url: '/pages/active_pages/unclaimed/index' });
       }
-      else{
-        Taro.navigateTo({ url: '/pages/active_pages/claimed/index' });
-      }
-
     }
   },
 

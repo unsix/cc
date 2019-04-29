@@ -3,7 +3,7 @@ import * as unclaimedApi from './service'
 import { getUid } from '../../../utils/localStorage'
 
 export default {
-  namespace: 'claimed',
+  namespace: 'unclffaimed',
   state: {
   },
 

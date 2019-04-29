@@ -6,6 +6,16 @@ page {
 
 .home-page {
   @include wh(100%, 100%);
+  .red_envelopes {
+    position: fixed;
+    bottom: 0;
+    right: 30px;
+    .envelopes {
+      width: 132px;
+      height: 154.6px;
+
+    }
+  }
   .home-top {
     height: 342px; 
     background: #EAD2B7;

@@ -15,7 +15,8 @@ import billDetail from '../pages/billDetail/model';
 import sendBack from '../pages/sendBack/model';
 import coupon from '../pages/coupon/model';
 import freshman from '../pages/freshman/model';
-import unclaimed from  '../pages/active_pages/unclaimed/model'
+import unclaimed from '../pages/active_pages/unclaimedText/model'
+import claimed from '../pages/active_pages/unclaimed/model'
 
 export default [
   home,
@@ -35,5 +36,6 @@ export default [
   sendBack,
   coupon,
   freshman,
-  unclaimed
+  unclaimed,
+  claimed
 ]
