@@ -16,8 +16,8 @@ export default {
     oldNewDegreeList: ['全新', '99新', '95新', '9成新', '8成新', '7成新'],
     serviceMarkList: ['包邮', '免押金', '免赔', '随租随还', '全新品', '分期支付'],
     // 为你推荐列表
-    recommendproductsList:[],
-    images_ismain:[],
+    recommendproductsList: [],
+    images_ismain: [],
     minRentCycleday: null
   },
 
@@ -33,9 +33,9 @@ export default {
     },
     // itemid商品详情其他接口
     * recommendproducts({ payload }, { call, put }) {
-      console.log(payload ,productDetailApi.recommendproducts)
+      console.log(payload, productDetailApi.recommendproducts)
       const res = yield call(productDetailApi.recommendproducts, payload);
-      console.log(res,'===>')
+      console.log(res, '===>')
       if (res) {
         yield put({
           type: 'saveRecommend',
@@ -83,21 +83,21 @@ export default {
           }
         });
       }
-      if(payload.images && payload.images.length){
-        payload.images.sort(function compare(a,b){
-          return b.isMain-a.isMain;
-        }); 
+      if (payload.images && payload.images.length) {
+        payload.images.sort(function compare(a, b) {
+          return b.isMain - a.isMain;
+        });
       }
       return {
         ...state,
         detail: payload,
-        images_ismain:payload.images,
+        images_ismain: payload.images,
         currentSku: {
           ...payload.skus[0],
           currentCyclePrice: payload.skus[0].cyclePrices[0],
         },
         currentDays: payload.skus[0].cyclePrices[0].days,
-        minRentCycleday:payload.minRentCycle,
+        minRentCycleday: payload.minRentCycle,
         advancedDays,
         startDay: startTime,
         saveServers,
@@ -107,7 +107,7 @@ export default {
     setCurrentSku(state, { payload }) {
       const { currentSku } = state;
       const { skus } = state.detail;
-      const specIds = currentSku.values.map(value => value.id === payload.preId ? payload.valueId : value.id); 
+      const specIds = currentSku.values.map(value => value.id === payload.preId ? payload.valueId : value.id);
       let newCurrentSku = {}
       if (skus.length) {
         newCurrentSku = skus.find(sku => {
@@ -133,8 +133,15 @@ export default {
 
     setCurrentDays(state, { payload }) {
       const { currentSku } = state;
-      const newCurrentCyclePrice = currentSku.cyclePrices.find(cycle => cycle.days <= payload);
-      console.log(payload,'sososoosososo=========================soos')
+      let newCurrentCyclePrice = {}
+      currentSku.cyclePrices && currentSku.cyclePrices.sort(function (a, b) {
+        return a.days - b.days;
+      })
+      currentSku.cyclePrices.forEach(cycle => {
+        if (cycle.days <= payload) {
+          newCurrentCyclePrice = cycle;
+        }
+      });
       return {
         ...state,
         currentSku: {
@@ -142,7 +149,7 @@ export default {
           currentCyclePrice: { ...newCurrentCyclePrice },
         },
         currentDays: payload,
-        minRentCycleday:payload
+        // minRentCycleday: payload
       };
     },
 
@@ -168,11 +175,11 @@ export default {
       };
     },
     // 为你推荐
-    saveRecommend (state, { payload }){
-      console.log(payload,'sjhfdghursfgyu')
+    saveRecommend(state, { payload }) {
+      console.log(payload, 'sjhfdghursfgyu')
       return {
         ...state,
-        recommendproductsList:payload
+        recommendproductsList: payload
       };
     }
   },

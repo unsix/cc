@@ -11,7 +11,6 @@ import homeImg from '../../images/home/homeindexbanner.png';
 import dibanner from '../../images/home/dibanner.png';
 
 import './index.scss';
-import { func } from '_@types_prop-types@15.7.0@@types/prop-types';
 
 @connect(({ productDetail, loading }) => ({
   ...productDetail,
@@ -31,13 +30,13 @@ class Productdetail extends Component {
   state = {
     showSKUPopup: false,
     showServicePopup: false,
-    showzimServicePopup:false,
+    showzimServicePopup: false,
     showCoupons: false,
     mainActive: 'detail',
     showServicePhone: false,
     editRentDays: false,
     daysValue: null,
-    input_bottom:0
+    input_bottom: 0
   }
 
   componentDidMount = () => {
@@ -50,7 +49,7 @@ class Productdetail extends Component {
     // productid就是itemid
     dispatch({
       type: 'productDetail/recommendproducts',
-      payload: { productid:this.$router.params.itemId }
+      payload: { productid: this.$router.params.itemId }
     });
   };
 
@@ -72,8 +71,8 @@ class Productdetail extends Component {
   onServicePopupClose = () => {
     this.setState({ showServicePopup: false });
   }
-  onServicezimaPopupClose = () =>{
-    this.setState({showzimServicePopup:false})
+  onServicezimaPopupClose = () => {
+    this.setState({ showzimServicePopup: false })
   }
 
   onShowAdditionalClick = () => {
@@ -98,7 +97,7 @@ class Productdetail extends Component {
 
   handleSkuClick = (valueId, preId) => {
     if (valueId === preId) {
-      return 
+      return
     }
     const { dispatch } = this.props;
     dispatch({
@@ -144,7 +143,7 @@ class Productdetail extends Component {
   }
 
   handleCustomBlur = () => {
-    this.setState({ editRentDays: false,input_bottom:0 });
+    this.setState({ editRentDays: false, input_bottom: 0 });
     const { daysValue } = this.state;
     if (daysValue) {
       const { detail: { minRentCycle, maxRentCycle }, dispatch } = this.props;
@@ -178,15 +177,15 @@ class Productdetail extends Component {
   }
 
   onSubmit = () => {
-    const { dispatch, currentSku, currentDays, detail, startDay, saveServers,minRentCycleday } = this.props;
+    const { dispatch, currentSku, currentDays, detail, startDay, saveServers } = this.props;
     const obj = {
       totalRent: currentDays * currentSku.currentCyclePrice.price,
       productName: detail.name,
       skuTitle: currentSku.id,
       productId: detail.itemId,
-      duration: minRentCycleday,
+      duration: currentDays,
       start: formatDate(new Date(startDay), 'yyyy-MM-dd'),
-      end: formatDate(new Date(startDay + (minRentCycleday - 1) * 24 * 3600 * 1000), 'yyyy-MM-dd'),
+      end: formatDate(new Date(startDay + (currentDays - 1) * 24 * 3600 * 1000), 'yyyy-MM-dd'),
       num: 1,
       additionalServicesIds: saveServers.join(','),
       logisticId: '',
@@ -230,21 +229,21 @@ class Productdetail extends Component {
   onShowPhoneModal = () => {
     this.setState({ showServicePhone: true });
   }
-  onEnvelope = () =>{
+  onEnvelope = () => {
     Taro.navigateTo({
-      url:'/pages/freshman/index'
+      url: '/pages/freshman/index'
     })
   }
-  goInmeddiate = () =>{
+  goInmeddiate = () => {
     Taro.switchTab({
-      url:'/pages/home/index'
+      url: '/pages/home/index'
     })
   }
-  gotodetail = (id) =>{
-    console.log(id,'shjkhd')
-    
+  gotodetail = (id) => {
+    console.log(id, 'shjkhd')
+
     Taro.navigateTo({
-      url:`/pages/productDetail/index?itemId=${id}`
+      url: `/pages/productDetail/index?itemId=${id}`
     })
   }
   connectService = (number) => {
@@ -265,16 +264,21 @@ class Productdetail extends Component {
   // 根据用户芝麻信用情况给予押金减免。
   render() {
     const { showzimServicePopup, showSKUPopup, showServicePopup, showServicePhone, showCoupons, showAdditionalPopup, mainActive, editRentDays, daysValue } = this.state;
-    const { loading, orderLoading, mineLoading, detail, currentSku, oldNewDegreeList, serviceMarkList, currentDays, advancedDays, startDay, saveServers,recommendproductsList,images_ismain,minRentCycleday } = this.props;
+    const { loading, orderLoading, mineLoading, detail, currentSku, oldNewDegreeList, serviceMarkList, currentDays, advancedDays, startDay, saveServers, recommendproductsList, images_ismain } = this.props;
 
-    // console.log(currentSku.cyclePrices,'sos===========w43234================================sos',currentDays,minRentCycleday)
-    currentSku.cyclePrices && currentSku.cyclePrices.sort(function(a,b){
-      return  a.days -b.days;
+    currentSku.cyclePrices && currentSku.cyclePrices.sort(function (a, b) {
+      return a.days - b.days;
     })
+    let currentValidCyclePrices = [];
+    if (currentSku.cyclePrices && currentSku.cyclePrices.length) {
+      currentValidCyclePrices = currentSku.cyclePrices.filter(function (info) {
+        return info.days >= detail.minRentCycle && info.days <= detail.maxRentCycle;
+      });
+    }
     // console.log(recommendproductsList,'limingsb')
     let totelRentPrice = 0
     if (currentSku.currentCyclePrice.days && currentSku.currentCyclePrice.price) {
-      totelRentPrice = (minRentCycleday * currentSku.currentCyclePrice.price).toFixed(2);
+      totelRentPrice = (currentDays * currentSku.currentCyclePrice.price).toFixed(2);
     }
     // console.log(totelRentPrice)
     let couponValue = 0;
@@ -304,7 +308,7 @@ class Productdetail extends Component {
           </swiper>
         </View>
         <View className='zima-Xy'>
-            <Image style='width:750rpx;height:88rpx;' mode='aspectFit' src={homeImg} />
+          <Image style='width:750rpx;height:88rpx;' mode='aspectFit' src={homeImg} />
         </View>
         <View className='swiper-space' />
         <View className='info-area'>
@@ -327,12 +331,12 @@ class Productdetail extends Component {
           // !!detail.serviceMarks && !!detail.serviceMarks.length && 
           <View className='service-info' onClick={this.onShowServiceClick}  >
             <View className='services'>
-            <View className='item' ><View className='item-img' />芝麻信用免押金</View>
+              <View className='item' ><View className='item-img' />芝麻信用免押金</View>
               {
-               !!detail.serviceMarks && !!detail.serviceMarks.length &&  detail.serviceMarks.map(service => (
-                <View className='item'  key={service.id}><View className='item-img' />{serviceMarkList[service.type]}</View>
-              )
-              )}
+                !!detail.serviceMarks && !!detail.serviceMarks.length && detail.serviceMarks.map(service => (
+                  <View className='item' key={service.id}><View className='item-img' />{serviceMarkList[service.type]}</View>
+                )
+                )}
             </View>
             <View className='spot' />
           </View>
@@ -349,13 +353,13 @@ class Productdetail extends Component {
             <Text className='front'>选择</Text>
             <Text>
               已选择：{currentSku.values && currentSku.values.map(v => `${v.name} `)}
-              {minRentCycleday && `${minRentCycleday}天`}
+              {currentDays && `${currentDays}天`}
             </Text>
           </View>
           <View className='spot' />
         </View>
         <View className='swiper-info'>
-            {/* <swiper
+          {/* <swiper
               indicator-dots
               indicator-active-color='#DBDBDB'
             >
@@ -365,51 +369,51 @@ class Productdetail extends Component {
                   </View>
                 </swiper-item>
             </swiper> */}
-             <View className='item' onClick={this.onEnvelope.bind()}>
-                <Image className='img' mode='aspectFit' src='http://jbkj-res.oss-cn-hangzhou.aliyuncs.com/79249b80547a4d9e9a8519ec47d420cf.png' />
-              </View>
+          <View className='item' onClick={this.onEnvelope.bind()}>
+            <Image className='img' mode='aspectFit' src='http://jbkj-res.oss-cn-hangzhou.aliyuncs.com/79249b80547a4d9e9a8519ec47d420cf.png' />
+          </View>
         </View>
         <View className='store-info' onClick={this.goInmeddiate.bind()}>
-            <View className='channel-top'>
-              <View className='channel-top-title'>
-                <Text className='left-text'>为你推荐</Text>
-              </View>
-              <View className='channel-top-more'>
-                <Text className='right-text'>查看全部</Text>
-                <AtIcon value='chevron-right' size='20' color='#ec2111c4'></AtIcon>
-              </View>
-            </View> 
+          <View className='channel-top'>
+            <View className='channel-top-title'>
+              <Text className='left-text'>为你推荐</Text>
+            </View>
+            <View className='channel-top-more'>
+              <Text className='right-text'>查看全部</Text>
+              <AtIcon value='chevron-right' size='20' color='#ec2111c4'></AtIcon>
+            </View>
+          </View>
         </View>
         <View className='other-commodities'>
-        {
-          !!recommendproductsList && recommendproductsList.map(item =>(
-                <View onClick={this.gotodetail.bind(this,item.productId||item.itemId)}>
-                  <View className="commodities-img">
-                    <Image style="width:100%;height:100%;" mode='aspectFit' src={item.detail||item.image} />
-                  </View>
-                  <View className="commodities-name">
-                    {item.name}
-                  </View>
-                  <View className="commodities-price">
-                    <Text style="font-size: 12px;">¥</Text>
-                    <Text style="font-size: 17px;line-height: 30px;">
+          {
+            !!recommendproductsList && recommendproductsList.map(item => (
+              <View onClick={this.gotodetail.bind(this, item.productId || item.itemId)}>
+                <View className="commodities-img">
+                  <Image style="width:100%;height:100%;" mode='aspectFit' src={item.detail || item.image} />
+                </View>
+                <View className="commodities-name">
+                  {item.name}
+                </View>
+                <View className="commodities-price">
+                  <Text style="font-size: 12px;">¥</Text>
+                  <Text style="font-size: 17px;line-height: 30px;">
                     {
-                      Number(item.sale).toFixed(2).toString().split('.')[0]  
+                      Number(item.sale).toFixed(2).toString().split('.')[0]
                     }
-                    </Text>
-                    <Text style="font-size: 10px;margin-top:10px;">
+                  </Text>
+                  <Text style="font-size: 10px;margin-top:10px;">
                     .
                     </Text>
-                    <Text style="font-size: 10px;">
+                  <Text style="font-size: 10px;">
                     {
-                      Number(item.sale).toFixed(2).toString().split('.')[1]  
+                      Number(item.sale).toFixed(2).toString().split('.')[1]
                     }
-                    </Text>
-                    <Text style="font-size: 10px;"> /天</Text>
-                  </View>
+                  </Text>
+                  <Text style="font-size: 10px;"> /天</Text>
                 </View>
-          ))
-        }
+              </View>
+            ))
+          }
           {/* {
           !!recommendproductsList && recommendproductsList.map(item =>(
                 <View onClick={this.gotodetail.bind(this,item.itemId)}>
@@ -439,7 +443,7 @@ class Productdetail extends Component {
                 </View>
           ))
         } */}
-         </View>
+        </View>
         <View className='main-area'>
           <View className='tab'>
             <View className={`item ${mainActive === 'detail' && 'active-item'}`} onClick={this.onMainTabActive.bind(this, 'detail')}>
@@ -494,10 +498,10 @@ class Productdetail extends Component {
           <View className='service-popup'>
             <View className='service-popup-title'>服务说明</View>
             <View className='service-popup-content'>
-                <View className='service-popup-content-item' >
-                  <View className='service-popup-content-item-type'>芝麻信用免押金</View>
-                  <View>根据用户芝麻信用情况给予押金减免</View>
-                </View>
+              <View className='service-popup-content-item' >
+                <View className='service-popup-content-item-type'>芝麻信用免押金</View>
+                <View>根据用户芝麻信用情况给予押金减免</View>
+              </View>
               {!!detail.serviceMarks && !!detail.serviceMarks.length && detail.serviceMarks.map(service => (
                 <View className='service-popup-content-item' key={service.id}>
                   <View className='service-popup-content-item-type'>{serviceMarkList[service.type]}</View>
@@ -508,7 +512,7 @@ class Productdetail extends Component {
             <View className='service-popup-close' onClick={this.onServicePopupClose}>关闭</View>
           </View>
         </popup>
-       
+
         <popup show={showCoupons} position='bottom' zIndex={999} disableScroll onClose={this.onCouponClose}>
           <View className='coupon-popup'>
             <View className='coupon-popup-title'>优惠券</View>
@@ -567,134 +571,134 @@ class Productdetail extends Component {
             </View>
           </View>
         </popup>
-        <View >             
-            <AtFloatLayout  isOpened={showSKUPopup} onClose={this.onSKUPopupClose} scrollY={false} className='product-float'>
-              <View className='popup-bottom'>
-                <View className='top'>
+        <View >
+          <AtFloatLayout isOpened={showSKUPopup} onClose={this.onSKUPopupClose} scrollY={false} className='product-float'>
+            <View className='popup-bottom'>
+              <View className='top'>
+                <View className='top-item'>
+                  <View className='price'>{totelRentPrice || ''}</View>
+                  <View className='text'>总租金</View>
+                </View>
+                <View className='dividing' />
+                {!!totelRentPrice && !!currentDays && currentDays > 30 && (
                   <View className='top-item'>
-                    <View className='price'>{totelRentPrice || ''}</View>
-                    <View className='text'>总租金</View>
+                    <View className='price month-price'>{(totelRentPrice / Math.ceil(currentDays / 31)).toFixed(2)}</View>
+                    <View className='text'>月租金(元/月)</View>
                   </View>
-                  <View className='dividing' />
-                  {!!totelRentPrice && !!minRentCycleday && minRentCycleday > 30 && (
-                    <View className='top-item'>
-                      <View className='price month-price'>{(totelRentPrice / Math.ceil(minRentCycleday / 31)).toFixed(2)}</View>
-                      <View className='text'>月租金(元/月)</View>
-                    </View>
-                  )}
-                </View>
-                <View className='product-main'>
-                  <View className='info'>
-                    <View>
-                      <Image className='img' mode='aspectFit' src={currentSku.values[0].image || detail.images[0].src} />
-                    </View>
-                    <View className='item'>
-                      <View className='price'>
-                        <Text className='font'>￥</Text><Text>{currentSku.currentCyclePrice.price && currentSku.currentCyclePrice.price.toFixed(2)} </Text><Text className='font'>元/天</Text>
-                      </View>
-                      <View className='old'>{oldNewDegreeList[currentSku.oldNewDegree - 1]}</View>
-                      <View className='sku-info'>已选:“{currentSku.values && currentSku.values.map(value => `${value.name};`)}{minRentCycleday}天”</View>
-                    </View>
+                )}
+              </View>
+              <View className='product-main'>
+                <View className='info'>
+                  <View>
+                    <Image className='img' mode='aspectFit' src={currentSku.values[0].image || detail.images[0].src} />
                   </View>
-                  <View className='close' onClick={this.onSKUPopupClose}><AtIcon value='close' size='18' color='#888' /></View>
-                </View>
-                <View className='area-scroll'>
-                  <ScrollView
-                    scrollY
-                    scrollTop='0'
-                    scrollWithAnimation
-                    className='content-area'
-                    style='height: 5.5rem'
-                  >
-                    <View className='sku-area'>
-                      {!!detail.specs && !!detail.specs.length && detail.specs.map((spec, i) => (
-                        <View className='item' key={spec.id}>
-                          <View className='item-text'>{spec.name}</View>
-                          <View className='item-tags'>
-                            {!!spec.values && !!spec.values.length && spec.values.map((value) => (
-                              <View
-                                onClick={this.handleSkuClick.bind(this, value.id, currentSku.values[i].id)}
-                                className={`tag ${!!currentSku.values && currentSku.values[i].id === value.id && 'tag-active'}`}
-                                key={value.id}
-                              >
-                                {value.name}
-                              </View>
-                            ))}
-                          </View>
-                        </View>
-                      ))}
-                      {currentSku.cyclePrices && currentSku.cyclePrices.length && (
-                        <View className='item'>
-                          <View className='item-text'>租用天数(最少{detail.minRentCycle}天，最多{detail.maxRentCycle}天)</View>
-                          <View className='item-tags'>
-                            {currentSku.cyclePrices.map(cycle => (
-                              <View
-                                key={cycle.id}
-                                className={`tag ${cycle.days === minRentCycleday && !editRentDays && 'tag-active'}`}
-                                onClick={this.handleDayChange.bind(this, cycle.days)}
-                              >
-                                {cycle.days}天
-                            </View>
-                            ))}
-                            <View
-                              // style={{'position':'relative','bottom':input_bottom+'px'}}
-                              className={`tag ${(editRentDays || currentDays === daysValue) && 'tag-active'}`}
-                              onClick={this.handleCustomClick}
-                            >
-                              {editRentDays ? (
-                                // cursorSpacing="80"
-                                <Input className='text' value={daysValue} onInput={this.handleCustomValue} adjustPosition focus onBlur={this.handleCustomBlur} />
-                              ) : daysValue ? `${daysValue}天` : '自定义'}
-                            </View>
-                          </View>
-                        </View>
-                      )}
+                  <View className='item'>
+                    <View className='price'>
+                      <Text className='font'>￥</Text><Text>{currentSku.currentCyclePrice.price && currentSku.currentCyclePrice.price.toFixed(2)} </Text><Text className='font'>元/天</Text>
                     </View>
-                    <View className='data-item'>
-                      <View className='item-text ml-30'>起租日期</View>
-                      <ScrollView scroll-x>
-                        <View className='data-tags'>
-                          {advancedDays && advancedDays.map((day, index) => (
+                    <View className='old'>{oldNewDegreeList[currentSku.oldNewDegree - 1]}</View>
+                    <View className='sku-info'>已选:“{currentSku.values && currentSku.values.map(value => `${value.name};`)}{currentDays}天”</View>
+                  </View>
+                </View>
+                <View className='close' onClick={this.onSKUPopupClose}><AtIcon value='close' size='18' color='#888' /></View>
+              </View>
+              <View className='area-scroll'>
+                <ScrollView
+                  scrollY
+                  scrollTop='0'
+                  scrollWithAnimation
+                  className='content-area'
+                  style='height: 5.5rem'
+                >
+                  <View className='sku-area'>
+                    {!!detail.specs && !!detail.specs.length && detail.specs.map((spec, i) => (
+                      <View className='item' key={spec.id}>
+                        <View className='item-text'>{spec.name}</View>
+                        <View className='item-tags'>
+                          {!!spec.values && !!spec.values.length && spec.values.map((value) => (
                             <View
-                              className={`tag ${startDay === day && 'tag-active'}`}
-                              onClick={this.handleAdvancedClick.bind(this, day)}
+                              onClick={this.handleSkuClick.bind(this, value.id, currentSku.values[i].id)}
+                              className={`tag ${!!currentSku.values && currentSku.values[i].id === value.id && 'tag-active'}`}
+                              key={value.id}
                             >
-                              {(index === 0 || new Date(day).getDate() === 1) ?
-                                `${new Date(day).getMonth() + 1}月${new Date(day).getDate()}号` : `${new Date(day).getDate()}号`}
+                              {value.name}
                             </View>
                           ))}
                         </View>
-                      </ScrollView>
-                    </View>
-                    {!!detail.additionalServices && !!detail.additionalServices.length && (
-                      <View className='sku-area'>
-                        <View className='item'>
-                          <View className='item-text save-server'>
-                            <View>安心服务(多选)</View>
-                            <View className='server-text' onClick={this.onShowAdditionalClick}>服务介绍</View>
-                          </View>
-                          <View className='item-tags'>
-                            {detail.additionalServices.map((ser) => (
-                              <View
-                                key={ser.id}
-                                className={`tag ${saveServers.findIndex((id) => id === ser.id) > -1 && 'tag-active'}`}
-                                onClick={this.handleSaveServiceClick.bind(this, ser)}
-                              >
-                                {ser.name} {` ￥${ser.price}元`}{ser.isMust && (<Text>(必选)</Text>)}
-                              </View>
-                            ))}
+                      </View>
+                    ))}
+                    {currentSku.cyclePrices && currentSku.cyclePrices.length && (
+                      <View className='item'>
+                        <View className='item-text'>租用天数(最少{detail.minRentCycle}天，最多{detail.maxRentCycle}天)</View>
+                        <View className='item-tags'>
+                          {currentValidCyclePrices.map(cycle => (
+                            <View
+                              key={cycle.id}
+                              className={`tag ${cycle.days === currentDays && !editRentDays && 'tag-active'}`}
+                              onClick={this.handleDayChange.bind(this, cycle.days)}
+                            >
+                              {cycle.days}天
+                            </View>
+                          ))}
+                          <View
+                            // style={{'position':'relative','bottom':input_bottom+'px'}}
+                            className={`tag ${(editRentDays || currentDays === daysValue) && 'tag-active'}`}
+                            onClick={this.handleCustomClick}
+                          >
+                            {editRentDays ? (
+                              // cursorSpacing="80"
+                              <Input className='text' value={daysValue} onInput={this.handleCustomValue} adjustPosition focus onBlur={this.handleCustomBlur} />
+                            ) : daysValue ? `${daysValue}天` : '自定义'}
                           </View>
                         </View>
                       </View>
                     )}
-                  </ScrollView>
-                </View>
-                <View className='bottom'>
-                  <View className='submit' onClick={this.onSubmit}>确定</View>
-                </View>
+                  </View>
+                  <View className='data-item'>
+                    <View className='item-text ml-30'>起租日期</View>
+                    <ScrollView scroll-x>
+                      <View className='data-tags'>
+                        {advancedDays && advancedDays.map((day, index) => (
+                          <View
+                            className={`tag ${startDay === day && 'tag-active'}`}
+                            onClick={this.handleAdvancedClick.bind(this, day)}
+                          >
+                            {(index === 0 || new Date(day).getDate() === 1) ?
+                              `${new Date(day).getMonth() + 1}月${new Date(day).getDate()}号` : `${new Date(day).getDate()}号`}
+                          </View>
+                        ))}
+                      </View>
+                    </ScrollView>
+                  </View>
+                  {!!detail.additionalServices && !!detail.additionalServices.length && (
+                    <View className='sku-area'>
+                      <View className='item'>
+                        <View className='item-text save-server'>
+                          <View>安心服务(多选)</View>
+                          <View className='server-text' onClick={this.onShowAdditionalClick}>服务介绍</View>
+                        </View>
+                        <View className='item-tags'>
+                          {detail.additionalServices.map((ser) => (
+                            <View
+                              key={ser.id}
+                              className={`tag ${saveServers.findIndex((id) => id === ser.id) > -1 && 'tag-active'}`}
+                              onClick={this.handleSaveServiceClick.bind(this, ser)}
+                            >
+                              {ser.name} {` ￥${ser.price}元`}{ser.isMust && (<Text>(必选)</Text>)}
+                            </View>
+                          ))}
+                        </View>
+                      </View>
+                    </View>
+                  )}
+                </ScrollView>
               </View>
-            </AtFloatLayout>
-          </View>  
+              <View className='bottom'>
+                <View className='submit' onClick={this.onSubmit}>确定</View>
+              </View>
+            </View>
+          </AtFloatLayout>
+        </View>
         <modal
           show={showServicePhone}
           showClose={false}
