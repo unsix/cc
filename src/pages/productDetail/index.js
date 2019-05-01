@@ -335,7 +335,7 @@ class Productdetail extends Component {
             </View>
             <View>
               <View className='dec_situation'>
-                <View className='volume'> 官方售价¥{detail.skus[0].marketPrice}</View>
+                <View className='volume'> 官方售价¥{detail.skus[0].marketPrice} 起</View>
               </View>
               <View className='volume'>月销：{detail.salesVolume}笔</View>
             </View>
