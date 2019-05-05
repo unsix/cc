@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+<<<<<<< HEAD
+=======
   <component name="ChangeListManager">
 <<<<<<< HEAD
     <list default="true" id="edaaf797-d38f-4cfb-8bfa-85bc7caf7b6f" name="Default Changelist" comment="">
@@ -99,12 +101,21 @@
       </usages-collector>
     </session>
   </component>
+>>>>>>> 4ff45ace06f5d58792c5d95abae593f7c765d38d
   <component name="FileColors">
     <fileColor scope="Non-Project Files (Material Default)" color="2E3C43" />
     <fileColor scope="Non-Project Files (Material Darker)" color="323232" />
     <fileColor scope="Non-Project Files (Material Lighter)" color="eae8e8" />
     <fileColor scope="Non-Project Files (Material Palenight)" color="2f2e43" />
   </component>
+<<<<<<< HEAD
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$USER_HOME$/Documents/WebStorm" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="$USER_HOME$/.nvm/versions/node/v6.5.0/bin/node" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
+=======
   <component name="FileEditorManager">
 <<<<<<< HEAD
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
@@ -554,10 +565,13 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+>>>>>>> 4ff45ace06f5d58792c5d95abae593f7c765d38d
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+<<<<<<< HEAD
+=======
   <component name="editorHistoryManager">
 <<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/src/images/home/homeindexbanner.png">
@@ -740,4 +754,5 @@
     </entry>
 >>>>>>> fd955fe36122a7f11473311e90c12e2efac143ef
   </component>
+>>>>>>> 4ff45ace06f5d58792c5d95abae593f7c765d38d
 </project>
