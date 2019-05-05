@@ -197,7 +197,7 @@ class Orderdetail extends Component {
   }
 
   render() {
-    const { cancelOrderDisplay, receiveDoodsDisplay, modifySettlementDisplay, countDownStr } = this.state;
+    const { cancelOrderDisplay, receiveDoodsDisplay, modifySettlementDisplay, countDownStr, showServicePhone } = this.state;
     const { cashes, product, userAddress, userOrders, loading } = this.props;
     const createTiemStr = userOrders.createTime && formatDate(new Date(userOrders.createTimeStr), 'yyyy年MM月dd hh:mm');
     const rentStartStr = userOrders.rentStart && formatDate(new Date(userOrders.rentStartStr), 'yyyy年MM月dd');
@@ -322,7 +322,7 @@ class Orderdetail extends Component {
                       </View>
                       {!!cashes.userViolationRecords && !!cashes.userViolationRecords.length && cashes.userViolationRecords.map(data =>
                         <View className='gray-info margin-bottom-30'>
-                          <View className='left-text'>{yqType[data.type]}</View><View className='right-text'>￥{data.amount ? data.amount.toFixed(2) : '0.00'}</View>
+                          <View className='left-text'>{yqType[Number(data.type)]}</View><View className='right-text'>￥{data.amount ? data.amount.toFixed(2) : '0.00'}</View>
                         </View>
                       )}
                     </View>

@@ -46,46 +46,23 @@ class RedCollect extends Component {
   render() {
     console.log(this.props,'1231231231231232')
     const code = this.props.unclaimed
-    // if(code == '2'){
-    //   return(
-    //     <View className='red_claimed'>
-    //       <View className='complete'>
-    //         <Image className='complete_img' onClick={this.toBack} src={Back} />
-    //         <Image className='complete_img' src={Tosee} onClick={this.toSee}  />
-    //       </View>
-    //     </View>
-    //   )
-    // }
-    // else if (code == '1'){
-    //   return(
-    //     <View className='red_unclaimed'>
-    //       <View className='confirm'>
-    //         <Image onClick={this.handleGetCoupon} className='confirm_img' src={Receive} />
-    //       </View>
-    //     </View>
-    //   )
-    // }
     return (
       <View>
-        {code&&code == '2'?
+        {code&&code == '2' ?
           (
             <View className='red_claimed'>
               <View className='complete'>
-                <Image className='complete_img' onClick={this.toBack} src={Back} />
-                <Image className='complete_img' onClick={this.toSee} src={Tosee} />
+                <Image className='complete_img' onClick={this.toBack} src={Back}/>
+                <Image className='complete_img' onClick={this.toSee} src={Tosee}/>
               </View>
             </View>
-          ):null
-        }
-        {code&&code == '1'?
-          (
-          <View className='red_unclaimed'>
+          ) : (
+            <View className='red_unclaimed'>
               <View className='confirm'>
-                <Image onClick={this.handleGetCoupon} className='confirm_img' src={Receive} />
+                <Image onClick={this.handleGetCoupon} className='confirm_img' src={Receive}/>
               </View>
-          </View>
+            </View>
           )
-          :null
         }
       </View>
     )
@@ -93,3 +70,20 @@ class RedCollect extends Component {
 }
 
 export default RedCollect
+
+// {code&&code == '2' ?
+//   (
+//     <View className='red_claimed'>
+//       <View className='complete'>
+//         <Image className='complete_img' onClick={this.toBack} src={Back}/>
+//         <Image className='complete_img' onClick={this.toSee} src={Tosee}/>
+//       </View>
+//     </View>
+//   ) : (
+//     <View className='red_unclaimed'>
+//       <View className='confirm'>
+//         <Image onClick={this.handleGetCoupon} className='confirm_img' src={Receive}/>
+//       </View>
+//     </View>
+//   )
+// }
