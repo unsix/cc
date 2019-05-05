@@ -13,7 +13,7 @@ export default {
   },
 
   effects: {
-    * selectUserOrderDetail({ payload }, { call, put }) {
+    *selectUserOrderDetail({ payload }, { call, put }) {
       const res = yield call(orderDetailApi.selectUserOrderDetail, payload);
       if (res) {
         yield put({
@@ -23,7 +23,7 @@ export default {
       }
     },
 
-    * userCancelOrder({ payload, callback }, { call, put }) {
+    *userCancelOrder({ payload, callback }, { call, put }) {
       const res = yield call(orderDetailApi.userCancelOrder, payload);
       if (res) {
         const nextStatus = 'USER_CANCELED_CLOSED';
@@ -129,7 +129,7 @@ export default {
       if (res && res.data !== '2') {
         try {
           const payres = yield tradePay('tradeNO', res.data)
-          console.log('====', payres);
+          // console.log('====', payres);
           const nextStatus = 'ORDER_FINISH';
           yield put({
             type: 'setOrderStatus',

@@ -5,13 +5,13 @@ import './index.scss';
 
 class BillList extends Component {
   handleClick = (item) => {
-    console.log('click->', item, this.props);
+    // console.log('click->', item, this.props);
   }
 
   render() {
     const { data } = this.props;
     const dateStr = formatStrDate(data.repaymentDate, 'yyyy年MM月dd日');
-    console.log(data,'shuigsfieugrfiue')
+    // console.log(data,'shuigsfieugrfiue')
     return (
       <View className='bill'>
         <View className='bill-list'>

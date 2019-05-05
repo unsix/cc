@@ -37,7 +37,7 @@ class Address extends Component {
 
   onDelete = (id) => {
     const { dispatch ,list } = this.props;
-    console.log(list,'listshangchu')
+    // console.log(list,'listshangchu')
     if(list.length==1){
       Taro.setStorageSync(`isShow_s`,1) 
       Taro.setStorageSync(`isShow`, 1);
@@ -63,7 +63,7 @@ class Address extends Component {
     const { dispatch, list } = this.props;
     const { type } = this.$router.params;
     
-    console.log(list,'dewrf')
+    // console.log(list,'dewrf')
     if(list.length==1){
       Taro.setStorageSync(`isShow_s`,1) 
       Taro.setStorageSync(`isShow`, 1);

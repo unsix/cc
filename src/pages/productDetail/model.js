@@ -33,9 +33,15 @@ export default {
     },
     // itemid商品详情其他接口
     * recommendproducts({ payload }, { call, put }) {
+<<<<<<< HEAD
       console.log(payload, productDetailApi.recommendproducts)
       const res = yield call(productDetailApi.recommendproducts, payload);
       console.log(res, '===>')
+=======
+      // console.log(payload ,productDetailApi.recommendproducts)
+      const res = yield call(productDetailApi.recommendproducts, payload);
+      // console.log(res,'===>')
+>>>>>>> 4ff45ace06f5d58792c5d95abae593f7c765d38d
       if (res) {
         yield put({
           type: 'saveRecommend',
@@ -45,6 +51,12 @@ export default {
     },
     * getCoupon({ payload }, { call, put }) {
       const res = yield call(productDetailApi.getCoupon, { ...payload, uid: getUid() });
+      // if(res.code == 1){
+      //   Taro.navigateTo({ url: 'pages/active_pages/claimed/index' });
+      // }
+      // if(res.code == 0){
+      //   Taro.navigateTo({ url: 'pages/active_pages/claimed/index' });
+      // }
       if (res) {
         Taro.showToast({
           title: res.msg,
@@ -52,6 +64,12 @@ export default {
         });
       }
     },
+    * conuponSearch({payload},{call,put}){
+      const res =  yield call(productDetailApi.conuponSearch, { ...payload, uid: getUid() });
+      if(res){
+        Taro.navigateTo({ url: '/pages/active_pages/unclaimed/index' });
+      }
+    }
   },
 
   reducers: {
@@ -133,6 +151,7 @@ export default {
 
     setCurrentDays(state, { payload }) {
       const { currentSku } = state;
+<<<<<<< HEAD
       let newCurrentCyclePrice = {}
       currentSku.cyclePrices && currentSku.cyclePrices.sort(function (a, b) {
         return a.days - b.days;
@@ -142,6 +161,10 @@ export default {
           newCurrentCyclePrice = cycle;
         }
       });
+=======
+      const newCurrentCyclePrice = currentSku.cyclePrices.find(cycle => cycle.days <= payload);
+      // console.log(payload,'sososoosososo=========================soos')
+>>>>>>> 4ff45ace06f5d58792c5d95abae593f7c765d38d
       return {
         ...state,
         currentSku: {
@@ -175,8 +198,13 @@ export default {
       };
     },
     // 为你推荐
+<<<<<<< HEAD
     saveRecommend(state, { payload }) {
       console.log(payload, 'sjhfdghursfgyu')
+=======
+    saveRecommend (state, { payload }){
+      // console.log(payload,'sjhfdghursfgyu')
+>>>>>>> 4ff45ace06f5d58792c5d95abae593f7c765d38d
       return {
         ...state,
         recommendproductsList: payload

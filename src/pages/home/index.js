@@ -6,6 +6,7 @@ import Channel from './component/channel/index';
 import flowImg from '../../images/home/flow.png';
 // import Rolling from '../../components/rolling/rolling';
 import './index.scss';
+import productRed from '../../images/product/red_envelopes.png'
 
 @connect(({ home, loading }) => ({
   ...home,
@@ -22,6 +23,21 @@ class Home extends Component {
       type: 'home/getIndexList',
     })
   };
+
+  //悬浮红包
+  gotoRed = () => {
+    // const { dispatch } = this.props;
+    //     dispatch({
+    //       type: 'productDetail/conuponSearch',
+    //       payload:{
+    //         couponid:'PL123AADSK'
+    //       },
+    //     });
+    my.navigateToMiniProgram({
+      appId: '2018122562686742',
+      path: 'pages/index/index?originAppId=2019011162880259&newUserTemplate=20190428000000168854'
+    });
+  }
   // 收藏
   canIUsesc = () => {
     // console.log('shou')
@@ -64,6 +80,9 @@ class Home extends Component {
     loading ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
     return (
       <View className='home-page'>
+        <View className='red_envelopes'>
+          <Image onClick={this.gotoRed} className='envelopes'  src={productRed} />
+        </View>
         {/* <favorite>收藏小程序，下次使用更方便</favorite> */}
         <lifestyle publicId="2019011262875377" />
         <View className='home-top'>

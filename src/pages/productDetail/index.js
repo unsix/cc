@@ -8,6 +8,7 @@ import { customerServiceTel } from '../../assets/Constant';
 
 import ParseComponent from './wxParseComponent'
 import homeImg from '../../images/home/homeindexbanner.png';
+import productRed from  '../../images/product/red_envelopes.png'
 import dibanner from '../../images/home/dibanner.png';
 
 import './index.scss';
@@ -52,7 +53,19 @@ class Productdetail extends Component {
       payload: { productid: this.$router.params.itemId }
     });
   };
-
+  gotoRed = () => {
+    // const { dispatch } = this.props;
+    //     dispatch({
+    //       type: 'productDetail/conuponSearch',
+    //       payload:{
+    //         couponid:'PL123AADSK'
+    //       },
+    //     });
+    my.navigateToMiniProgram({
+      appId: '2018122562686742',
+      path: 'pages/index/index?originAppId=2019011162880259&newUserTemplate=20190428000000168854'
+    });
+  }
   onShowSKUClick = () => {
     this.setState({ showSKUPopup: true });
   }
@@ -108,7 +121,7 @@ class Productdetail extends Component {
 
   handleDayChange = (days) => {
     const { dispatch } = this.props;
-    console.log(days)
+    // console.log(days)
     dispatch({
       type: 'productDetail/setCurrentDays',
       payload: days,
@@ -193,7 +206,7 @@ class Productdetail extends Component {
       logisticForm: '1',
       from: '1',
     };
-    console.log(obj)
+    // console.log(obj)
     // return false;
     Taro.setStorageSync(`isShow`, 0);
     dispatch({
@@ -239,9 +252,15 @@ class Productdetail extends Component {
       url: '/pages/home/index'
     })
   }
+<<<<<<< HEAD
   gotodetail = (id) => {
     console.log(id, 'shjkhd')
 
+=======
+  gotodetail = (id) =>{
+    // console.log(id,'shjkhd')
+    
+>>>>>>> 4ff45ace06f5d58792c5d95abae593f7c765d38d
     Taro.navigateTo({
       url: `/pages/productDetail/index?itemId=${id}`
     })
@@ -292,6 +311,9 @@ class Productdetail extends Component {
     (loading || orderLoading || mineLoading) ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
     return (
       <View className='productDetail-page'>
+        <View className='red_envelopes'>
+          <Image onClick={this.gotoRed} className='envelopes'  src={productRed} />
+        </View>
         <View className='swiper'>
           <swiper
             circular
@@ -307,8 +329,13 @@ class Productdetail extends Component {
             ))}
           </swiper>
         </View>
+<<<<<<< HEAD
         <View className='zima-Xy'>
           <Image style='width:750rpx;height:88rpx;' mode='aspectFit' src={homeImg} />
+=======
+        <View className='sesame_credit'>
+            <Image className='sesame_credit_img' mode='aspectFit' src={homeImg} />
+>>>>>>> 4ff45ace06f5d58792c5d95abae593f7c765d38d
         </View>
         <View className='swiper-space' />
         <View className='info-area'>
@@ -321,7 +348,26 @@ class Productdetail extends Component {
               <Text className='price-text'>{currentSku.currentCyclePrice.price}</Text>
               <Text className='unit'> 元/天</Text>
             </View>
-            <View className='volume'>销量：{detail.salesVolume}笔</View>
+            <View>
+              <View className='dec_situation'>
+                <View className='volume'> 官方售价¥{detail.skus[0].marketPrice} 起</View>
+              </View>
+              <View className='volume'>月销：{detail.salesVolume}笔</View>
+            </View>
+          </View>
+        </View>
+        <View className='integral'>
+          <View className='grade'>
+            600分
+            <Text className='grade_price'>免¥1500</Text>
+          </View>
+          <View className='grade'>
+            650分
+            <Text className='grade_price'>免¥5000</Text>
+          </View>
+          <View className='grade'>
+            700分
+            <Text className='grade_price'>有机会全免</Text>
           </View>
         </View>
         {/* <View className='zima-Xy' style='background:#fff;'>
@@ -333,11 +379,19 @@ class Productdetail extends Component {
             <View className='services'>
               <View className='item' ><View className='item-img' />芝麻信用免押金</View>
               {
+<<<<<<< HEAD
                 !!detail.serviceMarks && !!detail.serviceMarks.length && detail.serviceMarks.map(service => (
                   <View className='item' key={service.id}><View className='item-img' />{serviceMarkList[service.type]}</View>
                 )
                 )}
             </View>
+=======
+               !!detail.serviceMarks && !!detail.serviceMarks.length &&  detail.serviceMarks.map(service => (
+                <View className='item'  key={service.id}><View className='item-img' />{serviceMarkList[service.type]}</View>
+              )
+              )}
+              </View>
+>>>>>>> 4ff45ace06f5d58792c5d95abae593f7c765d38d
             <View className='spot' />
           </View>
         )}
@@ -498,9 +552,52 @@ class Productdetail extends Component {
           <View className='service-popup'>
             <View className='service-popup-title'>服务说明</View>
             <View className='service-popup-content'>
+<<<<<<< HEAD
               <View className='service-popup-content-item' >
                 <View className='service-popup-content-item-type'>芝麻信用免押金</View>
                 <View>根据用户芝麻信用情况给予押金减免</View>
+              </View>
+=======
+                <View className='service-popup-content-item' >
+                  <View className='service-po·  pup-content-item-type'>芝麻信用免押金</View>
+                  <View>根据用户芝麻信用情况给予押金减免</View>
+                </View>
+>>>>>>> 4ff45ace06f5d58792c5d95abae593f7c765d38d
+              {!!detail.serviceMarks && !!detail.serviceMarks.length && detail.serviceMarks.map(service => (
+                <View className='service-popup-content-item' key={service.id}>
+                  <View className='service-popup-content-item-type'>{serviceMarkList[service.type]}</View>
+                  <View>{service.description}</View>
+                </View>
+              ))}
+            </View>
+            <View className='service-popup-content'>
+              <View className='service-popup-content-item' >
+                <View className='service-po·  pup-content-item-type'>正品保障</View>
+                <View>商品支持正品保障服务</View>
+              </View>
+              {!!detail.serviceMarks && !!detail.serviceMarks.length && detail.serviceMarks.map(service => (
+                <View className='service-popup-content-item' key={service.id}>
+                  <View className='service-popup-content-item-type'>{serviceMarkList[service.type]}</View>
+                  <View>{service.description}</View>
+                </View>
+              ))}
+            </View>
+            <View className='service-popup-content'>
+              <View className='service-popup-content-item' >
+                <View className='service-po·  pup-content-item-type'>7天无理由退货</View>
+                <View>消费者在满足7天无理由退换货申请条件下的前提下，可以提出"7天无理由退换货"的申请</View>
+              </View>
+              {!!detail.serviceMarks && !!detail.serviceMarks.length && detail.serviceMarks.map(service => (
+                <View className='service-popup-content-item' key={service.id}>
+                  <View className='service-popup-content-item-type'>{serviceMarkList[service.type]}</View>
+                  <View>{service.description}</View>
+                </View>
+              ))}
+            </View>
+            <View className='service-popup-content'>
+              <View className='service-popup-content-item' >
+                <View className='service-po·  pup-content-item-type'>免修服务</View>
+                <View>质量问题，不为修，直接换新</View>
               </View>
               {!!detail.serviceMarks && !!detail.serviceMarks.length && detail.serviceMarks.map(service => (
                 <View className='service-popup-content-item' key={service.id}>

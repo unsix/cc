@@ -110,7 +110,7 @@ class Confirmorder extends Component {
   }
 
   render() {
-    console.log(this.state.isshow,'===>')
+    // console.log(this.state.isshow,'===>')
     const { confirmOrder, loading } = this.props;
     const { defaultUserAddress, sku, product, priceList, additionalServices } = confirmOrder;
     // eslint-disable-next-line no-undef

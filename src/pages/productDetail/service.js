@@ -27,3 +27,11 @@ export const getCoupon = data => Request({
   method: 'GET',
   data,
 });
+
+//查询红包
+
+export const conuponSearch = data => Request({
+  url: 'aliPay/coupon/getOneUserPlatformCoupon',
+  method: 'GET',
+  data,
+});

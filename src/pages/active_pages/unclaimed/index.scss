@@ -1,0 +1,43 @@
+@import "../../../styles/mixin";
+page {
+  width: 100%;
+  height: 100vh;
+  background-color: #f7f7f7;
+}
+.red_claimed{
+  //@include wh(100%, 1220px);
+  @include wh(100%, 100vh);
+  background: #FE4d22 url(../../../images/active_page/bgred_al.png) no-repeat;
+  background-size: 100% 100%;
+  .complete{
+    text-align: center;
+    width: 100%;
+    position: relative;
+    top: 870px;
+    .complete_img{
+      width: 270px;
+      height: 96px;
+      margin: 0 20px;
+    }
+  }
+}
+.red_unclaimed{
+  //@include wh(100%, 1220px);
+  @include wh(100%, 100vh);
+  box-sizing: border-box;
+  background: #FE4d22 url(../../../images/active_page/bgred.png) no-repeat;
+  background-size:100% 100%;
+  .confirm{
+    text-align: center;
+    width: 100%;
+    position: relative;
+    top: 870px;
+    .confirm_img{
+      width: 550px;
+      height: 102px;
+    }
+  }
+}
+
+
+

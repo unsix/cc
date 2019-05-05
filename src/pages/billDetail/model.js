@@ -29,13 +29,13 @@ export default {
       if (res) {
         try {
           const payres = yield tradePay('tradeNO', res.data)
-          console.log('====', payres);
+          // console.log('====', payres);
           // yield put({
           //   type: 'selectOrderByStagesList',
           //   payload: { orderId: payload.orderId }
           // });
         } catch (e) {
-          console.log('====1', e);
+          // console.log('====1', e);
           Taro.showToast({
             title: '支付失败，请重试或联系客服',
             icon: 'none',

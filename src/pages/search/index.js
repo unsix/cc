@@ -34,7 +34,7 @@ class Search extends Component {
   }
 
   handleChangeInput(e) {
-    console.log(e.detail.value,'sosos')
+    // console.log(e.detail.value,'sosos')
     this.setState({ value: e.detail.value });
   }
 
