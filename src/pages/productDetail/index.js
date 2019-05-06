@@ -252,15 +252,9 @@ class Productdetail extends Component {
       url: '/pages/home/index'
     })
   }
-<<<<<<< HEAD
-  gotodetail = (id) => {
-    console.log(id, 'shjkhd')
-
-=======
   gotodetail = (id) =>{
     // console.log(id,'shjkhd')
     
->>>>>>> 4ff45ace06f5d58792c5d95abae593f7c765d38d
     Taro.navigateTo({
       url: `/pages/productDetail/index?itemId=${id}`
     })
@@ -329,13 +323,8 @@ class Productdetail extends Component {
             ))}
           </swiper>
         </View>
-<<<<<<< HEAD
-        <View className='zima-Xy'>
-          <Image style='width:750rpx;height:88rpx;' mode='aspectFit' src={homeImg} />
-=======
         <View className='sesame_credit'>
             <Image className='sesame_credit_img' mode='aspectFit' src={homeImg} />
->>>>>>> 4ff45ace06f5d58792c5d95abae593f7c765d38d
         </View>
         <View className='swiper-space' />
         <View className='info-area'>
@@ -379,19 +368,11 @@ class Productdetail extends Component {
             <View className='services'>
               <View className='item' ><View className='item-img' />芝麻信用免押金</View>
               {
-<<<<<<< HEAD
                 !!detail.serviceMarks && !!detail.serviceMarks.length && detail.serviceMarks.map(service => (
                   <View className='item' key={service.id}><View className='item-img' />{serviceMarkList[service.type]}</View>
                 )
                 )}
             </View>
-=======
-               !!detail.serviceMarks && !!detail.serviceMarks.length &&  detail.serviceMarks.map(service => (
-                <View className='item'  key={service.id}><View className='item-img' />{serviceMarkList[service.type]}</View>
-              )
-              )}
-              </View>
->>>>>>> 4ff45ace06f5d58792c5d95abae593f7c765d38d
             <View className='spot' />
           </View>
         )}
@@ -552,17 +533,10 @@ class Productdetail extends Component {
           <View className='service-popup'>
             <View className='service-popup-title'>服务说明</View>
             <View className='service-popup-content'>
-<<<<<<< HEAD
               <View className='service-popup-content-item' >
                 <View className='service-popup-content-item-type'>芝麻信用免押金</View>
                 <View>根据用户芝麻信用情况给予押金减免</View>
               </View>
-=======
-                <View className='service-popup-content-item' >
-                  <View className='service-po·  pup-content-item-type'>芝麻信用免押金</View>
-                  <View>根据用户芝麻信用情况给予押金减免</View>
-                </View>
->>>>>>> 4ff45ace06f5d58792c5d95abae593f7c765d38d
               {!!detail.serviceMarks && !!detail.serviceMarks.length && detail.serviceMarks.map(service => (
                 <View className='service-popup-content-item' key={service.id}>
                   <View className='service-popup-content-item-type'>{serviceMarkList[service.type]}</View>
