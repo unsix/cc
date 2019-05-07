@@ -24,6 +24,10 @@ class Confirmorder extends Component {
   componentDidShow () {
     // console.log(Taro.getStorageSync(`isShow`),'dehkuiwhfi')
     const { dispatch, confirmOrder } = this.props;
+    let saveServer = [];
+    if(confirmOrder.additionalServices && confirmOrder.additionalServices.length){
+      saveServer = confirmOrder.additionalServices.map(ser=>ser.id);
+    }
     const obj = {
       totalRent: confirmOrder.priceList &&  confirmOrder.priceList.totalRent,
       productName: confirmOrder.product && confirmOrder.product.name,
@@ -33,7 +37,7 @@ class Confirmorder extends Component {
       start: confirmOrder.start,
       end: confirmOrder.end,
       num: confirmOrder.num,
-      additionalServicesIds: confirmOrder.additionalServices,
+      additionalServicesIds: saveServer.join(','),
       logisticId: '',
       uid: 'abc',
       logisticForm: '1',
@@ -72,6 +76,10 @@ class Confirmorder extends Component {
 
   submitOrder = () => {
     const { dispatch, confirmOrder } = this.props;
+    let saveServer = [];
+    if(confirmOrder.additionalServices && confirmOrder.additionalServices.length){
+      saveServer = confirmOrder.additionalServices.map(ser=>ser.id);
+    }
     const { message } = this.state;
     if (confirmOrder.realNameStatus && confirmOrder.defaultUserAddress) {
       dispatch({
@@ -95,6 +103,7 @@ class Confirmorder extends Component {
           creditAmount: 0,
           couponType: confirmOrder.coupons.defaultCoupon.type,
           couponId: confirmOrder.coupons.defaultCoupon.couponId,
+          additionalServicesIds: saveServer.join(','),
           message,
         },
         callback: (orderId, type) => {

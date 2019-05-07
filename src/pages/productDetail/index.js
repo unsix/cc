@@ -9,7 +9,7 @@ import { customerServiceTel } from '../../assets/Constant';
 import ParseComponent from './wxParseComponent'
 import homeImg from '../../images/home/homeindexbanner.png';
 import productRed from  '../../images/product/red_envelopes.png'
-import dibanner from '../../images/home/dibanner.png';
+// import dibanner from '../../images/home/dibanner.png';
 
 import './index.scss';
 
