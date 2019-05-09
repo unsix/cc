@@ -8,7 +8,7 @@ page {
   //@include wh(100%, 1220px);
   @include wh(100%, 100vh);
   background: #FE4d22 url(../../../images/active_page/bgred_al.png) no-repeat;
-  background-size: 100% 100%;
+  background-size: 100% 100% !important;
   .complete{
     text-align: center;
     width: 100%;
@@ -26,7 +26,7 @@ page {
   @include wh(100%, 100vh);
   box-sizing: border-box;
   background: #FE4d22 url(../../../images/active_page/bgred.png) no-repeat;
-  background-size:100% 100%;
+  background-size:100% 100% !important;
   .confirm{
     text-align: center;
     width: 100%;
