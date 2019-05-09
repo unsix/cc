@@ -145,9 +145,9 @@ class Productdetail extends Component {
   }
 
   handleSaveServiceClick = (ser) => {
-    if (ser.isMust) {
-      return;
-    }
+    // if (ser.isMust) {
+    //   return;
+    // }
     const { dispatch } = this.props;
     dispatch({
       type: 'productDetail/setSaveServers',
@@ -755,7 +755,8 @@ class Productdetail extends Component {
                               className={`tag ${saveServers.findIndex((id) => id === ser.id) > -1 && 'tag-active'}`}
                               onClick={this.handleSaveServiceClick.bind(this, ser)}
                             >
-                              {ser.name} {` ￥${ser.price}元`}{ser.isMust && (<Text>(必选)</Text>)}
+                              {ser.name} {` ￥${ser.price}元`}
+                              {/* {ser.isMust && (<Text>(必选)</Text>)} */}
                             </View>
                           ))}
                         </View>
