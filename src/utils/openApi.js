@@ -41,8 +41,9 @@ export const apNsf = (context) => {
         ...context,
       },
       success: (data) => {
+        console.log(data)
         my.httpRequest({
-          url: baseUrl+'/aliPay/user/userrisk',
+          url: baseUrl+'aliPay/user/userrisk',
           data:{
             key:data,
             uid:getUid()
@@ -74,15 +75,15 @@ export const apNsf = (context) => {
     if(my.ap && my.ap.nsf){
       my.ap.nsf(obj)
     }else{
-      let jsonstr = {
-        rankname:'rank0'
+      let jsonstr = 'rank0'
+      let obj = {
+        riskResult:jsonstr,
+        uid:getUid()
       }
+      let data = JSON.stringify(obj)
       my.httpRequest({
-        url: baseUrl+'/aliPay/user/userrisk',
-        data:{
-          key:JSON.stringify(jsonstr),
-          uid:getUid()
-        },
+        url: baseUrl+'aliPay/user/userrisk',
+        data,
         headers:{
           'Content-Type': 'application/json',
         },
