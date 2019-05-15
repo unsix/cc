@@ -10,26 +10,26 @@ import './index.scss';
 }))
 class Confirmorder extends Component {
   config = {
-    navigationBarTitleText: '确认订单', 
+    navigationBarTitleText: '确认订单',
     usingComponents: {
       "notice": "../../npm/mini-antui/es/notice/index"
     }
   };
 
-  state = { 
+  state = {
     message: null,
-    isshow:true,
-    marquee:{loop: true, leading: 2000, trailing: 100, fps: 18 }
-   }
-  componentDidShow () {
+    isshow: true,
+    marquee: { loop: true, leading: 2000, trailing: 100, fps: 18 }
+  }
+  componentDidShow() {
     // console.log(Taro.getStorageSync(`isShow`),'dehkuiwhfi')
     const { dispatch, confirmOrder } = this.props;
     let saveServer = [];
-    if(confirmOrder.additionalServices && confirmOrder.additionalServices.length){
-      saveServer = confirmOrder.additionalServices.map(ser=>ser.id);
+    if (confirmOrder.additionalServices && confirmOrder.additionalServices.length) {
+      saveServer = confirmOrder.additionalServices.map(ser => ser.id);
     }
     const obj = {
-      totalRent: confirmOrder.priceList &&  confirmOrder.priceList.totalRent,
+      totalRent: confirmOrder.priceList && confirmOrder.priceList.totalRent,
       productName: confirmOrder.product && confirmOrder.product.name,
       skuTitle: confirmOrder.sku && confirmOrder.sku.skuId,
       productId: confirmOrder.product && confirmOrder.product.productId,
@@ -43,7 +43,7 @@ class Confirmorder extends Component {
       logisticForm: '1',
       from: '1',
     };
-    if(Taro.getStorageSync(`isShow`) == 1){
+    if (Taro.getStorageSync(`isShow`) == 1) {
       dispatch({
         type: 'confirmOrder/userConfirmOrder',
         payload: obj,
@@ -70,15 +70,15 @@ class Confirmorder extends Component {
   onMessageInput = (e) => {
     this.setState({ message: e.detail.value });
   }
-  ddOrder = ()=>{
+  ddOrder = () => {
     this.setState({ isshow: false });
   }
 
   submitOrder = () => {
     const { dispatch, confirmOrder } = this.props;
     let saveServer = [];
-    if(confirmOrder.additionalServices && confirmOrder.additionalServices.length){
-      saveServer = confirmOrder.additionalServices.map(ser=>ser.id);
+    if (confirmOrder.additionalServices && confirmOrder.additionalServices.length) {
+      saveServer = confirmOrder.additionalServices.map(ser => ser.id);
     }
     const { message } = this.state;
     if (confirmOrder.realNameStatus && confirmOrder.defaultUserAddress) {
@@ -101,8 +101,8 @@ class Confirmorder extends Component {
           client: 1,
           logisticType: 0,
           creditAmount: 0,
-          couponType: confirmOrder.coupons.defaultCoupon.type,
-          couponId: confirmOrder.coupons.defaultCoupon.couponId,
+          couponType: confirmOrder.coupons.defaultCoupon ? confirmOrder.coupons.defaultCoupon.type : '',
+          couponId: confirmOrder.coupons.defaultCoupon ? confirmOrder.coupons.defaultCoupon.couponId : '',
           additionalServicesIds: saveServer.join(','),
           message,
         },
@@ -126,7 +126,7 @@ class Confirmorder extends Component {
     (loading) ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
     return (
       <View className='confirmOrder-page'>
-      {/* {this.state.isshow && (
+        {/* {this.state.isshow && (
           <View onClick={this.ddOrder} className='bill-detail-broadcast tip-wx'>
           <Text style="position: absolute;left: 19px;bottom: 0.05rem;">
             <AtIcon value='volume-plus' size='15' color='#FFFFFF' />
@@ -137,10 +137,10 @@ class Confirmorder extends Component {
           </Text>
           </View>
         )} */}
-        <View onClick={this.ddOrder}> 
+        <View onClick={this.ddOrder}>
           <notice show={isshow} class="loslos" marqueeProps={marquee} enableMarquee={true} actionCls="closeable" mode="closable">温馨提示:请确保账户金额大于实付款,确保下单成功!!!</notice>
         </View>
-       <View className='' style="height:0.1rem;background:#f0f0f080;" ></View>
+        <View className='' style="height:0.1rem;background:#f0f0f080;" ></View>
         <View className='top'>
           {defaultUserAddress ? (
             <View className='address' onClick={this.gotoAddress}>
