@@ -45,6 +45,7 @@ class App extends Component {
       'pages/sendBack/index',
       'pages/selAddress/index',
       'pages/active_pages/unclaimed/index',
+      'pages/webview/report',
 
     ],
     window: {
