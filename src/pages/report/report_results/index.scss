@@ -1,0 +1,321 @@
+@import "../../../styles/mixin";
+*{-webkit-text-size-adjust:none;}
+.container{
+  padding-bottom: 35px;
+  background: #F0F0F0;
+  height: auto;
+  .container_canvas{
+    .copy{
+      border: 1px solid #fff;
+      padding: 5px;
+      border-radius: 10px;
+      margin:  0 0 0 10px;
+      background: #fff;
+      color: #000;
+    }
+    @include bg('../../../images/report/bg_result.png');
+    height: 1050px;
+    canvas {
+      display: block;
+      //border: 1px solid #eee;
+      position: relative;
+      left: 50%;
+      top: 400px;
+      transform: translate(-50%, -50%) scale(0.85);
+      //background: -webkit-linear-gradient(top, #0e83f5 0%, #21bdf6 100%);
+      //background-image: linear-gradient(180deg, #FA4E62 7%, #FC766B 100%);
+    }
+    .report_number{
+      position: absolute;
+      width: 720px;
+      top: 55px ;
+      left: 20px;
+      font-size: 12px;
+      color: #fff;
+      .number_l{
+        @include fj(space-between);
+        font-size: 24px;
+      }
+      .number_r{
+        @include fj(space-between);
+        font-size: 24px;
+      }
+    }
+    .scale_examine{
+      width: 100%;
+      text-align: center;
+      position: absolute;
+      top: 475px;
+
+      .com{
+        font-size: 28px;
+        color: #fff;
+      }
+      .com_dec{
+        font-size: 22px;
+        color: #fff;
+        margin: 15px;
+        .prop{
+          color: #000;
+        }
+      }
+    }
+
+    .risk_mark{
+      @include wh(720px,214px);
+      position: absolute;
+      top: 565px;
+      background: rgba(255,255,255,0.94);
+      box-shadow: 0 1px 9px 4px #D16161;
+      border-radius: 8px;
+      .table_risk{
+        .mark{
+          padding: 10px 0 0 10px;
+          font-size: 22px;
+          margin-top: 10px;
+        }
+        .risk_sort{
+          margin-top: 15px;
+          display: flex;
+          font-size: 22px;
+          .risk_b{
+            flex: 1;
+            border-right: 2px  solid #F0E1E1;
+          }
+        }
+        //transform:scale(0.850);
+        //width: 117%;
+        //margin-left: -55px;
+        font-size: 20px;
+        .mark{
+          text-align: left;
+        }
+        .result{
+         //line-height: 110px;
+         // margin-top: 30px;
+          padding-top: 45px;
+        }
+      }
+    }
+    .degree_mark{
+      @include wh(720px,133px);
+      position: absolute;
+      top:822px;
+      background: rgba(255,255,255,0.94);
+      box-shadow: 0 1px 9px 4px #D16161;
+      border-radius: 8px;
+      .table_degree{
+        .mark{
+          padding: 10px 0 0 10px;
+          font-size: 22px;
+          margin-top: 10px;
+        }
+        .risk_sort{
+          margin-top: 15px;
+          display: flex;
+          font-size: 22px;
+          .risk_b{
+            flex: 1;
+          }
+        }
+      .result{
+        margin-top: 20px;
+        border-top: 2px solid #F0E1E1;
+        padding-top: 15px;
+      }
+    }
+    }
+    .Tips{
+      font-size: 16px;
+      color: #fff;
+      position: absolute;
+      top: 975px;
+      text-align: center;
+      width: 100%;
+      height: 35px;
+      line-height: 35px;
+      margin-top: 10px;
+    }
+  }
+  .essential_inf{
+    background: #F0F0F0;
+    //通用宽度
+    .con_100{
+      width: 100%;
+    }
+    //通用居中
+    .w_m{
+      width: 700px;
+      margin: 0 auto;
+    }
+    //插标图片
+    .bg_mark{
+      @include wh(100%,55px)
+    }
+    .inf_iden{
+      @include wh(720px,198px);
+      @include bg('../../../images/report/bg_Frame.png');
+      position: relative;
+      .img_mark{
+        @include wh(77px,34px);
+        position: absolute;
+        top:30px;
+        right: 0;
+      }
+      .iden{
+        width: 636px;
+        margin: 20px auto 0 auto;
+        padding: 20px 0 0 0;
+        font-size: 22px;
+        .per_inf{
+          display: flex;
+          .name{
+            font-size: 40px;
+            letter-spacing: 1px;
+          }
+        }
+      }
+      .id_num{
+        display: flex;
+        margin-top: 10px;
+        .img{
+          width: 38px;
+          text-align: center;
+        }
+        .id{
+          @include wh(36px,25px);
+          margin: 0 auto;
+        }
+        .num{
+          padding: 0 0 0 20px;
+        }
+      }
+      .re_num{
+        margin-top: 10px;
+        //border-bottom: 1px solid #F2F2F2;;
+        display: flex;
+        .img{
+          width: 40px;
+          text-align: center;
+        }
+        .re{
+          @include wh(26px,30px);
+        }
+        .num{
+          padding: 0 0 0 20px;
+        }
+      }
+      .re_time{
+        border-top: 1px solid #F2F2F2;;
+        text-align: right;
+        font-size: 20px;
+      }
+    }
+    .black_list{
+      font-size: 22px;
+     .text{
+      @include fj(space-between);
+       margin-top: 20px;
+       height: 30px;
+       .judge{
+         margin-right: 65px;
+       }
+     }
+    }
+    .credit_apply,.credit{
+      .credit_mark{
+        @include wh(720px,auto)
+      }
+      .table_credit{
+        background: #FBFBFB;
+        border: none;
+        thead{
+          background: #fff;
+          th{
+            @include wh(227px,30px);
+            font-size: 20px;
+            height: 30px;
+            line-height: 30px;
+          }
+        }
+        tbody{
+          td{
+            font-size: 18px;
+            height: 50px;
+            line-height: 30px;
+          }
+        }
+      }
+      //申请
+      .frequency{
+        margin-top: 20px;
+        .td_cos{
+         padding-left: 150px;
+        }
+      }
+    }
+    .credit_loan{
+
+    }
+    .credit_law{
+      .law_tb{
+        th:nth-child(1),td:nth-child(2),td:nth-child(3){
+          width: 100px!important;
+        }
+        th:nth-child(4){
+          width: 600px !important;
+        }
+      }
+    }
+  }
+  .footer{
+    width: 100%;
+    height: 56px;
+    background: #fff;
+    line-height: 60px;
+    margin-top: 50px;
+    font-size: 20px;
+    text-align: center;
+  }
+
+}
+
+//标题img
+.title_img{
+  width: 100%;
+  height: 60px;
+  margin-top: 20px;
+}
+//通用tbale外层
+.table_series{
+  width: 750px;
+  text-align: center;
+  letter-spacing: 1px;
+  margin: 20px 0 0 2.5%;
+  //通用tbale
+  .series{
+   padding: 20px;
+
+
+  }
+  .table_view{
+    background-color: #FFF;
+    font-size: 22px;
+    //.credit_text{
+    //  padding-left: 150px;
+    //  .text{
+    //    width: 130px;
+    //  }
+    //}
+  }
+  .table_text{
+    display: flex;
+    font-size: 22px;
+    .text{
+      padding-top: 10px;
+      width: 200px;
+      line-height: 30px;
+    }
+  }
+}
+

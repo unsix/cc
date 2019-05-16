@@ -4,7 +4,7 @@ import { connect } from '@tarojs/redux'
 import Back from '../../../images/active_page/back.png'
 import Tosee from '../../../images/active_page/tosee.png'
 import Receive from '../../../images/active_page/confirm.png'
-import Banner from  '../../../images/active_page/report_banner_1.png'
+import Banner from  '../../../images/active_page/banner.png'
 import BtnReport from  '../../../images/active_page/repott_go.png'
 import './index.scss';
 @connect(({ unclaimed }) => ({
@@ -50,9 +50,9 @@ class RedCollect extends Component {
   toSee = () => {
     Taro.navigateTo({ url: '/pages/coupon/index' })
   }
-  webview = () =>{
+  toReport = () =>{
     Taro.redirectTo({
-      url:'/pages/webview/report'
+      url:'/pages/home/index'
     })
   }
   componentDidMount = () => {
@@ -93,7 +93,7 @@ class RedCollect extends Component {
       <View>
         {code&&code == '2' ?
           (<View>
-              <View className='report_banner' onClick={this.webview}>
+              <View className='report_banner'>
                 <Swiper
                   className="swiper-container"
                   circular
@@ -107,36 +107,13 @@ class RedCollect extends Component {
                   {/*    <Image className="swiper-img" mode="widthFix" src={item.image_src}></Image>*/}
                   {/*  </SwiperItem>*/}
                   {/*))}*/}
+
+
                   <SwiperItem key='1' >
                     <View className='banner'>
-                      <Image className="swiper-img" mode="widthFix" src={Banner}></Image>
-                      <Image className="swiper-btn" mode="widthFix" src={BtnReport} ></Image>
-                      <View className='swiper-text' >
-                        <View className='text_t'>查查你的网络信用</View>
-                        <View className='text_b'>信用要积累，数据早知道</View>
-                      </View>
+                      <Image className="swiper-img" mode="widthFix" src={Banner} onClick={this.toReport}></Image>
                     </View>
                   </SwiperItem>
-                  {/*<SwiperItem key='2'>*/}
-                  {/*  <View className='banner'>*/}
-                  {/*    <Image className="swiper-img" mode="widthFix" src={Banner}></Image>*/}
-                  {/*    <Image className="swiper-btn" mode="widthFix" src={BtnReport} ></Image>*/}
-                  {/*    <View className='swiper-text' >*/}
-                  {/*      <View className='text_t'>查查你的网络信用</View>*/}
-                  {/*      <View className='text_b'>信用要积累，数据早知道</View>*/}
-                  {/*    </View>*/}
-                  {/*  </View>*/}
-                  {/*</SwiperItem>*/}
-                  {/*<SwiperItem key='3'>*/}
-                  {/*  <View className='banner'>*/}
-                  {/*    <Image className="swiper-img" mode="widthFix" src={Banner}></Image>*/}
-                  {/*    <Image className="swiper-btn" mode="widthFix" src={BtnReport} ></Image>*/}
-                  {/*    <View className='swiper-text' >*/}
-                  {/*      <View className='text_t'>查查你的网络信用</View>*/}
-                  {/*      <View className='text_b'>信用要积累，数据早知道</View>*/}
-                  {/*    </View>*/}
-                  {/*  </View>*/}
-                  {/*</SwiperItem>*/}
                 </Swiper>
               </View>
               <View className='red_claimed'>

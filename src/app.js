@@ -46,7 +46,12 @@ class App extends Component {
       'pages/selAddress/index',
       'pages/active_pages/unclaimed/index',
       'pages/webview/report',
-
+      'pages/report/home/index',
+      'pages/report/pay/index',
+      'pages/report/presentation/index',
+      'pages/report/read/index',
+      'pages/report/report_case/index',
+      'pages/report/report_results/index'
     ],
     window: {
       titleBarColor: '#fff',

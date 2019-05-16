@@ -54,17 +54,17 @@ class Productdetail extends Component {
     });
   };
   gotoRed = () => {
-    // const { dispatch } = this.props;
-    //     dispatch({
-    //       type: 'productDetail/conuponSearch',
-    //       payload:{
-    //         couponid:'PL123AADSK'
-    //       },
-    //     });
-    my.navigateToMiniProgram({
-      appId: '2018122562686742',
-      path: 'pages/index/index?originAppId=2019011162880259&newUserTemplate=20190428000000168854'
-    });
+    const { dispatch } = this.props;
+        dispatch({
+          type: 'productDetail/conuponSearch',
+          payload:{
+            couponid:'PL123AADSK'
+          },
+        });
+    // my.navigateToMiniProgram({
+    //   appId: '2018122562686742',
+    //   path: 'pages/index/index?originAppId=2019011162880259&newUserTemplate=20190428000000168854'
+    // });
   }
   onShowSKUClick = () => {
     this.setState({ showSKUPopup: true });

@@ -1,0 +1,115 @@
+@import "../../styles/mixin";
+.container_enty{
+  @include wh(100%, 100vh);
+  @include bg('../../../images/report/bg_enty.png');
+  overflow:hidden;
+  .content{
+    background: #fff;
+    @include wh(610px,755px);
+    @include sc(28px, #BEC0C2);
+    @include rb(8px,#fff);
+    margin:100px auto 0 auto;
+    padding: 30px 40px 30px 40px;
+  }
+  .top_dec{
+    .text{
+      background-image: linear-gradient(90deg, #FC766B 0%, #FA4E62 100%);
+      color: #fff;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+    .text_up{
+      width: 534px;
+      height: 59px;
+      border-radius: 29.5px;
+      font-size: 36px;
+      margin: 100px auto 0 auto;
+      line-height: 59px;
+
+    }
+    .text_down{
+      width: 654px;
+      height: 45px;
+      border-radius: 19px;
+      font-size: 28px;
+      margin:20px auto 0 auto ;
+      line-height: 45px;
+    }
+  }
+  .checkbox{
+    display: flex;
+    .user_ment{
+      color: #4a90e2!important;
+      font-size: 26px;
+      margin-top: 30px;
+    }
+    .at-checkbox__title{
+      margin:  3px auto 0 -45px;
+      color: #BEC0C2 !important;
+    }
+    .at-checkbox__option-cnt{
+      margin-left: -10px;
+    }
+    .at-checkbox__icon-cnt{
+      //margin: 0 auto;
+      margin-left: 45px;
+    }
+    //默认下边框
+    .at-checkbox::before,.at-checkbox::after{
+      border: none;
+    }
+    //选框
+    .at-checkbox__option--selected .at-checkbox__icon-cnt{
+      margin-left: 45px;
+    }
+
+  }
+  .query_btn{
+    width: 550px;
+    height: 92px;
+    margin: 0 auto;
+    border-radius: 6px;
+  }
+  .switch{
+    text-align: center;
+    font-size: 28px;
+    color: #4A90E2;
+    margin-top: 30px;
+    height: 60px;
+    line-height: 60px;
+  }
+  .query_modal{
+    .at-modal__container{
+      @include wh(590px,650px);
+      box-shadow: 0 5px 8px 5px #E64340;
+      border-radius: 18px;
+    }
+    //modal header边框
+    .at-modal__header::after{
+      border: none;
+    }
+    //footer边框
+    .at-modal__footer::before{
+      border:none
+    }
+  }
+  button[type=primary]{
+    background: #6190E8;
+  }
+  .about_inf{
+    @include fj(space-between);
+    .contact_service{
+      color: #f60;
+      letter-spacing: 1px;
+      font-size: 23px;
+    }
+    .report_case{
+      color: #4A90E2;
+      letter-spacing: 1px;
+      font-size: 23px;
+    }
+  }
+}
+.at-checkbox__option:active{
+  background:none;
+}

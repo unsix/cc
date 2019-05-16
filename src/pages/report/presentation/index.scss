@@ -1,0 +1,19 @@
+@import "../../../styles/mixin";
+
+.container_presentation{
+  .content_pre{
+    margin-top: 150px;
+    height: 690px!important;
+    .report{
+      height: 350px;
+      .number{
+        @include wh(550px,86px);
+        margin: 50px auto 0 auto;
+        text-align: center;
+        background: #F9F9F9;
+        border: 2px solid #596167;
+        border-radius: 21px;
+      }
+    }
+  }
+}

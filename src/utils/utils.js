@@ -1,4 +1,52 @@
 // eslint-disable-next-line import/prefer-default-export
+
+//window url
+export  const getQueryString = function (url) {
+  if (url) {
+    url = url.substr(url.indexOf("?") + 1);
+  }
+  let result = {}, queryString = url || location.search.substring(1),
+    re = /([^&=]+)=([^&]*)/g, m
+  while (m = re.exec(queryString)) {
+    result[decodeURIComponent(m[1])] = decodeURIComponent(m[2])
+  }
+  return result;
+}
+//过滤空格
+export const blankSpace = (space) => {
+  let  newSpack = space.replace(/\s+/g,"");
+  return newSpack
+}
+//转换时间 - /
+export const dateDiff = (time) =>{
+  let newTime = time.replace(/-/g,'/')
+  return newTime
+}
+//名字格式
+export const  formatName =(name) =>{
+  // let newStr;
+  // if (name.length === 2) {
+  //   newStr = name.substr(0, 1) + '*';
+  // } else if (name.length > 2) {
+  //   let char = '';
+  //   for (let i = 0, len = name.length - 2; i < len; i++) {
+  //     char += '*';
+  //   }
+  //   newStr = name.substr(0, 1) + char + name.substr(-1, 1);
+  // } else {
+  //   newStr = name;
+  // }
+  let newStr = name.substr(0,1) +'**'
+  return newStr;
+}
+//身份证
+export const forIdCard = (num) =>{
+
+  let  newNum = num.substr(0, 4) + '*******' + num.substr(14, 18)
+  return newNum
+}
+
+
 export const setUrlEncoded = (obj) => {
   let urlEncoded = '';
   if (obj && obj instanceof Object) {
