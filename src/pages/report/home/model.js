@@ -1,12 +1,15 @@
 
 import * as HomeApi from './service';
 import Taro from '@tarojs/taro';
+import * as billDetailApi from '../../billDetail/service'
+import { getBuyerId } from '../../../utils/localStorage'
+import { tradePay } from '../../../utils/openApi'
 
 export default {
   namespace: 'reportHome',
   state: {
     code:'',
-    detail: {},
+    details: {},
   },
   effects: {
     * fetchProductDetail({ payload }, { call, put }) {
@@ -29,18 +32,69 @@ export default {
           callback(res);
         }
       }
-      else if(res.code == 1){
+    },
+    * reportPay({ payload,callback}, { call, put }) {
+      const res = yield call(HomeApi.reportPay, payload );
+      if (res) {
+        try {
+          const payres = yield tradePay('tradeNO', res.data.orderNo)
+          // console.log('====', payres);
+          // yield put({
+          //   type: 'selectOrderByStagesList',
+          //   payload: { orderId: payload.orderId }
+          // });
+          let type = 'detail';
+          console.log(payres)
+          console.log(payres.resultCode )
+          console.log(res)
+          if (payres.resultCode !== '9000') {
+            console.log(payres.resultCode )
+            Taro.showToast({
+              title: payres.memo,
+              icon: 'none',
+            });
+            type = 'list';
+          }
+          if (callback) {
+            // console.log(res.data.orders.orderId)
+            callback(res.data.orderNo, type);
+          }
+          // if(res){
+          //   console.log(payres,123123123)
+          // }
+        } catch (e) {
+          // console.log('====1', e);
+          Taro.showToast({
+            title: '支付失败，请重试或联系客服',
+            icon: 'none',
+          });
+        }
       }
-    }
-
+    },
+    * getResult({payload,callback},{call,put}){
+      const res =  yield call(HomeApi.getResults, payload);
+      if (res) {
+        Taro.showToast({
+          title:res.msg
+        })
+        yield put({
+          type: 'saveReport',
+          payload: res.data,
+        });
+        if (callback) {
+          callback(res);
+        }
+      }
+    },
   },
   reducers: {
-    // validateCode (state, { payload }){
-    //   return {
-    //     ...state,
-    //     code:payload
-    //   };
-    // },
+
+    saveReport (state, { payload }){
+      return {
+        ...state,
+        details:payload
+      };
+    },
     // saveDetail(state, { payload }) {
     //   const { minAdvancedDays, maxAdvancedDays } = payload;
     //   let startTime = new Date().getTime();
@@ -75,5 +129,6 @@ export default {
     //     detail: payload,
     //   };
     // },
+
   }
 }

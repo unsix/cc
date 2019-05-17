@@ -7,7 +7,7 @@ import Request from '../../../utils/request';
 // });
 
 export const checkParams = (data) =>Request(({
-  url:'user/checkParams',
+  url:'checkParams',
   method: 'POST',
   test:'report',
   contentType: 'application/www',
@@ -21,5 +21,17 @@ export const checkParams = (data) =>Request(({
 export const selectProductDetail = data => Request({
   url: 'aliPay/product/selectProductDetail',
   method: 'GET',
+  data,
+});
+
+export const reportPay = data => Request({
+  url: 'aliPay/preForAppPay',
+  test:'report',
+  method: 'GET',
+  data,
+});
+export const getResults = data => Request({
+  url: 'getCheckResult',
+  test:'report',
   data,
 });

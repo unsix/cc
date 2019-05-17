@@ -95,36 +95,56 @@ class  Index extends Component{
     // Taro.redirectTo({
     //   url: `/pages/pay/index?userName=${names}&phone=${phones}&idCardNo=${idCards}&type=${obj.type}`
     // })
-    my.httpRequest({
-      url: reportUrl+'user/aliPay/preForAppPay',//须加httpRequest域白名单
-      method: 'POST',
-      data: {//data里的key、value是开发者自定义的
-       userName: names,
-       phone:phones,
-       idCardNo: idCards,
-       buyerId:getUid(),
-       aliUserId:getBuyerId(),
-       type:'3'
+    this.props.dispatch({
+      type:'reportHome/reportPay',
+      payload: {
+        userName: names,
+        phone:phones,
+        idCardNo: idCards,
+        buyerId:getUid(),
+        aliUserId:getBuyerId(),
+        type:'3'
       },
-      dataType: 'json',
-      success: function(res) {
-        my.tradePay({//调起支付页面
-          tradeNO: res.data.orderNo,
-          success: function(res) {
-            my.alert(res.resultCode);
-          },
-          fail: function(res) {
-            my.alert(res.resultCode);
-          },
-        });
+      callback: (orderId, type) => {
+        if (type === 'detail') {
+          Taro.redirectTo({ url: `/pages/report/report_results/index?orderNo=${orderId}` });
+        } else {
+          Taro.redirectTo({ url: '/pages/report/home/index' });
+
+        }
       },
-      fail: function(res) {
-        my.alert({content: 'fail'});
-      },
-      complete: function(res) {
-        my.hideLoading();
-      }
-    });
+    })
+    // my.httpRequest({
+    //   url: reportUrl+'user/aliPay/preForAppPay',//须加httpRequest域白名单
+    //   method: 'POST',
+    //   data: {//data里的key、value是开发者自定义的
+    //    userName: names,
+    //    phone:phones,
+    //    idCardNo: idCards,
+    //    buyerId:getUid(),
+    //    aliUserId:getBuyerId(),
+    //    type:'3'
+    //   },
+    //   dataType: 'json',
+    //   success: function(res) {
+    //     console.log(res),
+    //     my.tradePay({//调起支付页面
+    //       tradeNO: res.data.orderNo,
+    //       success: function(res) {
+    //         my.alert(res.resultCode);
+    //       },
+    //       fail: function(res) {
+    //         my.alert(res.resultCode,'213123123');
+    //       },
+    //     });
+    //   },
+    //   fail: function(res) {
+    //     my.alert({content: 'fail'});
+    //   },
+    //   complete: function(res) {
+    //     my.hideLoading();
+    //   }
+    // });
   }
   //协议
   read = () =>{
