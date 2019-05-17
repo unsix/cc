@@ -3,6 +3,7 @@ import { View,Text,Image,Input, Button,Form} from '@tarojs/components';
 import {  AtCheckbox,AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui';
 import { blankSpace,getQueryString} from '../../../utils/utils'
 import { connect } from '@tarojs/redux'
+import {reportUrl} from  '../../../config'
 import '../enty.scss';
 import './index.scss'
 import Name from '../../../images/report/name.png'
@@ -12,7 +13,7 @@ import Com from  '../../../images/report/comprehensive.png'
 import Erro from  '../../../images/report/erro.png'
 import Grade from  '../../../images/report/grade.png'
 
-@connect(({ reportHome }) => ({
+@connect(({ reportHome}) => ({
   ...reportHome,
 }))
 
@@ -25,7 +26,12 @@ class  Index extends Component{
       validateCode:"",
       names:"",
       idCards:"",
-      phones:""
+      phones:"",
+      code:'',
+      name:'',
+      phone:'',
+      idCord:''
+
 
     }
     this.checkboxOption = [{
@@ -36,8 +42,9 @@ class  Index extends Component{
   componentDidMount(){
 
     this.props.dispatch({
-      type:'reportHome/validateCodes'
-    })
+      type: 'reportHome/fetchProductDetail',
+      payload: { itemId:'1557400218783' },
+    });
   }
   handleChange (value) {
     this.setState({
@@ -53,28 +60,70 @@ class  Index extends Component{
     })
   }
   formSubmit = (e) => {
-    const { name,idCord,phone,code,} = e.detail.value;
-    const  {names,idCards,phones} = this.state
-    this.setState({
-      names:blankSpace(name),
-      idCards:blankSpace(idCord),
-      phones:blankSpace(phone),
-    })
-    console.log(this.state,'111')
+    const { name,idCord,phone} = e.detail.value;
 
+      this.props.dispatch({
+        type:'reportHome/checkParams',
+        payload: {
+          userName:blankSpace(name),
+          phone:blankSpace(phone),
+          idCardNo:blankSpace(idCord),
+        },
+        callback:(res)=>{
+          console.log(11111)
+          if(res.code === 1){
+            this.setState({
+              isOpened:true
+            })
+          }
+        }
+      })
+        // .then(res=>{
+        //   console.log(res)
+        //   if(res.code == 1){
+        //     this.setState({
+        //       isOpened:true
+        //     })
+        //   }
+        // })
   }
   switch = () => {
     Taro.navigateTo({ url: '/pages/report/presentation/index' });
   }
   //支付
   pay = () => {
-    let  obj = getQueryString(window.location.href)
-    console.log(obj.type,'type type type ')
-    const {names,phones,idCards} = this.state
-    Taro.redirectTo({
-      url: `/pages/pay/index?userName=${names}&phone=${phones}&idCardNo=${idCards}&type=${obj.type}`
-    })
-
+    // let  obj = getQueryString(window.location.href)
+    // console.log(obj.type,'type type type ')
+    // const {names,phones,idCards} = this.state
+    // Taro.redirectTo({
+    //   url: `/pages/pay/index?userName=${names}&phone=${phones}&idCardNo=${idCards}&type=${obj.type}`
+    // })
+    my.httpRequest({
+      url: reportUrl+'aliPay/preForAppPay',//须加httpRequest域白名单
+      method: 'POST',
+      data: {//data里的key、value是开发者自定义的
+        from: '支付宝',
+        order: 'XXXXX',//订单信息
+      },
+      dataType: 'json',
+      success: function(res) {
+        my.tradePay({//调起支付页面
+          tradeNO: res.data.result,
+          success: function(res) {
+            my.alert(res.resultCode);
+          },
+          fail: function(res) {
+            my.alert(res.resultCode);
+          },
+        });
+      },
+      fail: function(res) {
+        my.alert({content: 'fail'});
+      },
+      complete: function(res) {
+        my.hideLoading();
+      }
+    });
   }
   //协议
   read = () =>{
@@ -89,8 +138,8 @@ class  Index extends Component{
   }
 
   render(){
-    console.log(this.props)
-    const {isOpened,validateCode} = this.state
+    const {code} = this.props
+    const {isOpened} = this.state
     return(
       <View id='apps' className='container_enty container_index'>
         <View id='pay'></View>
@@ -144,19 +193,19 @@ class  Index extends Component{
               />
             </View>
           </view>
-          <view className='code'>
-            <View className='text'>
-              <Input
-                name='code'
-                type='number'
-                className='code_input'
-                placeholder='请输入验证码'
-              />
-            </View>
-            <View className='code_img'>
-                <Image onClick={this.repeatCode} className='code_number' src={validateCode} />
-            </View>
-          </view>
+          {/*<view className='code'>*/}
+          {/*  <View className='text'>*/}
+          {/*    <Input*/}
+          {/*      name='code'*/}
+          {/*      type='number'*/}
+          {/*      className='code_input'*/}
+          {/*      placeholder='请输入验证码'*/}
+          {/*    />*/}
+          {/*  </View>*/}
+          {/*  <View className='code_img'>*/}
+          {/*      <Image onClick={this.repeatCode} className='code_number' src={code} />*/}
+          {/*  </View>*/}
+          {/*</view>*/}
           <View className='checkbox'>
             <View>
               <AtCheckbox

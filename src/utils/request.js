@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro';
 import { setUrlEncoded } from './utils';
 // import { getToken, setToken } from './token';
 // import { getShopId } from './shopId';
-import { baseUrl, noConsole } from '../config';
+import { baseUrl, noConsole,reportUrl } from '../config';
 
 // const request_data = {
 //   platform: 'wap',
@@ -39,7 +39,7 @@ export default (options = { method: 'GET', data: {} }) => {
       data = setUrlEncoded(data);
     } else if (options.contentType === 'formData') {
       header = {
-        Accept: 'application/json',
+        Accept: 'application/json ',
       };
     } else {
       header = {
@@ -50,7 +50,7 @@ export default (options = { method: 'GET', data: {} }) => {
   }
   let requesturl;
   if(options.test == 'report'){
-    requesturl = 'https://www.laiyongmall.com/'+options.url   //本地联调
+    requesturl = reportUrl+options.url   //本地联调
   }
   // else{
   // if(options.test == 'userConfirmOrder'){

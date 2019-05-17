@@ -80,7 +80,6 @@ class RedCollect extends Component {
     });
   }
   render() {
-    console.log(this.props,'1231231231231232')
     const code = this.props.unclaimed
     const {animationData} = this.state
     // const animation = Taro.createAnimation({
