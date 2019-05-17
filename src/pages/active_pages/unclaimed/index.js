@@ -52,7 +52,7 @@ class RedCollect extends Component {
   }
   toReport = () =>{
     Taro.redirectTo({
-      url:'/pages/home/index'
+      url:'/pages/report/home/index'
     })
   }
   componentDidMount = () => {

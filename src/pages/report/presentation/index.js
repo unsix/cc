@@ -9,19 +9,12 @@ class  Presentation extends Component{
   constructor () {
     super(...arguments)
     this.state = {
-      checkedList: ['list1'],
+      checkedList: ['list2'],
     }
     this.checkboxOption = [{
-      value: 'list1',
+      value: 'list2',
       // label: '我已阅读并同意《洞察报告用户协议》',
     },]
-  }
-  componentDidMount(){
-    var hrt = document.documentElement.clientHeight; //获取当前可视区域的高度存到hrt变量
-    window.onload = function(){ //在页面整体加载完毕时
-      document.getElementById('app').style.height= hrt+'px'//把获取到的高度赋值给根div
-    }
-
   }
   handleChange (value) {
     this.setState({
@@ -30,7 +23,7 @@ class  Presentation extends Component{
   }
   //协议
   read = () =>{
-    Taro.navigateTo({ url: '/pages/read/index' });
+    Taro.navigateTo({ url: '/pages/report/read/index' });
   }
   //from提交
   formSubmit = (e) => {

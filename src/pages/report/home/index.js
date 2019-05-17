@@ -2,6 +2,7 @@ import Taro, { Component } from '@tarojs/taro';
 import { View,Text,Image,Input, Button,Form} from '@tarojs/components';
 import {  AtCheckbox,AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui';
 import { blankSpace,getQueryString} from '../../../utils/utils'
+import { getUid ,getBuyerId} from '../../../utils/localStorage';
 import { connect } from '@tarojs/redux'
 import {reportUrl} from  '../../../config'
 import '../enty.scss';
@@ -61,7 +62,11 @@ class  Index extends Component{
   }
   formSubmit = (e) => {
     const { name,idCord,phone} = e.detail.value;
-
+    this.setState({
+      names:blankSpace(name),
+      idCards:blankSpace(idCord),
+      phones:blankSpace(phone),
+    })
       this.props.dispatch({
         type:'reportHome/checkParams',
         payload: {
@@ -78,14 +83,6 @@ class  Index extends Component{
           }
         }
       })
-        // .then(res=>{
-        //   console.log(res)
-        //   if(res.code == 1){
-        //     this.setState({
-        //       isOpened:true
-        //     })
-        //   }
-        // })
   }
   switch = () => {
     Taro.navigateTo({ url: '/pages/report/presentation/index' });
@@ -94,16 +91,18 @@ class  Index extends Component{
   pay = () => {
     // let  obj = getQueryString(window.location.href)
     // console.log(obj.type,'type type type ')
-    // const {names,phones,idCards} = this.state
+    const {names,phones,idCards} = this.state
     // Taro.redirectTo({
     //   url: `/pages/pay/index?userName=${names}&phone=${phones}&idCardNo=${idCards}&type=${obj.type}`
     // })
     my.httpRequest({
-      url: reportUrl+'aliPay/preForAppPay',//须加httpRequest域白名单
+      url: reportUrl+'user/aliPay/preForAppPay',//须加httpRequest域白名单
       method: 'POST',
       data: {//data里的key、value是开发者自定义的
-        from: '支付宝',
-        order: 'XXXXX',//订单信息
+       userName: names,
+       phone:phones,
+       idCardNo: idCards,
+       buyerId:getBuyerId(),
       },
       dataType: 'json',
       success: function(res) {
@@ -221,7 +220,7 @@ class  Index extends Component{
             </View>
           </View>
           <View className='query_btn'>
-            <Button type='primary' size='normal' formType='submit' >立即查询</Button>
+            <Button type='primary' size='normal'  formType='submit' >立即查询</Button>
           </View>
           <View className='switch'>
             <Text onClick={this.switch}>
