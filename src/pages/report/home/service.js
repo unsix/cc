@@ -1,10 +1,10 @@
 import Request from '../../../utils/request';
-export const validateCodses = () => Request({
-  url: 'user/validateCode',
-  credentials: "include",
-  method: 'GET',
-  test:'report',
-});
+// export const validateCodses = () => Request({
+//   url: 'user/validateCode',
+//   credentials: "include",
+//   method: 'GET',
+//   test:'report',
+// });
 
 export const checkParams = (data) =>Request(({
   url:'user/checkParams',

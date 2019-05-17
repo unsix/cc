@@ -405,7 +405,7 @@ class Productdetail extends Component {
                 </swiper-item>
             </swiper> */}
           <View className='item' onClick={this.onEnvelope.bind()}>
-            <Image className='img' mode='aspectFit' src='http://jbkj-res.oss-cn-hangzhou.aliyuncs.com/79249b80547a4d9e9a8519ec47d420cf.png' />
+            <Image className='img' mode='aspectFit' src='http://oss.huizustore.com/79249b80547a4d9e9a8519ec47d420cf.png' />
           </View>
         </View>
         <View className='store-info' onClick={this.goInmeddiate.bind()}>

@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View,Text,Image} from '@tarojs/components';
+import { View,Text,Image,Canvas} from '@tarojs/components';
 import '../report_results/index.scss'
 
 //img
@@ -15,11 +15,20 @@ import LawInf from  '../../../images/report/law_inf.png'
 
 class  Inc extends Component{
 
+  componentDidMount () {
+    const ctx = my.createCanvasContext('canvas')
+  }
+
   render(){
     return (
       <View className='container'>
         <View className='container_canvas'>
           {/*<canvas id="canvas" data-score='80' data-time='2018.06.01'></canvas>*/}
+          {/*<Canvas width={200} height={150} canvasId='canvas'*/}
+          {/*        />*/}
+          <Canvas width={400} height={350} canvasId='canvas'>
+
+          </Canvas>
           <View className='report_number'>
             <View className='number_l'>
               <View>报告编号：XS0000001</View>

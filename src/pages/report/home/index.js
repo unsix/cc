@@ -42,10 +42,10 @@ class  Index extends Component{
   }
   componentDidMount(){
 
-    this.props.dispatch({
-      type: 'reportHome/fetchProductDetail',
-      payload: { itemId:'1557400218783' },
-    });
+    // this.props.dispatch({
+    //   type: 'reportHome/fetchProductDetail',
+    //   payload: { itemId:'1557400218783' },
+    // });
   }
   handleChange (value) {
     this.setState({
@@ -102,12 +102,14 @@ class  Index extends Component{
        userName: names,
        phone:phones,
        idCardNo: idCards,
-       buyerId:getBuyerId(),
+       buyerId:getUid(),
+       aliUserId:getBuyerId(),
+       type:'3'
       },
       dataType: 'json',
       success: function(res) {
         my.tradePay({//调起支付页面
-          tradeNO: res.data.result,
+          tradeNO: res.data.orderNo,
           success: function(res) {
             my.alert(res.resultCode);
           },
