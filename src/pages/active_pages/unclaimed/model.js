@@ -13,7 +13,7 @@ export default {
       const res = yield call(claimedApi.getCoupon, { ...payload, uid: getUid() });
       // console.log(getUid(),'2312312312312321')
       if (res) {
-        Taro.switchTab({ url: '/pages/home/index' })
+        Taro.redirectTo({ url: 'pages/active_pages/unclaimed/index' })
         // Taro.navigateBack
         Taro.showToast({
           title: res.msg,

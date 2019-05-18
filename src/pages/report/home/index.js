@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View,Text,Image,Input, Button,Form} from '@tarojs/components';
 import {  AtCheckbox,AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui';
-import { blankSpace,getQueryString} from '../../../utils/utils'
+import { blankSpace} from '../../../utils/utils'
 import { getUid ,getBuyerId} from '../../../utils/localStorage';
 import { connect } from '@tarojs/redux'
 import {reportUrl} from  '../../../config'
@@ -13,12 +13,18 @@ import Phone from '../../../images/report/phone.png'
 import Com from  '../../../images/report/comprehensive.png'
 import Erro from  '../../../images/report/erro.png'
 import Grade from  '../../../images/report/grade.png'
+import { customerServiceTel } from '../../../assets/Constant'
+import BackHome from  '../../../images/report/backHome.png'
 
 @connect(({ reportHome}) => ({
   ...reportHome,
 }))
 
 class  Index extends Component{
+  config = {
+    navigationBarTitleText: '洞察报告',
+
+  };
   constructor () {
     super(...arguments)
     this.state = {
@@ -60,6 +66,9 @@ class  Index extends Component{
       isOpened:true
     })
   }
+  backHome =()=>{
+    Taro.switchTab({ url: '/pages/home/index' })
+  }
   formSubmit = (e) => {
     const { name,idCord,phone} = e.detail.value;
     this.setState({
@@ -84,6 +93,11 @@ class  Index extends Component{
         }
       })
   }
+
+  connectService = (number) => {
+    let num = String(number);
+    my.makePhoneCall({ number:num });
+  }
   switch = () => {
     Taro.navigateTo({ url: '/pages/report/presentation/index' });
   }
@@ -107,7 +121,7 @@ class  Index extends Component{
       },
       callback: (orderId, type) => {
         if (type === 'detail') {
-          Taro.redirectTo({ url: `/pages/report/report_results/index?orderNo=${orderId}` });
+          Taro.redirectTo({ url: `/pages/report/report_results/index?tradeNo=${orderId}` });
         } else {
           Taro.redirectTo({ url: '/pages/report/home/index' });
 
@@ -251,7 +265,7 @@ class  Index extends Component{
           </View>
             <View className='about_inf'>
               <Text   className='contact_service' >
-                <a href="tel:15158129875">联系客服</a>
+                <View style={{ textAlign: 'left', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectService.bind(this,customerServiceTel )}>{customerServiceTel}</Text></View>
               </Text>
               <Text className='report_case' onClick={this.case}>报告案例</Text>
             </View>
@@ -310,6 +324,9 @@ class  Index extends Component{
               </View>
             </AtModalAction>
           </AtModal>
+        </View>
+        <View className='back'>
+          <Image className='img' onClick={this.backHome} src={BackHome} />
         </View>
       </View>
     )

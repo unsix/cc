@@ -30,8 +30,15 @@ export const reportPay = data => Request({
   method: 'GET',
   data,
 });
-export const getResults = data => Request({
-  url: 'getCheckResult',
+export const getCheckResultByTradeNo = data => Request({
+  url: 'getCheckResultByTradeNo',
   test:'report',
+  method: 'GET',
+  data,
+});
+export const getResultById = data => Request({
+  url: 'getResultById',
+  test:'report',
+  method: 'GET',
   data,
 });

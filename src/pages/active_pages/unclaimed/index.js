@@ -52,8 +52,17 @@ class RedCollect extends Component {
   }
   toReport = () =>{
     Taro.redirectTo({
-      url:'/pages/report/home/index'
+      url:'/pages/report/home/'
     })
+  }
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.unclaimed !== nextProps.unclaimed) {
+      return true;
+    }
+    if (this.state.unclaimed  !== nextState.unclaimed ) {
+      return true;
+    }
+    return false;
   }
   componentDidMount = () => {
     const { dispatch } = this.props;

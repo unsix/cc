@@ -3,7 +3,9 @@ import { View,Text} from '@tarojs/components';
 
 import './index.scss'
 class Read extends Component{
-
+  config = {
+    navigationBarTitleText: '阅读',
+  };
   render(){
     return(
       <View className='container_read'>

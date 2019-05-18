@@ -1,8 +1,7 @@
 
 import * as HomeApi from './service';
 import Taro from '@tarojs/taro';
-import * as billDetailApi from '../../billDetail/service'
-import { getBuyerId } from '../../../utils/localStorage'
+import { formatName,forIdCard} from '../../../utils/utils'
 import { tradePay } from '../../../utils/openApi'
 
 export default {
@@ -72,7 +71,22 @@ export default {
       }
     },
     * getResult({payload,callback},{call,put}){
-      const res =  yield call(HomeApi.getResults, payload);
+      const res =  yield call(HomeApi.getCheckResultByTradeNo, payload.tradeNo);
+      if (res) {
+        Taro.showToast({
+          title:res.msg
+        })
+        yield put({
+          type: 'saveReport',
+          payload: res.data,
+        });
+        if (callback) {
+          callback(res);
+        }
+      }
+    },
+    * getResultById({payload,callback},{call,put}){
+      const res =  yield call(HomeApi.getResultById, payload.reportId);
       if (res) {
         Taro.showToast({
           title:res.msg
@@ -92,7 +106,9 @@ export default {
     saveReport (state, { payload }){
       return {
         ...state,
-        details:payload
+        details:payload,
+        name: formatName(payload.userName),
+        idCardNo:forIdCard(payload.idCardNo)
       };
     },
     // saveDetail(state, { payload }) {

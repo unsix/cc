@@ -12,6 +12,7 @@ export  const getQueryString = function (url) {
   }
   return result;
 }
+
 //过滤空格
 export const blankSpace = (space) => {
   let  newSpack = space.replace(/\s+/g,"");

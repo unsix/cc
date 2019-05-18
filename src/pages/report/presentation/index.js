@@ -1,11 +1,15 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View,Text,Input,Form,Button} from '@tarojs/components';
 import { reportUrl } from '../../../config';
+import { connect } from '@tarojs/redux'
 import { blankSpace } from '../../../utils/utils'
 import {  AtCheckbox } from 'taro-ui'
 import '../enty.scss';
 import './index.scss'
 class  Presentation extends Component{
+  config = {
+    navigationBarTitleText: '编号查询',
+  };
   constructor () {
     super(...arguments)
     this.state = {
@@ -21,6 +25,9 @@ class  Presentation extends Component{
       checkedList: value
     })
   }
+  componentDidMount () {
+  }
+
   //协议
   read = () =>{
     Taro.navigateTo({ url: '/pages/report/read/index' });
@@ -44,7 +51,7 @@ class  Presentation extends Component{
     }
     else {
       Taro.redirectTo({
-        url:`/pages/report_results/index?reportId=${number}`
+        url:`/pages/report/report_results/index?reportId=${number}`
       })
     }
     // fetch(reportUrl+'/user/getResultById?reportId='+`${number}`,{

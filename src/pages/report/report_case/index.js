@@ -12,9 +12,12 @@ import Credit from  '../../../images/report/credit.png'
 import CreditLoan from  '../../../images/report/credit_loan.png'
 import Overdue from  '../../../images/report/overdue_risk.png'
 import LawInf from  '../../../images/report/law_inf.png'
+import Report from '../../../images/report/reportResult.png'
 
 class  Inc extends Component{
-
+  config = {
+    navigationBarTitleText: '案例',
+  };
   componentDidMount () {
     const ctx = my.createCanvasContext('canvas')
   }
@@ -40,6 +43,12 @@ class  Inc extends Component{
             </View>
           </View>
           <View className='scale_examine'>
+            <View className='report_img'>
+              <Image className='img' src={Report} />
+            </View>
+            <View className='score'>
+              36分
+            </View>
             <View className='com'>
               综合评分：36分
             </View>
@@ -50,34 +59,32 @@ class  Inc extends Component{
           <View className='risk_mark table_series'>
             <View className='table_risk series'>
               <View className='mark'>重点风险标注</View>
-              <View className='table_view'>
               <View className='risk_sort'>
                 <View className='risk_b'>命中黑名单
                   <View className='result'>
                     否
                   </View>
                 </View>
-                <View className='risk_b'> 涉发院案件
+                <View className='risk_b'> 涉法院案件
                   <View className='result'>
                     是
                   </View>
                 </View>
                 <View className='risk_b'>12个月网贷申请
-                  <View className='result'>
+                  <View className='result result_w'>
                     19
                   </View>
                 </View>
                 <View className='risk_b'>6个月网贷放款
-                  <View className='result'>
+                  <View className='result result_w'>
                     17
                   </View>
                 </View>
                 <View className='risk_b'>6个月网贷逾期
-                  <View className='result'>
+                  <View className='result result_w'>
                     1
                   </View>
                 </View>
-              </View>
               </View>
             </View>
           </View>
