@@ -20,30 +20,7 @@ class RedCollect extends Component {
     // ]
     animationData:{}
   }
-  // componentDidShow() {
-  //   const animation = Taro.createAnimation({
-  //     duration: 300,
-  //     timingFunction: 'ease',
-  //     delay: 0
-  //   });
-  //   this.animation = animation;
-  //   this.startAnimation();
-  // }
-  // startAnimation() {
-  //   this.barrageTimer = setInterval(() => {
-  //     this.animation.opacity(1).step({
-  //       duration: 2000,
-  //       timingFunction: 'ease'
-  //     });
-  //     this.animation.opacity(0).step({
-  //       duration: 2000,
-  //       timingFunction: 'ease'
-  //     });
-  //     this.setState({
-  //       animationData: this.animation.export()
-  //     });
-  //   }, 4000);
-  // }
+
   toBack = () => {
     Taro.switchTab({ url: '/pages/home/index' })
   }
@@ -59,10 +36,10 @@ class RedCollect extends Component {
     if (this.props.unclaimed !== nextProps.unclaimed) {
       return true;
     }
-    if (this.state.unclaimed  !== nextState.unclaimed ) {
+    if (this.state.unclaimed  !== nextState.unclaimed) {
       return true;
     }
-    return false;
+    return true;
   }
   componentDidMount = () => {
     const { dispatch } = this.props;
@@ -81,16 +58,24 @@ class RedCollect extends Component {
         dispatch({
           type: 'unclaimed/getCoupon', //领红包
           payload: { couponId:'PL123AADSK'},
-          // callback:() => {
-          //
-          // }
+          callback:()=>{
+            console.log('555555555555555555555555')
+          dispatch({
+            type: 'unclaimed/conuponSearch',
+            payload:{
+              couponid:'PL123AADSK'
+            },
+          });
+        }
         });
+
       },
     });
   }
   render() {
     const code = this.props.unclaimed
-    const {animationData} = this.state
+    console.log(code,'0000000000000000000000000000000000')
+    const {animationData,unclaimed} = this.state
     // const animation = Taro.createAnimation({
     //   transformOrigin: "50% 50%",
     //   duration: 1000,

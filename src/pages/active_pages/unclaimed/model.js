@@ -9,16 +9,19 @@ export default {
   },
 
   effects: {
-    * getCoupon({ payload }, { call, put }) {
+    * getCoupon({ payload ,callback}, { call, put }) {
       const res = yield call(claimedApi.getCoupon, { ...payload, uid: getUid() });
       // console.log(getUid(),'2312312312312321')
       if (res) {
-        Taro.redirectTo({ url: 'pages/active_pages/unclaimed/index' })
+        // Taro.switchTab({ url: '/pages/home/index' })
         // Taro.navigateBack
         Taro.showToast({
           title: res.msg,
           icon: 'none',
         });
+        if(callback){
+          callback(res)
+        }
       }
     },
     * conuponSearch({payload},{call,put}){
