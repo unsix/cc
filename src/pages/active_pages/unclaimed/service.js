@@ -5,3 +5,9 @@ export const getCoupon = data => Request({
   method: 'GET',
   data,
 });
+
+export const getSettingDynamic = () => Request({
+  url: 'aliPay/index/getSettingDynamic',
+  method: 'GET',
+  test:'text'
+});

@@ -29,7 +29,7 @@ class RedCollect extends Component {
   }
   toReport = () =>{
     Taro.redirectTo({
-      url:'/pages/report/home/'
+      url:'/pages/report/home/index'
     })
   }
   shouldComponentUpdate(nextProps, nextState) {
@@ -43,13 +43,21 @@ class RedCollect extends Component {
   }
   componentDidMount = () => {
     const { dispatch } = this.props;
-        dispatch({
-          type: 'unclaimed/conuponSearch',
-          payload:{
-            couponid:'PL123AADSK'
-          },
-        });
+      dispatch({
+        type: 'unclaimed/conuponSearch',
+        payload:{
+          couponid:'PL123AADSK'
+        },
+      });
+    dispatch({
+      type: 'unclaimed/getSettingDynamic',
+    });
   };
+  onGoToMore = (url) =>{
+    Taro.redirectTo({
+      url:url
+    })
+  }
   handleGetCoupon = () => {
     const { dispatch } = this.props;
     dispatch({
@@ -73,7 +81,7 @@ class RedCollect extends Component {
     });
   }
   render() {
-    const code = this.props.unclaimed
+    const {code,banner}= this.props
     console.log(code,'0000000000000000000000000000000000')
     const {animationData,unclaimed} = this.state
     // const animation = Taro.createAnimation({
@@ -86,29 +94,34 @@ class RedCollect extends Component {
       <View>
         {code&&code == '2' ?
           (<View>
-              <View className='report_banner'>
-                <Swiper
-                  className="swiper-container"
-                  circular
-                  indicatorDots
-                  indicatorColor='#999'
-                  indicatorActiveColor='#bf708f'
-                  autoplay
-                >
-                  {/*{ banner.map((item, index) => (*/}
-                  {/*  <SwiperItem key={index}>*/}
-                  {/*    <Image className="swiper-img" mode="widthFix" src={item.image_src}></Image>*/}
-                  {/*  </SwiperItem>*/}
-                  {/*))}*/}
+              {banner&&banner>0?(
+                <View className='report_banner'>
+                  <Swiper
+                    className="swiper-container"
+                    circular
+                    indicatorDots
+                    indicatorColor='#999'
+                    indicatorActiveColor='#bf708f'
+                    autoplay
+                  >
+                    { banner.map((item, index) => (
+                      <swiper-item key={banner.id}>
+                        <View className='item' onClick={this.onGoToMore(this,item.imgUrl)}>
+                          <Image className='img' mode='aspectFit' src={item.imgSrc} />
+                        </View>
+                      </swiper-item>
+                    ))}
 
 
-                  <SwiperItem key='1' >
-                    <View className='banner'>
-                      <Image className="swiper-img" mode="widthFix" src={Banner} onClick={this.toReport}></Image>
-                    </View>
-                  </SwiperItem>
-                </Swiper>
-              </View>
+                    {/*<SwiperItem key='1' >*/}
+                    {/*  <View className='banner'>*/}
+                    {/*    <Image className="swiper-img" mode="widthFix" src={Banner} onClick={this.toReport}></Image>*/}
+                    {/*  </View>*/}
+                    {/*</SwiperItem>*/}
+                  </Swiper>
+                </View>
+              ):null}
+
               <View className='red_claimed'>
                 <View className='complete'>
                   <Image className='complete_img' onClick={this.toBack} src={Back}/>

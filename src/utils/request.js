@@ -52,10 +52,9 @@ export default (options = { method: 'GET', data: {} }) => {
   if(options.test == 'report'){
     requesturl = reportUrl+options.url   //本地联调
   }
-  // else{
-  // if(options.test == 'userConfirmOrder'){
-  //   requesturl = 'http://192.168.1.106:8071/'+options.url
-  // }
+  else if(options.test == 'text'){
+    requesturl = 'http://192.168.132.102:8071/'+options.url
+  }
   else{
     requesturl = baseUrl + options.url
   }

@@ -82,7 +82,7 @@ class  Inc extends Component{
               综合评分：{score}分
             </View>
             <View className='com_dec'>
-              综合评估{score_Text}。<Text className='prop' >{pass===true?'建议通过':'建议不通过'}</Text> 评分越低，风险越高
+              综合评估{score_Text}。<Text className='prop' >{pass===true?'建议通过':'建议不通过'};</Text> 评分越低，风险越高
             </View>
           </View>
           <View className='risk_mark table_series'>

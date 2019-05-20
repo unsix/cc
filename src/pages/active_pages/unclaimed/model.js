@@ -6,6 +6,8 @@ import * as productDetailApi from '../../productDetail/service'
 export default {
   namespace: 'unclaimed',
   state: {
+    code:'',
+    banner:''
   },
 
   effects: {
@@ -32,6 +34,16 @@ export default {
           payload: res.data,
         });
       }
+    },
+    //请求图片
+    * getSettingDynamic({payload},{call,put}){
+      const res =  yield call(claimedApi.getSettingDynamic, { ...payload, uid: getUid() });
+      if (res) {
+        yield put({
+          type: 'banner',
+          payload: res.data,
+        });
+      }
     }
   },
 
@@ -40,9 +52,16 @@ export default {
       // console.log(payload,'sjhfdghursfgyu')
       return {
         ...state,
-        unclaimed:payload
+        code:payload
       };
-    }
+    },
+    banner (state, { payload }){
+      // console.log(payload,'sjhfdghursfgyu')
+      return {
+        ...state,
+        banner:payload
+      };
+    },
   },
 
 };

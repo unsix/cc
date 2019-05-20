@@ -265,7 +265,7 @@ class  Index extends Component{
           </View>
             <View className='about_inf'>
               <Text   className='contact_service' >
-                <View style={{ textAlign: 'left', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectService.bind(this,customerServiceTel )}>{customerServiceTel}</Text></View>
+                <View onClick={this.connectService.bind(this,customerServiceTel )} style={{ textAlign: 'left', paddingLeft: '15px' }}>平台客服</View>
               </Text>
               <Text className='report_case' onClick={this.case}>报告案例</Text>
             </View>
