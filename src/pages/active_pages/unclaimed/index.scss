@@ -28,9 +28,16 @@
     width: 100%;
     position: relative;
     top: 870px;
-    .confirm_img{
+    .confirm_button{
       width: 550px;
       height: 102px;
+      margin: 0 auto;
+      background: #F9BE63;
+      border-radius: 53.5px;
+      border: none;
+      font-size: 56px;
+      color: #B33431;
+      line-height: 102px;
     }
   }
 }

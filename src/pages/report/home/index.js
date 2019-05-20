@@ -47,7 +47,13 @@ class  Index extends Component{
     },]
   }
   componentDidMount(){
-
+    const { dispatch } = this.props
+    dispatch({
+      type: 'mine/fetchAuthCode',
+      callback:(data)=>{
+        console.log(data,'111111111111111111111111111111111111111111111111111111')
+      }
+    });
     // this.props.dispatch({
     //   type: 'reportHome/fetchProductDetail',
     //   payload: { itemId:'1557400218783' },
@@ -128,37 +134,6 @@ class  Index extends Component{
         }
       },
     })
-    // my.httpRequest({
-    //   url: reportUrl+'user/aliPay/preForAppPay',//须加httpRequest域白名单
-    //   method: 'POST',
-    //   data: {//data里的key、value是开发者自定义的
-    //    userName: names,
-    //    phone:phones,
-    //    idCardNo: idCards,
-    //    buyerId:getUid(),
-    //    aliUserId:getBuyerId(),
-    //    type:'3'
-    //   },
-    //   dataType: 'json',
-    //   success: function(res) {
-    //     console.log(res),
-    //     my.tradePay({//调起支付页面
-    //       tradeNO: res.data.orderNo,
-    //       success: function(res) {
-    //         my.alert(res.resultCode);
-    //       },
-    //       fail: function(res) {
-    //         my.alert(res.resultCode,'213123123');
-    //       },
-    //     });
-    //   },
-    //   fail: function(res) {
-    //     my.alert({content: 'fail'});
-    //   },
-    //   complete: function(res) {
-    //     my.hideLoading();
-    //   }
-    // });
   }
   //协议
   read = () =>{

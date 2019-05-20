@@ -97,6 +97,7 @@
     background: #6190E8;
   }
   .about_inf{
+    margin-top: 50px!important;
     @include fj(space-between);
     .contact_service{
       color: #f60;

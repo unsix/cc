@@ -54,29 +54,8 @@ class  Presentation extends Component{
         url:`/pages/report/report_results/index?reportId=${number}`
       })
     }
-    // fetch(reportUrl+'/user/getResultById?reportId='+`${number}`,{
-    //   method:'GET',
-    // })
-    //   .then(res=>{
-    //     return res.json()
-    //   })
-    //   .then(data=>{
-    //    if(data.code == 1){
-    //      Taro.redirectTo({
-    //        url:`/pages/report_results/index?reportId=${number}`
-    //      })
-    //    }
-    //    // else {
-    //    //   Taro.showToast({
-    //    //     title:data.msg,
-    //    //     icon:'none'
-    //    //   })
-    //    //  }
-    //   })
+
   }
-  // config = {
-  //   navigationBarTitleText: '新人领券',
-  // };
   render(){
     return(
       <View className='container_enty container_presentation'>

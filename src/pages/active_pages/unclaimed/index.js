@@ -1,11 +1,9 @@
 import Taro, { Component} from '@tarojs/taro'
-import { View ,Swiper, SwiperItem, Image} from '@tarojs/components'
+import { View ,Swiper, SwiperItem, Image,Form, Button} from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import Back from '../../../images/active_page/back.png'
 import Tosee from '../../../images/active_page/tosee.png'
 import Receive from '../../../images/active_page/confirm.png'
-import Banner from  '../../../images/active_page/banner.png'
-import BtnReport from  '../../../images/active_page/repott_go.png'
 import './index.scss';
 @connect(({ unclaimed }) => ({
   ...unclaimed,
@@ -53,12 +51,17 @@ class RedCollect extends Component {
       type: 'unclaimed/getSettingDynamic',
     });
   };
-  onGoToMore = (url) =>{
-    Taro.redirectTo({
-      url:url
+  onGoTo = (url) =>{
+    Taro.navigateTo({
+      url:`/${url}`
     })
   }
   handleGetCoupon = () => {
+  }
+  //领红包
+  formSubmit = (e) =>{
+    // console.log(e.detail.formId)
+    let formId = e.detail.formId
     const { dispatch } = this.props;
     dispatch({
       type: 'mine/fetchAuthCode',
@@ -68,13 +71,23 @@ class RedCollect extends Component {
           payload: { couponId:'PL123AADSK'},
           callback:()=>{
             console.log('555555555555555555555555')
-          dispatch({
-            type: 'unclaimed/conuponSearch',
-            payload:{
-              couponid:'PL123AADSK'
-            },
-          });
-        }
+            dispatch({
+              type: 'unclaimed/conuponSearch',
+              payload:{
+                couponid:'PL123AADSK'
+              },
+              callback:()=>{
+                dispatch({
+                  type:'unclaimed/userFormIdPool',
+                  payload:{
+                    type:'1',
+                    userFormId:formId
+                  }
+                })
+              }
+            });
+
+          }
         });
 
       },
@@ -92,9 +105,9 @@ class RedCollect extends Component {
     // })
     return (
       <View>
-        {code&&code == '2' ?
+        {code&&code === '2' ?
           (<View>
-              {banner&&banner>0?(
+              {banner&&banner!=null || undefined?(
                 <View className='report_banner'>
                   <Swiper
                     className="swiper-container"
@@ -104,13 +117,13 @@ class RedCollect extends Component {
                     indicatorActiveColor='#bf708f'
                     autoplay
                   >
-                    { banner.map((item, index) => (
-                      <swiper-item key={banner.id}>
-                        <View className='item' onClick={this.onGoToMore(this,item.imgUrl)}>
-                          <Image className='img' mode='aspectFit' src={item.imgSrc} />
+                    {/*{ banner.map((item, index) => (*/}
+                      <SwiperItem key={banner.id}>
+                        <View className='banner' onClick={this.onGoTo.bind(this,banner.jumpUrl)}>
+                          <Image className='swiper-img' mode='aspectFit' src={banner.imgUrl} />
                         </View>
-                      </swiper-item>
-                    ))}
+                      </SwiperItem>
+                    {/*))}*/}
 
 
                     {/*<SwiperItem key='1' >*/}
@@ -131,9 +144,13 @@ class RedCollect extends Component {
             </View>
           ) : (
             <View className='red_unclaimed'>
-              <View className='confirm'>
-                <Image onClick={this.handleGetCoupon} className='confirm_img' src={Receive}/>
-              </View>
+              <Form report-submit='true' onSubmit={this.formSubmit}>
+                <View className='confirm' >
+                  <Button className='confirm_button' formType='submit'>
+                    点击领取
+                  </Button>
+                </View>
+              </Form>
             </View>
           )
         }
@@ -143,20 +160,3 @@ class RedCollect extends Component {
 }
 
 export default RedCollect
-
-// {code&&code == '2' ?
-//   (
-//     <View className='red_claimed'>
-//       <View className='complete'>
-//         <Image className='complete_img' onClick={this.toBack} src={Back}/>
-//         <Image className='complete_img' onClick={this.toSee} src={Tosee}/>
-//       </View>
-//     </View>
-//   ) : (
-//     <View className='red_unclaimed'>
-//       <View className='confirm'>
-//         <Image onClick={this.handleGetCoupon} className='confirm_img' src={Receive}/>
-//       </View>
-//     </View>
-//   )
-// }
