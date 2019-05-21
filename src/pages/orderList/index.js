@@ -35,7 +35,7 @@ class Orderlist extends Component {
       if (currentMenu.id === 'settle') {
         status = ['WAITING_SETTLEMENT', 'WAITING_CONFIRM_SETTLEMENT', 'WAITING_SETTLEMENT_PAYMENT'];
       }
-      if (currentMenu.id === 'SETTLEMENT_RETURN_CONFIRM_PAY') {
+      if (currentMenu.id === 'overdue') {
         status = ['SETTLEMENT_RETURN_CONFIRM_PAY', 'ORDER_VERDUE'];
       }
     }
@@ -69,9 +69,10 @@ class Orderlist extends Component {
     if (item.id === 'settle') {
       status = ['WAITING_SETTLEMENT', 'WAITING_CONFIRM_SETTLEMENT', 'WAITING_SETTLEMENT_PAYMENT'];
     }
-    if (item.id === 'SETTLEMENT_RETURN_CONFIRM_PAY') {
+    if (item.id === 'overdue') {
       status = ['SETTLEMENT_RETURN_CONFIRM_PAY', 'ORDER_VERDUE'];
     }
+    console.log('=====', item, status);
     const info = {
       status,
       pageNumber: 1,

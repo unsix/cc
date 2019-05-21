@@ -58,9 +58,9 @@ export default {
         });
       }
     },
-    * conuponSearch({payload},{call,put}){
-      const res =  yield call(productDetailApi.conuponSearch, { ...payload, uid: getUid() });
-      if(res){
+    * conuponSearch({ payload }, { call, put }) {
+      const res = yield call(productDetailApi.conuponSearch, { ...payload, uid: getUid() });
+      if (res) {
         Taro.navigateTo({ url: '/pages/active_pages/unclaimed/index' });
       }
     }
@@ -100,15 +100,24 @@ export default {
           return b.isMain - a.isMain;
         });
       }
+      if (payload.skus[0] && payload.skus[0].length) {
+        payload.skus[0].cyclePrices.sort((a, b) => {
+          return a.days - b.days;
+        })
+      }
+      const cyclePricesArr = [...payload.skus[0].cyclePrices];
+      cyclePricesArr.length && cyclePricesArr.sort((a,b)=>{
+        return a.days - b.days;
+      });
       return {
         ...state,
         detail: payload,
         images_ismain: payload.images,
         currentSku: {
           ...payload.skus[0],
-          currentCyclePrice: payload.skus[0].cyclePrices[0],
+          currentCyclePrice: cyclePricesArr[0],
         },
-        currentDays: payload.skus[0].cyclePrices[0].days,
+        currentDays: cyclePricesArr[0].days,
         minRentCycleday: payload.minRentCycle,
         advancedDays,
         startDay: startTime,
@@ -187,7 +196,7 @@ export default {
       };
     },
     // 为你推荐
-    saveRecommend (state, { payload }){
+    saveRecommend(state, { payload }) {
       // console.log(payload,'sjhfdghursfgyu')
       return {
         ...state,
