@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Image, Text } from '@tarojs/components';
+import { View, Image, Text,Form} from '@tarojs/components';
 import { AtIcon } from 'taro-ui'
 import './index.scss';
 
@@ -14,10 +14,10 @@ class Search extends Component {
     const { onGoToMore } = this.props;
     onGoToMore(url);
   }
-
   render() {
     const { products, tab, oldNewDegreeList } = this.props;
     return (
+
       <View className='channel'>
         <View className='channel-top'>
           <View className='channel-top-title'>

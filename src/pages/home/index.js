@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Image, Text } from '@tarojs/components';
+import { View, Image, Text,Form } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import Search from './component/search/index';
 import Channel from './component/channel/index';
@@ -73,7 +73,10 @@ class Home extends Component {
   handleGotoClassify = (url) => {
     Taro.navigateTo({ url });
   }
-
+  formSubmit = (e) => {
+    let formId = e.detail.formId
+    console.log(formId,'9999999999999999999999999999999999999999999999999')
+  }
   render() {
     const { bannerList, iconList, tabList, oldNewDegreeList, loinBanner, loading } = this.props;
     // eslint-disable-next-line no-undef
@@ -139,19 +142,20 @@ class Home extends Component {
           </View>
           <View className='home-freshman-button'>立即领取</View> */}
         </View>
-
-        <View className='home-channel'>
-          {tabList && tabList.length && tabList.map(info => (
-            <Channel
-              products={info.products}
-              tab={info.tab}
-              oldNewDegreeList={oldNewDegreeList}
-              onGotoProduct={this.onGotoProduct}
-              onGoToMore={this.onGoToMore}
-            />
-          ))}
-        </View>
-
+        <Form report-submit='true' onSubmit={this.formSubmit}>
+          <View className='home-channel' >
+            {tabList && tabList.length && tabList.map(info => (
+              <Channel
+                formType='submit'
+                products={info.products}
+                tab={info.tab}
+                oldNewDegreeList={oldNewDegreeList}
+                onGotoProduct={this.onGotoProduct}
+                onGoToMore={this.onGoToMore}
+              />
+            ))}
+          </View>
+        </Form>
         <View className='home-bottom'>
           <Text className='text'> - 再拖就没有了 - </Text>
         </View>

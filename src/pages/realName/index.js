@@ -95,6 +95,14 @@ class Realname extends Component {
   formSubmit = (e) => {
     const { userName, idcard, mobile, smsCode } = e.detail.value;
     const { dispatch, codeTime, codeKey } = this.props;
+    let formId = e.detail.formId
+    dispatch({
+      type:'unclaimed/userFormIdPool',
+      payload:{
+        type:'1',
+        userFormId:formId
+      }
+    })
     if (!userName) {
       this.showToast('请输入姓名');
       return;
@@ -131,7 +139,7 @@ class Realname extends Component {
     // eslint-disable-next-line no-undef
     loading ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
     return (
-      <Form onSubmit={this.formSubmit}>
+      <Form report-submit='true' onSubmit={this.formSubmit}>
         <View className='realName-page'>
           <View className='content'>
             <View className='content-item'>

@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Image, Text, ScrollView, Input } from '@tarojs/components';
+import { View, Image, Text, ScrollView, Input,Button,Form} from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import { AtIcon, AtFloatLayout } from 'taro-ui';
 
@@ -54,22 +54,33 @@ class Productdetail extends Component {
     });
   };
   gotoRed = () => {
-    const { dispatch } = this.props;
-        dispatch({
-      type: 'productDetail/conuponSearch',
-      payload:{
-        couponid:'PL123AADSK'
-      },
-    });
-    // my.navigateToMiniProgram({
-    //   appId: '2018122562686742',
-    //   path: 'pages/index/index?originAppId=2019011162880259&newUserTemplate=20190428000000168854'
+    // const { dispatch } = this.props;
+    //     dispatch({
+    //   type: 'productDetail/conuponSearch',
+    //   payload:{
+    //     couponid:'PL123AADSK'
+    //   },
     // });
+    my.navigateToMiniProgram({
+      appId: '2018122562686742',
+      path: 'pages/index/index?originAppId=2019011162880259&newUserTemplate=20190428000000168854'
+    });
   }
   onShowSKUClick = () => {
     this.setState({ showSKUPopup: true });
   }
-
+  // formSubmit = (e) => {
+  //   const { dispatch } = this.props;
+  //   let formId = e.detail.formId
+  //   dispatch({
+  //     type:'unclaimed/userFormIdPool',
+  //     payload:{
+  //       type:'1',
+  //       userFormId:formId
+  //     }
+  //   })
+  //   this.setState({ showSKUPopup: true });
+  // }
   onSKUPopupClose = () => {
     this.setState({ showSKUPopup: false });
   }
@@ -189,8 +200,9 @@ class Productdetail extends Component {
     }
   }
 
-  onSubmit = () => {
+  formSubmit = (e) => {
     const { dispatch, currentSku, currentDays, detail, startDay, saveServers } = this.props;
+    let formId = e.detail.formId
     const obj = {
       totalRent: currentDays * currentSku.currentCyclePrice.price,
       productName: detail.name,
@@ -211,15 +223,24 @@ class Productdetail extends Component {
     Taro.setStorageSync(`isShow`, 0);
     dispatch({
       type: 'mine/fetchAuthCode',
-      callback: () => {
+      callback:()=>{
         dispatch({
-          type: 'confirmOrder/userConfirmOrder',
-          payload: obj,
-          callback: () => {
-            Taro.redirectTo({ url: '/pages/confirmOrder/index' });
+          type:'unclaimed/userFormIdPool',
+          payload:{
+            type:'1',
+            userFormId:formId
           },
-        });
-      },
+          callback: () => {
+            dispatch({
+              type: 'confirmOrder/userConfirmOrder',
+              payload: obj,
+              callback: () => {
+                Taro.redirectTo({ url: '/pages/confirmOrder/index' });
+              },
+            });
+          },
+        })
+      }
     });
   }
 
@@ -525,7 +546,7 @@ class Productdetail extends Component {
             </View>
           </View>
           <View className='right-area'>
-            <View className='red-botton' onClick={this.onShowSKUClick}>立即租用</View>
+              <Button className='red-botton'  formType='submit' onClick={this.onShowSKUClick}>立即租用</Button>
           </View>
         </View>
 
@@ -766,7 +787,10 @@ class Productdetail extends Component {
                 </ScrollView>
               </View>
               <View className='bottom'>
-                <View className='submit' onClick={this.onSubmit}>确定</View>
+                <Form report-submit='true' onSubmit={this.formSubmit}>
+                  {/*<Button className='red-botton'  formType='submit' onClick={this.onShowSKUClick}>立即租用</Button>*/}
+                  <Button className='submit' formType='submit' >确定</Button>
+                </Form>
               </View>
             </View>
           </AtFloatLayout>

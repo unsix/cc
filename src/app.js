@@ -51,7 +51,8 @@ class App extends Component {
       'pages/report/presentation/index',
       'pages/report/read/index',
       'pages/report/report_case/index',
-      'pages/report/report_results/index'
+      'pages/report/report_results/index',
+      'pages/member/index',
     ],
     window: {
       titleBarColor: '#fff',

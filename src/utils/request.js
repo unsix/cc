@@ -53,10 +53,13 @@ export default (options = { method: 'GET', data: {} }) => {
     requesturl = reportUrl+options.url   //本地联调
   }
   else if(options.test == 'text'){
-    requesturl = 'http://192.168.132.102:8071/'+options.url
+    requesturl = 'http://192.168.132.103:8071/'+options.url
   }
   else if(options.test == 'form'){
     requesturl = 'http://192.168.132.101:9000/'+options.url
+  }
+  else if(options.test == 'member'){
+    requesturl = 'http://192.168.132.103:8071/'+options.url
   }
   else{
     requesturl = baseUrl + options.url

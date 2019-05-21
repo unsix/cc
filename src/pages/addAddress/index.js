@@ -122,6 +122,15 @@ class Addaddress extends Component {
     const { realname, telephone, street, isDefault } = e.detail.value;
     const { currentAddress } = this.state;
     const { addressInfo } = this.props;
+    const { dispatch } = this.props;
+    let formId = e.detail.formId
+    dispatch({
+      type:'unclaimed/userFormIdPool',
+      payload:{
+        type:'1',
+        userFormId:formId
+      }
+    })
     if (!realname) {
       this.showToast('请输入收货人姓名');
       return;
@@ -138,7 +147,6 @@ class Addaddress extends Component {
       this.showToast('请输入详细地址');
       return;
     }
-    const { dispatch } = this.props;
     let params = {
       realname,
       telephone,
@@ -206,7 +214,7 @@ class Addaddress extends Component {
         <View onClick={this.ddOrder}> 
           <notice show={isshow} class="loslos" marqueeProps={marquee} enableMarquee={true} actionCls="closeable" mode="closable">若所在省市无法选择,请在省市区选择其他,在详细地址输入即可！！！！！</notice>
         </View>
-        <Form onSubmit={this.formSubmit}>
+        <Form report-submit='true' onSubmit={this.formSubmit}>
           <View className='info'>
             <View className='item'>
               <Input placeholder='收货人' style={{width: '100%'}} name='realname' value={addressInfo.realname} />

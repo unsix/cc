@@ -184,7 +184,7 @@ class  Index extends Component{
             <View className='text'>
               <Input
                 name='idCord'
-                type='text'
+                type='idcard'
                 className='name_input'
                 placeholder='身份证号'
               />

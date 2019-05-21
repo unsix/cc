@@ -55,6 +55,12 @@ class Mine extends Component {
     Taro.navigateTo({ url: `/pages/productDetail/index?itemId=${itemId}` });
   }
 
+  //开通会员
+  member = () => {
+    Taro.redirectTo({
+      url: '/pages/member/index'
+    })
+  }
   render() {
     const { nickName, avatar, isCertified, loading, productList, statusNumInfo } = this.props;
     const menuNumList = menuList.map(menu => {
@@ -126,6 +132,10 @@ class Mine extends Component {
           </View>
           <View onClick={this.skipOtherPage.bind(this, 'address')} className='mine-page-order-other'>
             <Text className='text'>收货地址</Text>
+            <AtIcon value='chevron-right' size='18' color='#cccccc' />
+          </View>
+          <View onClick={this.member} className='mine-page-order-other'>
+            <Text className='text'>开通会员</Text>
             <AtIcon value='chevron-right' size='18' color='#cccccc' />
           </View>
         </View>

@@ -3,10 +3,11 @@ import { View ,Swiper, SwiperItem, Image,Form, Button} from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import Back from '../../../images/active_page/back.png'
 import Tosee from '../../../images/active_page/tosee.png'
-import Receive from '../../../images/active_page/confirm.png'
+import Banner from  '../../../images/active_page/report_banner_1.png'
 import './index.scss';
-@connect(({ unclaimed }) => ({
+@connect(({ unclaimed ,loading}) => ({
   ...unclaimed,
+  loading: loading.models.unclaimed,
 }))
 class RedCollect extends Component {
   config = {
@@ -51,11 +52,11 @@ class RedCollect extends Component {
       type: 'unclaimed/getSettingDynamic',
     });
   };
-  onGoTo = (url) =>{
-    Taro.navigateTo({
-      url:`/${url}`
-    })
-  }
+  // onGoTo = (url) =>{
+  //   Taro.navigateTo({
+  //     url:`/${url}`
+  //   })
+  // }
   handleGetCoupon = () => {
   }
   //领红包
@@ -94,7 +95,7 @@ class RedCollect extends Component {
     });
   }
   render() {
-    const {code,banner}= this.props
+    const {code,banner,loading}= this.props
     console.log(code,'0000000000000000000000000000000000')
     const {animationData,unclaimed} = this.state
     // const animation = Taro.createAnimation({
@@ -103,11 +104,12 @@ class RedCollect extends Component {
     //   timingFunction: "ease",
     //   delay: 0
     // })
+    loading ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
     return (
       <View>
         {code&&code === '2' ?
           (<View>
-              {banner&&banner!=null || undefined?(
+              {/*{banner&&banner!=null || undefined?(*/}
                 <View className='report_banner'>
                   <Swiper
                     className="swiper-container"
@@ -118,22 +120,22 @@ class RedCollect extends Component {
                     autoplay
                   >
                     {/*{ banner.map((item, index) => (*/}
-                      <SwiperItem key={banner.id}>
-                        <View className='banner' onClick={this.onGoTo.bind(this,banner.jumpUrl)}>
-                          <Image className='swiper-img' mode='aspectFit' src={banner.imgUrl} />
-                        </View>
-                      </SwiperItem>
+                    {/*  <SwiperItem key={banner.id}>*/}
+                    {/*    <View className='banner' onClick={this.onGoTo.bind(this,banner.jumpUrl)}>*/}
+                    {/*      <Image className='swiper-img' mode='aspectFit' src={banner.imgUrl} />*/}
+                    {/*    </View>*/}
+                    {/*  </SwiperItem>*/}
                     {/*))}*/}
 
 
-                    {/*<SwiperItem key='1' >*/}
-                    {/*  <View className='banner'>*/}
-                    {/*    <Image className="swiper-img" mode="widthFix" src={Banner} onClick={this.toReport}></Image>*/}
-                    {/*  </View>*/}
-                    {/*</SwiperItem>*/}
+                    <SwiperItem key='1' >
+                      <View className='banner'>
+                        <Image className="swiper-img" mode="widthFix" src={Banner} onClick={this.toReport}></Image>
+                      </View>
+                    </SwiperItem>
                   </Swiper>
                 </View>
-              ):null}
+              {/*):null}*/}
 
               <View className='red_claimed'>
                 <View className='complete'>

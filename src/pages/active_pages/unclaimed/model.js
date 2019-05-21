@@ -1,6 +1,6 @@
 import Taro from '@tarojs/taro';
 import * as claimedApi from './service'
-import { getUid ,getBuyerId} from '../../../utils/localStorage'
+import { getUid } from '../../../utils/localStorage'
 import * as productDetailApi from '../../productDetail/service'
 
 export default {
@@ -52,12 +52,19 @@ export default {
       }
     },
     //form id
-    * userFormIdPool({payload},{call,put}){
-      const res =  yield call(claimedApi.userFormIdPool, { ...payload, sysUserId: getUid(),aliUserId: getBuyerId()});
+    * userFormIdPool({payload,callback},{call,put}){
+      const res =  yield call(claimedApi.userFormIdPool, { ...payload, sysUserId: getUid()});
       if (res) {
         // if(res.code === 1){
         //
         // }
+        // Taro.showToast({
+        //   title: res.msg,
+        //   icon: 'none',
+        // })
+        if(callback){
+          callback(res.data)
+        }
       }
     }
   },

@@ -100,3 +100,9 @@ $tag-dark:#555 !default;
   display: flex;
   justify-content: $type;
 }
+
+@mixin fcc($type) {
+  display: flex;
+  justify-content: $type;
+  align-items: center;
+}

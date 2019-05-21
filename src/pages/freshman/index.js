@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Button } from '@tarojs/components';
+import { View, Button,Form} from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 
 import Ticket from './component/ticket/index';
@@ -20,7 +20,19 @@ class Freshman extends Component {
     });
   };
 
-  submit() {
+  // submit() {
+  //   const { dispatch } = this.props;
+  //   dispatch({
+  //     type: 'mine/fetchAuthCode',
+  //     callback: () => {
+  //       dispatch({
+  //         type: 'freshman/getNewPackage', //领红包
+  //         payload: { type: 1 },
+  //       });
+  //     },
+  //   });
+  // }
+  formSubmit = (e) =>{
     const { dispatch } = this.props;
     dispatch({
       type: 'mine/fetchAuthCode',
@@ -31,8 +43,15 @@ class Freshman extends Component {
         });
       },
     });
+    let formId = e.detail.formId
+    dispatch({
+      type:'unclaimed/userFormIdPool',
+      payload:{
+        type:'1',
+        userFormId:formId
+      }
+    })
   }
-
   render() {
     const { list } = this.props;
     return (
@@ -42,8 +61,9 @@ class Freshman extends Component {
             <Ticket key={data.id} data={data} />
           )}
         </View>
-
-        <View className='freshman-page-btn' onClick={this.submit}>一键领取新人优惠</View>
+        <Form report-submit='true' onSubmit={this.formSubmit}>
+          <Button className='freshman-page-btn' formType='submit' >一键领取新人优惠</Button>
+        </Form>
       </View>
     )
   }
