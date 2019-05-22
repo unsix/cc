@@ -52,11 +52,11 @@ class RedCollect extends Component {
       type: 'unclaimed/getSettingDynamic',
     });
   };
-  // onGoTo = (url) =>{
-  //   Taro.navigateTo({
-  //     url:`/${url}`
-  //   })
-  // }
+  onGoTo = (url) =>{
+    Taro.navigateTo({
+      url:`/${url}`
+    })
+  }
   handleGetCoupon = () => {
   }
   //领红包
@@ -68,22 +68,22 @@ class RedCollect extends Component {
       type: 'mine/fetchAuthCode',
       callback: () => {
         dispatch({
-          type: 'unclaimed/getCoupon', //领红包
-          payload: { couponId:'PL123AADSK'},
+          type:'unclaimed/userFormIdPool',
+          payload:{
+            type:'1',
+            userFormId:formId
+          },
           callback:()=>{
             console.log('555555555555555555555555')
             dispatch({
-              type: 'unclaimed/conuponSearch',
-              payload:{
-                couponid:'PL123AADSK'
-              },
+              type: 'unclaimed/getCoupon', //领红包
+              payload: { couponId:'PL123AADSK'},
               callback:()=>{
                 dispatch({
-                  type:'unclaimed/userFormIdPool',
+                  type: 'unclaimed/conuponSearch',
                   payload:{
-                    type:'1',
-                    userFormId:formId
-                  }
+                    couponid:'PL123AADSK'
+                  },
                 })
               }
             });
@@ -109,7 +109,7 @@ class RedCollect extends Component {
       <View>
         {code&&code === '2' ?
           (<View>
-              {/*{banner&&banner!=null || undefined?(*/}
+              {banner&&banner!=null || undefined?(
                 <View className='report_banner'>
                   <Swiper
                     className="swiper-container"
@@ -120,27 +120,27 @@ class RedCollect extends Component {
                     autoplay
                   >
                     {/*{ banner.map((item, index) => (*/}
-                    {/*  <SwiperItem key={banner.id}>*/}
-                    {/*    <View className='banner' onClick={this.onGoTo.bind(this,banner.jumpUrl)}>*/}
-                    {/*      <Image className='swiper-img' mode='aspectFit' src={banner.imgUrl} />*/}
-                    {/*    </View>*/}
-                    {/*  </SwiperItem>*/}
+                      <SwiperItem key={banner.id}>
+                        <View className='banner' onClick={this.onGoTo.bind(this,banner.jumpUrl)}>
+                          <Image className='swiper-img' mode='aspectFit' src={banner.imgUrl} />
+                        </View>
+                      </SwiperItem>
                     {/*))}*/}
 
 
-                    <SwiperItem key='1' >
-                      <View className='banner'>
-                        <Image className="swiper-img" mode="widthFix" src={Banner} onClick={this.toReport}></Image>
-                      </View>
-                    </SwiperItem>
+                    {/*<SwiperItem key='1' >*/}
+                    {/*  <View className='banner'>*/}
+                    {/*    <Image className="swiper-img" mode="widthFix" src={Banner} onClick={this.toReport}></Image>*/}
+                    {/*  </View>*/}
+                    {/*</SwiperItem>*/}
                   </Swiper>
                 </View>
-              {/*):null}*/}
+              ):null}
 
               <View className='red_claimed'>
                 <View className='complete'>
-                  <Image className='complete_img' onClick={this.toBack} src={Back}/>
-                  <Image className='complete_img' onClick={this.toSee} src={Tosee}/>
+                  <Image className='complete_img' onClick={this.toBack} src={Back} />
+                  <Image className='complete_img' onClick={this.toSee} src={Tosee} />
                 </View>
               </View>
             </View>

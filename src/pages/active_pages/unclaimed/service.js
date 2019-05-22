@@ -9,7 +9,6 @@ export const getCoupon = data => Request({
 export const getSettingDynamic = () => Request({
   url: 'aliPay/index/getSettingDynamic',
   method: 'GET',
-  test:'text'
 });
 export const userFormIdPool = (data) => Request({
   url: 'aliPay/user/userFormIdPool/pushFormIdToPool',
