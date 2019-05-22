@@ -64,7 +64,7 @@ class Confirmorder extends Component {
   }
 
   gotoProtocol = () => {
-    Taro.navigateTo({ url: '/pages/serviceProtocol/index' });
+    Taro.navigateTo({ url: '/pages/webview/xieyi' });
   }
 
   onMessageInput = (e) => {

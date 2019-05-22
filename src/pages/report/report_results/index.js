@@ -381,12 +381,18 @@ class  Inc extends Component{
                   <View>
                   {lawDataList&&lawDataList.map((item,index)=>(
                     <View className='table_text'>
-                      <View className='text'>1</View>
-                      <View className='text'>2017-03-31</View>
-                      <View className='text'>裁判文书</View>
+                      <View className='text'>{index+1}</View>
+                      <View className='text'>{item.sort_time_string}</View>
                       <View className='text'>
-                        法院：上海市浦东新区人民法院
-                        法案案号：(2017)泸0115民初***9号
+                        {item.data_type == "judgment"?'裁判文书':null}
+                        {item.data_type == "dishonest_notice"?'失信公告':null}
+                        {item.data_type == "court_session_notice"?"开庭公告":null}
+                        {item.data_type == "court_notice"?"法院公告":null}
+                        {item.data_type == "exec_notice"?"执行公告":null}
+                        {item.data_type == "exposure"?"曝光台":null}
+                        {item.data_type == "law_case"?"案件流程信息":null}</View>
+                      <View className='text'>
+                        {item.content}
                       </View>
                     </View>
                   ))}

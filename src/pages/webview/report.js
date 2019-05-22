@@ -6,7 +6,6 @@ class Report extends Component {
   config = {
     navigationBarTitleText: '洞察报告',
   };
-  s
   componentDidMount () {
     if (Taro.getEnv() === Taro.ENV_TYPE.ALIPAY){
       my.setStorage({

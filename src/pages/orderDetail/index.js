@@ -325,6 +325,12 @@ class Orderdetail extends Component {
                           <View className='left-text'>{yqType[Number(data.type)]}</View><View className='right-text'>￥{data.amount ? data.amount.toFixed(2) : '0.00'}</View>
                         </View>
                       )}
+                      {/*{cashes&&cashes.userViolationRecords&&cashes.userViolationRecords.length>0?*/}
+                      {/*  (cashes.userViolationRecords&&cashes.userViolationRecords.map(data =>*/}
+                      {/*  <View className='gray-info margin-bottom-30'>*/}
+                      {/*    <View className='left-text'>{yqType[Number(data.type)]}</View><View className='right-text'>￥{data.amount ? data.amount.toFixed(2) : '0.00'}</View>*/}
+                      {/*  </View>*/}
+                      {/*)):null}*/}
                     </View>
                   )}
                 </View>

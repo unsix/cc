@@ -52,7 +52,7 @@ export default (options = { method: 'GET', data: {} }) => {
   if(options.test == 'report'){
     requesturl = reportUrl+options.url   //本地联调
   }
-  else if(options.test == 'text'){
+  else if(options.test == 'Detail'){
     requesturl = 'http://192.168.132.103:8071/'+options.url
   }
   else if(options.test == 'member'){

@@ -53,6 +53,7 @@ class App extends Component {
       'pages/report/report_case/index',
       'pages/report/report_results/index',
       'pages/member/index',
+      'pages/webview/xieyi'
     ],
     window: {
       titleBarColor: '#fff',
