@@ -4,7 +4,7 @@ import { WebView } from '@tarojs/components'
 
 class Ment extends Component {
   config = {
-    navigationBarTitleText: '收藏有礼',
+    navigationBarTitleText: '租赁协议',
   };
   componentDidMount () {
   }

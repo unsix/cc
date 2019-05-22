@@ -1,8 +1,10 @@
 @import "../../styles/mixin";
 
 .container_member{
+  background: #F2F2F2;
+  padding-bottom: 200px;
   .header{
-    @include wh(100%, 730px);
+    @include wh(100%, 545px);
     background: #fff url(../../../images/member/bg.png) no-repeat;
     background-size: 100%;
     position: relative;
@@ -48,6 +50,41 @@
         font-size: 22px;
         color: #898E93;
       }
+      .mem_time{
+        font-size: 24px;
+        color: #FC766B;
+      }
+    }
+    .make_times{
+      @include wh(696px,142px);
+      margin: 25px 0 0 30px;
+      box-shadow: 0 0 4px 2px rgba(230,222,222,0.50);
+      border-radius: 8px;
+      border: 1px solid #fff;
+      background-color: #fff;
+      .title{
+        font-size: 22px;
+        color: #FC766B;
+        margin: 25px 0 0 35px;
+      }
+      .member_t{
+        display: flex;
+        justify-content: center;
+        margin: 0 0 0 20px;
+        .img{
+          margin: 40px 0 0 20px ;
+          width: 400px;
+          height: 20px;
+        }
+        .times{
+          margin: 5px 0 0 50px;
+          font-size: 22px;
+          color: #FC766B;
+          .num{
+            margin: 8px 0 0 50px;
+          }
+        }
+      }
     }
     .quota{
       margin-top: 30px;
@@ -62,9 +99,64 @@
       }
     }
   }
+  //权益
+  .member_equity{
+    margin: 10px 0 0 0;
+    @include wh(100%,auto);
+    .img{
+      @include wh(100%,500px);
+    }
+    .member_price{
+      width:100%;
+      .img_price{
+
+      }
+    }
+  }
+  //商城
+  .member_shop{
+    margin-top: 100px;
+    width: 100%;
+    .banner_shop{
+     width: 100%;
+      text-align: center;
+      margin: 20px 0;
+      .img{
+        @include wh(700px,150px);
+      }
+    }
+    .goods_img{
+      @include fj(space-bewteen);
+      justify-content: center;
+      .img{
+        @include wh(337px,429px);
+        margin: 0 15px;
+      }
+    }
+    .bottom_img{
+      margin-top: 100px;
+      .img{
+        @include wh(100%,97px)
+      }
+    }
+    .title{
+      height: 80px;
+      line-height: 80px;
+      background-color: #fff;
+      .shop_text{
+        text-align: center;
+        font-size: 26px;
+        color: #333;
+        font-weight: bold;
+        letter-spacing: 1px;
+      }
+    }
+  }
   .pay_member{
     @include wh(100%,110px);
-    margin: 0 25px 0 25px;
+    background-color: #fff;
+    margin: 0 25px 0 0;
+    padding-left: 25px;
     box-shadow: inset 0 1px 0 0 #E4E4E4;
     display: flex;
     align-items: center;

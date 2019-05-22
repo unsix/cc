@@ -13,6 +13,7 @@ export const userConfirmOrder = data => Request({
   method: 'POST',
   data,
   contentType: 'application/json',
+  test:'userConfirmOrder',
 });
 
 export const exemptLogin = data =>
