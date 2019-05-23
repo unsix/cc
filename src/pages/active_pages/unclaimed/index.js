@@ -3,7 +3,6 @@ import { View ,Swiper, SwiperItem, Image,Form, Button} from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import Back from '../../../images/active_page/back.png'
 import Tosee from '../../../images/active_page/tosee.png'
-import Banner from  '../../../images/active_page/report_banner_1.png'
 import './index.scss';
 @connect(({ unclaimed ,loading}) => ({
   ...unclaimed,
