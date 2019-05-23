@@ -49,6 +49,12 @@ class Member extends Component{
       isOpened:true
     })
   }
+  //确定
+  confirm = () => {
+    this.setState({
+      isOpened:false
+    })
+  }
   //跳转报告
   toReport = () => {
     Taro.navigateTo({
