@@ -1,5 +1,6 @@
 import Taro, { Component} from '@tarojs/taro'
-import { View, Image, Form,Swiper, SwiperItem, Button} from '@tarojs/components'
+import { View, Image, Form, Swiper, SwiperItem, Button, Text } from '@tarojs/components'
+import { AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui';
 import { connect } from '@tarojs/redux'
 import './index.scss'
 //img
@@ -16,6 +17,9 @@ import EquPrice from '../../images/member/member_price.png'
 import MemTip from '../../images/member/mem_tips.png'
 import BannerOne from '../../images/member/banner_1.png'
 import More from '../../images/member/member_more.png'
+import Com from '../../images/report/comprehensive.png'
+import Erro from '../../images/report/erro.png'
+import Grade from '../../images/report/grade.png'
 @connect(({ mine, member}) => ({
   ...mine,
   ...member
@@ -24,7 +28,9 @@ class Member extends Component{
   config = {
     navigationBarTitleText: '会员',
   };
-
+  state = {
+    isOpened:false
+  }
   componentDidMount () {
     const { dispatch } = this.props
       dispatch({
@@ -36,6 +42,12 @@ class Member extends Component{
       return true;
     }
     return true;
+  }
+  //弹窗
+  details = () => {
+    this.setState({
+      isOpened:true
+    })
   }
   //跳转报告
   toReport = () => {
@@ -62,7 +74,7 @@ class Member extends Component{
   render () {
     // console.log(this.props,'99999999999999')
     const { nickName,avatar,memberIfn} = this.props
-
+    const { isOpened } = this.state
     return(
       <View className='container container_member'>
         <View className='header'>
@@ -192,18 +204,18 @@ class Member extends Component{
               </View>
               <View>
                 <View className='goods_img'>
-                  <View >
+                  <View onClick={this.details}>
                     <Image className='img' src='http://oss.huizustore.com/7f9f2fadb8d94e08abfcca60952c8089.png' />
                   </View>
-                  <View>
+                  <View onClick={this.details}>
                     <Image className='img' src='http://oss.huizustore.com/fd68ddd6b81d47f2867311f25fc72a0a.png' />
                   </View>
                 </View>
                 <View className='goods_img'>
-                  <View >
-                    <Image className='img' src='http://oss.huizustore.com/85b6f7558b104a1596d63b8b3b7962bc.png' />
+                  <View onClick={this.details} >
+                    <Image  className='img' src='http://oss.huizustore.com/85b6f7558b104a1596d63b8b3b7962bc.png' />
                   </View>
-                  <View>
+                  <View onClick={this.details} >
                     <Image className='img' src='http://oss.huizustore.com/a68d130d99784f1188ca7f6c9b558b33.png' />
                   </View>
                 </View>
@@ -213,28 +225,28 @@ class Member extends Component{
               <View className='banner_shop'>
                 <Image className='img' src='http://oss.huizustore.com/d2f90b7674474cf4bd36cd208ed75672.png' />
               </View>
-              <View>
+              <View >
                 <View className='goods_img'>
-                  <View >
+                  <View onClick={this.details} >
                     <Image className='img' src='http://oss.huizustore.com/c14d7f93c63d4768a0997e21c9342a79.png' />
                   </View>
-                  <View>
+                  <View onClick={this.details} >
                     <Image className='img' src='http://oss.huizustore.com/ea994efa3c784cf2a6f38626b9625941.png' />
                   </View>
                 </View>
                 <View className='goods_img'>
-                  <View >
+                  <View onClick={this.details} >
                     <Image className='img' src='http://oss.huizustore.com/9b9549bbd84c4dee9c28a6ff2e9ec53d.png' />
                   </View>
-                  <View>
+                  <View onClick={this.details}>
                     <Image className='img' src='http://oss.huizustore.com/321d7a2e244d4b3483537433d10774a5.png' />
                   </View>
                 </View>
                 <View className='goods_img'>
-                  <View >
+                  <View onClick={this.details} >
                     <Image className='img' src='http://oss.huizustore.com/10888dc49a2c4cd6a04010d0b5a53283.png' />
                   </View>
-                  <View>
+                  <View onClick={this.details}>
                     <Image className='img' src='http://oss.huizustore.com/e8977a968ac94e688208771eca294322.png' />
                   </View>
                 </View>
@@ -246,26 +258,26 @@ class Member extends Component{
               </View>
               <View>
                 <View className='goods_img'>
-                  <View >
+                  <View onClick={this.details} >
                     <Image className='img' src='http://oss.huizustore.com/9324063c36e44f79957abf50eea8b280.png' />
                   </View>
-                  <View>
+                  <View onClick={this.details} >
                     <Image className='img' src='http://oss.huizustore.com/8835b887d7c3453f939741a1fb364b7c.png' />
                   </View>
                 </View>
                 <View className='goods_img'>
-                  <View >
+                  <View onClick={this.details} >
                     <Image className='img' src='http://oss.huizustore.com/a046a8b05224492f88d777224869008e.png' />
                   </View>
-                  <View>
+                  <View onClick={this.details}>
                     <Image className='img' src='http://oss.huizustore.com/2acb8a46a7f94479b97fa5b868602544.png' />
                   </View>
                 </View>
                 <View className='goods_img'>
-                  <View >
+                  <View onClick={this.details} >
                     <Image className='img' src='http://oss.huizustore.com/ddeed113e5234fcdb7200e4b3d7750cd.png' />
                   </View>
-                  <View>
+                  <View onClick={this.details} >
                     <Image className='img' src='http://oss.huizustore.com/94fd0ee2f6a44f61bb2521e7a1b89b1a.png' />
                   </View>
                 </View>
@@ -277,26 +289,26 @@ class Member extends Component{
               </View>
               <View>
                 <View className='goods_img'>
-                  <View >
+                  <View onClick={this.details}>
                     <Image className='img' src='http://oss.huizustore.com/22bc8e4effa2419486ebae4cc3da0628.png' />
                   </View>
-                  <View>
+                  <View onClick={this.details}>
                     <Image className='img' src='http://oss.huizustore.com/b71680e8adca4758bf9d63638eb5bd65.png' />
                   </View>
                 </View>
                 <View className='goods_img'>
-                  <View >
+                  <View onClick={this.details} >
                     <Image className='img' src='http://oss.huizustore.com/3a356ac257e74e11b1f8f37394d260c0.png' />
                   </View>
-                  <View>
+                  <View onClick={this.details} >
                     <Image className='img' src='http://oss.huizustore.com/735b3aef70ca4b6d811e07202794ae43.png' />
                   </View>
                 </View>
                 <View className='goods_img'>
-                  <View >
+                  <View onClick={this.details} >
                     <Image className='img' src='http://oss.huizustore.com/c49d810d0fea4d7f9b13407bcd6ca5f7.png' />
                   </View>
-                  <View>
+                  <View onClick={this.details} >
                     <Image className='img' src='http://oss.huizustore.com/6d3fe7b4a7304494955966f6602adadd.png' />
                   </View>
                 </View>
@@ -308,18 +320,18 @@ class Member extends Component{
               </View>
               <View>
                 <View className='goods_img'>
-                  <View >
+                  <View onClick={this.details} >
                     <Image className='img' src='http://oss.huizustore.com/1ff9b6ab4b92445ab38d70a36a0539a0.png' />
                   </View>
-                  <View>
+                  <View onClick={this.details}>
                     <Image className='img' src='http://oss.huizustore.com/550e61c451f44c1baa889eebe98b3d12.png' />
                   </View>
                 </View>
                 <View className='goods_img'>
-                  <View >
+                  <View onClick={this.details} >
                     <Image className='img' src='http://oss.huizustore.com/f65c11e1a24c4b19af402ebd14c11775.png' />
                   </View>
-                  <View>
+                  <View onClick={this.details}>
                     <Image className='img' src='http://oss.huizustore.com/db784657431f427bac927fa5bfcf774a.png'/>
                   </View>
                 </View>
@@ -348,6 +360,26 @@ class Member extends Component{
           :
           null
         }
+        <View className='query_modal'>
+          <AtModal isOpened={isOpened}>
+            <AtModalContent>
+              <View className='title'>
+                温馨提示
+              </View>
+              <View className='online titles'>
+                将于
+                <Text className='time'>
+                  2019.6.6
+                </Text>
+              </View>
+              <View className='titles'>会员商品正式上架</View>
+              <View className='titles'>敬请期待</View>
+              <View className='con'>
+                <Button className='confirm' onClick={this.confirm}>确定</Button>
+              </View>
+            </AtModalContent>
+          </AtModal>
+        </View>
       </View>
     )
   }

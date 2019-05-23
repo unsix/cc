@@ -55,7 +55,7 @@ class Mine extends Component {
     Taro.navigateTo({ url: `/pages/productDetail/index?itemId=${itemId}` });
   }
 
-  //开通会员
+  //会员
   member = () => {
     Taro.navigateTo({
       url: '/pages/member/index'

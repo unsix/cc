@@ -285,7 +285,12 @@ class Productdetail extends Component {
     // console.log(num)
     my.makePhoneCall({ number: num });
   }
-
+  //会员
+    member = () => {
+      Taro.navigateTo({
+        url: '/pages/member/index'
+      })
+  }
 
   onShareAppMessage() {
     const { detail } = this.props;
@@ -366,6 +371,21 @@ class Productdetail extends Component {
             </View>
           </View>
         </View>
+        <View className='member_discount'>
+          <View className='discount'>
+            <View className='dis_text'>
+              ¥{currentSku.currentCyclePrice.price}元/天
+              <Text className='dis_shop'>会员商品</Text>
+            </View>
+            <View className='go_text' onClick={this.member}>
+              <View className='text'>
+                <View>立即</View>
+                <View>进入</View>
+              </View>
+              <View className='ff'>></View>
+            </View>
+          </View>
+        </View>
         <View className='integral'>
           <View className='grade'>
             600分
@@ -415,6 +435,7 @@ class Productdetail extends Component {
           <View className='spot' />
         </View>
         <View className='swiper-info'>
+
           {/* <swiper
               indicator-dots
               indicator-active-color='#DBDBDB'
@@ -425,8 +446,12 @@ class Productdetail extends Component {
                   </View>
                 </swiper-item>
             </swiper> */}
-          <View className='item' onClick={this.onEnvelope.bind()}>
-            <Image className='img' mode='aspectFit' src='http://oss.huizustore.com/79249b80547a4d9e9a8519ec47d420cf.png' />
+          {/*<View className='item' onClick={this.onEnvelope.bind()}>*/}
+          {/*  <Image className='img' mode='aspectFit' src='http://oss.huizustore.com/79249b80547a4d9e9a8519ec47d420cf.png' />*/}
+          {/*</View>*/}
+          <View className='item' onClick={this.member}>
+            {/*<Image className='img' mode='aspectFit' src='http://oss.huizustore.com/79249b80547a4d9e9a8519ec47d420cf.png' />*/}
+            <Image className='img' mode='aspectFit' src='http://oss.huizustore.com/22e920340b2d498db33318219424cc1d.png' />
           </View>
         </View>
         <View className='store-info' onClick={this.goInmeddiate.bind()}>
@@ -557,42 +582,6 @@ class Productdetail extends Component {
               <View className='service-popup-content-item' >
                 <View className='service-popup-content-item-type'>芝麻信用免押金</View>
                 <View>根据用户芝麻信用情况给予押金减免</View>
-              </View>
-              {!!detail.serviceMarks && !!detail.serviceMarks.length && detail.serviceMarks.map(service => (
-                <View className='service-popup-content-item' key={service.id}>
-                  <View className='service-popup-content-item-type'>{serviceMarkList[service.type]}</View>
-                  <View>{service.description}</View>
-                </View>
-              ))}
-            </View>
-            <View className='service-popup-content'>
-              <View className='service-popup-content-item' >
-                <View className='service-po·  pup-content-item-type'>正品保障</View>
-                <View>商品支持正品保障服务</View>
-              </View>
-              {!!detail.serviceMarks && !!detail.serviceMarks.length && detail.serviceMarks.map(service => (
-                <View className='service-popup-content-item' key={service.id}>
-                  <View className='service-popup-content-item-type'>{serviceMarkList[service.type]}</View>
-                  <View>{service.description}</View>
-                </View>
-              ))}
-            </View>
-            <View className='service-popup-content'>
-              <View className='service-popup-content-item' >
-                <View className='service-po·  pup-content-item-type'>7天无理由退货</View>
-                <View>消费者在满足7天无理由退换货申请条件下的前提下，可以提出"7天无理由退换货"的申请</View>
-              </View>
-              {!!detail.serviceMarks && !!detail.serviceMarks.length && detail.serviceMarks.map(service => (
-                <View className='service-popup-content-item' key={service.id}>
-                  <View className='service-popup-content-item-type'>{serviceMarkList[service.type]}</View>
-                  <View>{service.description}</View>
-                </View>
-              ))}
-            </View>
-            <View className='service-popup-content'>
-              <View className='service-popup-content-item' >
-                <View className='service-po·  pup-content-item-type'>免修服务</View>
-                <View>质量问题，不为修，直接换新</View>
               </View>
               {!!detail.serviceMarks && !!detail.serviceMarks.length && detail.serviceMarks.map(service => (
                 <View className='service-popup-content-item' key={service.id}>

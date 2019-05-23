@@ -34,3 +34,9 @@ export const conuponSearch = data => Request({
   method: 'GET',
   data,
 });
+
+//折扣
+export const getUserMembersDisCount = () => Request({
+  url: 'aliPay/user/members/getUserMembersDisCount',
+  method: 'GET',
+});

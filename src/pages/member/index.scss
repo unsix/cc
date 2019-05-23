@@ -252,3 +252,52 @@
     }
   }
 }
+
+.query_modal{
+  .at-modal__container{
+    @include wh(520px,421px);
+    background: #FFFFFF;
+    box-shadow: 0 0 10px 4px rgba(176,176,176,0.50);
+    border-radius: 22px;
+    border: none;
+    text-align: center;
+    font-size: 32px;
+    color: #333333;
+    .title{
+      font-weight: bold;
+    }
+    .titles{
+      line-height: 60px;
+    }
+    .online{
+      margin-top: 70px;
+      .time{
+        font-size: 34px;
+        color: #FC766B;
+      }
+    }
+    .con{
+      width: 100%;
+    }
+    .confirm{
+      margin: 0 auto;
+      @include wh(300px,76px);
+      background: #FC766B;
+      border-radius: 40px;
+      color: #fff;
+      line-height: 76px;
+    }
+  }
+  //AtModalAction改变flex布局
+  .at-modal__footer .at-modal__action{
+    display:block;
+  }
+  //modal header边框
+  .at-modal__header::after{
+    border: none;
+  }
+  //footer边框
+  .at-modal__footer::before{
+    border:none
+  }
+}

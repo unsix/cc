@@ -63,14 +63,14 @@ export default {
       if (res) {
         Taro.navigateTo({ url: '/pages/active_pages/unclaimed/index' });
       }
-    }
+    },
+
   },
 
   reducers: {
     save(state, { payload }) {
       return { ...state, ...payload };
     },
-
     saveDetail(state, { payload }) {
       const { minAdvancedDays, maxAdvancedDays } = payload;
       let startTime = new Date().getTime();
