@@ -5,7 +5,7 @@ import { AtIcon, AtBadge } from 'taro-ui'
 import Card from './components/card/index';
 import menuList from './menu.js';
 import './index.scss';
-
+import MemberCard from '../../images/mine/member_card.png'
 @connect(({ mine, loading }) => ({
   ...mine,
   loading: loading.models.mine,
@@ -57,7 +57,7 @@ class Mine extends Component {
 
   //开通会员
   member = () => {
-    Taro.redirectTo({
+    Taro.navigateTo({
       url: '/pages/member/index'
     })
   }
@@ -153,11 +153,12 @@ class Mine extends Component {
             )}
           </View>
         </View>
-
         <View className='mine-page-bottom'>
           <Text className='text'> - 不要扯了，已经到底了 -  </Text>
         </View>
-
+        <View className='member_card' onClick={this.member}>
+          <Image  className='img' src={MemberCard} />
+        </View>
       </View>
     )
   }

@@ -1,15 +1,21 @@
 import Taro, { Component} from '@tarojs/taro'
-import { View,Image,Form, Button} from '@tarojs/components'
+import { View, Image, Form,Swiper, SwiperItem, Button} from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { formatStrDate } from '../../utils/utils';
 import './index.scss'
 //img
 import VipYes from  '../../images/member/vip-yes.png'
 import VipNo from  '../../images/member/vip-no.png'
-import Tone from '../../images/member/5555.png'
+import Tz from '../../images/member/0000.png'
+import Tone from '../../images/member/1111.png'
+import Ttwo from '../../images/member/2222.png'
+import Tthree from '../../images/member/3333.png'
+import Tfour from '../../images/member/4444.png'
+import Tfive from '../../images/member/5555.png'
 import Equity from '../../images/member/equity.png'
 import EquPrice from '../../images/member/member_price.png'
 import MemTip from '../../images/member/mem_tips.png'
+import BannerOne from '../../images/member/banner_1.png'
+import More from '../../images/member/member_more.png'
 @connect(({ mine, member}) => ({
   ...mine,
   ...member
@@ -25,6 +31,18 @@ class Member extends Component{
         type:'member/getMember'
       })
   }
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.memberIfn.userMembers !== nextProps.memberIfn.userMembers) {
+      return true;
+    }
+    return true;
+  }
+  //跳转报告
+  toReport = () => {
+    Taro.navigateTo({
+      url:'/pages/report/home/index'
+    })
+  }
   //支付
   memberPay = () => {
     const { dispatch } = this.props
@@ -32,6 +50,11 @@ class Member extends Component{
         type:'member/userMember',
         payload:{
           type: '1'
+        },
+        callback:()=>{
+          dispatch({
+            type:'member/getMember'
+          })
         }
       })
   }
@@ -44,7 +67,6 @@ class Member extends Component{
       <View className='container container_member'>
         <View className='header'>
           <View className='due_time'>
-            至2019 01 25
           </View>
           <View className='avatar'>
             <View className='box'>
@@ -55,7 +77,7 @@ class Member extends Component{
                 {nickName}
               </View>
               <View className='icon'>
-                 <Image className='icon_img' src={memberIfn&&memberIfn.length!==0?VipYes:VipNo} />
+                 <Image className='icon_img' src={memberIfn&&memberIfn.userMembers && !!memberIfn.userMembers.length?VipYes:VipNo} />
               </View>
             </View>
             {memberIfn&&memberIfn.userMembers && memberIfn.userMembers.length === 0?
@@ -69,28 +91,36 @@ class Member extends Component{
             {/*      会员有效期至`${formatStrDate(memberIfn.userMembers[0].dueTime, 'yyyy.MM.dd')}`*/}
             {/*    </View>):null*/}
             {/*}*/}
-            <View  className='mem_time'>
-              会员有效期至2019-01-25
-            </View>
+            {memberIfn&&memberIfn.userMembers && !!memberIfn.userMembers.length?
+              ( <View  className='mem_time'>
+                会员有效期至2019-01-25
+              </View>
+              ):null
+            }
+
           </View>
-          {/*<View className='quota'>*/}
-          {/*  <View className='quota_text'>*/}
-          {/*    <Text>免押额度增幅</Text>*/}
-          {/*    <Text className='number' >+500</Text>*/}
-          {/*  </View>*/}
-          {/*  <View className='quota_text'>*/}
-          {/*    <Text>剩余使用次数</Text>*/}
-          {/*    <Text className='number' >8次</Text>*/}
-          {/*  </View>*/}
-          {/*</View>*/}
-          {/*<View className='tips'>*/}
-          {/*  <Image className='img' />*/}
-          {/*</View>*/}
           <View className='make_times'>
             <View className='title'>会员商品任意用</View>
             <View className='member_t'>
               <View className='times_img'>
-                <Image className='img' src={Tone} />
+                {memberIfn&&memberIfn.totalNumber&&memberIfn.totalNumber===0?
+                  (<Image className='img' src={Tz} />):null
+                }
+                {memberIfn&&memberIfn.totalNumber&&memberIfn.totalNumber===1?
+                  (<Image className='img' src={Tone} />):null
+                }
+                {memberIfn&&memberIfn.totalNumber&&memberIfn.totalNumber===2?
+                  (<Image className='img' src={Ttwo} />):null
+                }
+                {memberIfn&&memberIfn.totalNumber&&memberIfn.totalNumber===3?
+                  (<Image className='img' src={Tthree} />):null
+                }
+                {memberIfn&&memberIfn.totalNumber&&memberIfn.totalNumber===4?
+                  (<Image className='img' src={Tfour} />):null
+                }
+                {memberIfn&&memberIfn.totalNumber&&memberIfn.totalNumber===5?
+                  (<Image className='img' src={Tfive} />):null
+                }
               </View>
               <View className='times'>
                 <View>剩余使用次数</View>
@@ -123,12 +153,37 @@ class Member extends Component{
             {/*<Image className="img_money" src={} />*/}
           </View>
         </View>
-        <View>
-
+        <View className='member_banner'>
+          <Swiper
+            className="swiper-container"
+            circular
+            indicatorDots
+            indicatorColor='#999'
+            indicatorActiveColor='#bf708f'
+            autoplay
+          >
+            {/*{ banner.map((item, index) => (*/}
+            {/*<SwiperItem key={banner.id}>*/}
+            {/*  <View className='banner' onClick={this.onGoTo.bind(this,banner.jumpUrl)}>*/}
+            {/*    <Image className='swiper-img' mode='aspectFit' src={banner.imgUrl} />*/}
+            {/*  </View>*/}
+            {/*</SwiperItem>*/}
+            {/*))}*/}
+            <SwiperItem key='1' >
+              <View className='banner'>
+                <Image className="swiper-img" mode="widthFix" src={BannerOne} onClick={this.toReport}></Image>
+              </View>
+            </SwiperItem>
+          </Swiper>
         </View>
         <View className='member_shop'>
-          <View className='title'>
-            <View className='shop_text'>会员商城</View>
+          <View className='top'>
+            <View className='title'>
+              <View className='shop_text'>会员商城</View>
+              <View>
+                <Image className='img' src={More} />
+              </View>
+            </View>
           </View>
           <View>
             <View>
@@ -275,20 +330,24 @@ class Member extends Component{
             <Image className='img' src={require('../../images/member/bottom_img.png')} />
           </View>
         </View>
-        <View className='pay_member'>
-          <View className='subtotal'>
-            小计
-          </View>
-          <View className='price'>
-            <Text className='bol'>¥</Text>399
-            <View className='agreement'>
-              开通即同意《惠租会员协议》
+        {memberIfn&&memberIfn.userMembers && memberIfn.userMembers.length === 0?
+          <View className='pay_member'>
+            <View className='subtotal'>
+              小计
+            </View>
+            <View className='price'>
+              <Text className='bol'>¥</Text>399
+              <View className='agreement'>
+                开通即同意《惠租会员协议》
+              </View>
+            </View>
+            <View className='pay'>
+              <Button onClick={this.memberPay} className='pay_btn'>去支付</Button>
             </View>
           </View>
-          <View className='pay'>
-            <Button onClick={this.memberPay} className='pay_btn'>去支付</Button>
-          </View>
-        </View>
+          :
+          null
+        }
       </View>
     )
   }

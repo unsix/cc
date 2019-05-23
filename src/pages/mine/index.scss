@@ -30,6 +30,7 @@ page {
     }
   }
   &-order {
+    z-index: 2;
     padding: 0 30px;
     &-info {
       position: relative;
@@ -138,5 +139,15 @@ page {
       color: #909090;
       text-align: center;
     }
+  }
+}
+
+.member_card{
+  position: absolute;
+  top:106px;
+  right: 125px;
+  .img{
+    width: 193px;
+    height: 110px;
   }
 }

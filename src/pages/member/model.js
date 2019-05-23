@@ -12,10 +12,15 @@ export default {
     * getMember({ payload ,callback}, { call, put }) {
       const res = yield call(memberApi.getUserMembers, { ...payload, uid: getUid() });
       // console.log(getUid(),'2312312312312321')
-      yield put({
-        type: 'memberInf',
-        payload: res.data,
-      });
+      if(res){
+        yield put({
+          type: 'memberInf',
+          payload: res.data,
+        });
+        if(callback){
+          callback(res.data)
+        }
+      }
     },
     * userMember({ payload ,callback}, { call, put }) {
       const res = yield call(memberApi.userPayMembers, { ...payload, uid: getUid() });
@@ -55,6 +60,9 @@ export default {
           title: res.msg,
           icon: 'none',
         });
+        if(callback){
+          callback(res.data)
+        }
       }
     },
   },

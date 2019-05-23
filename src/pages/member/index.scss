@@ -151,16 +151,24 @@
       }
     }
   }
+  //banner
+  .member_banner{
+    margin-top: 20px;
+    .swiper-img,img {
+      height: 128px!important;
+      width: 100%;
+    }
+  }
   //商城
   .member_shop{
-    margin-top: 100px;
+    margin-top: 20px;
     width: 100%;
     .banner_shop{
      width: 100%;
       text-align: center;
       margin: 20px 0;
       .img{
-        @include wh(700px,150px);
+        @include wh(700px,174px);
       }
     }
     .goods_img{
@@ -168,7 +176,7 @@
       justify-content: center;
       .img{
         @include wh(337px,429px);
-        margin: 0 15px;
+        margin: 15px 15px;
       }
     }
     .bottom_img{
@@ -177,16 +185,32 @@
         @include wh(100%,97px)
       }
     }
-    .title{
-      height: 80px;
-      line-height: 80px;
+    .top{
+      width: 100%;
       background-color: #fff;
-      .shop_text{
-        text-align: center;
-        font-size: 26px;
-        color: #333;
-        font-weight: bold;
-        letter-spacing: 1px;
+      height: 80px;
+      .title{
+        width:708px;
+        margin: 0 auto;
+        background: #FFFFFF;
+        box-shadow: 0 3px 9px 2px rgba(202,182,182,0.50);
+        border-radius: 12px;
+        height: 80px;
+        line-height: 80px;
+        @include fcc(center);
+        position: relative;
+        .img{
+          @include wh(96px,33px);
+          position:absolute;
+          right: 10px;
+        }
+        .shop_text {
+          text-align: center;
+          font-size: 26px;
+          color: #333;
+          font-weight: bold;
+          letter-spacing: 1px;
+        }
       }
     }
   }
