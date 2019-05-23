@@ -101,10 +101,21 @@
   }
   //权益
   .member_equity{
-    margin: 10px 0 0 0;
-    @include wh(100%,auto);
-    .img{
-      @include wh(100%,500px);
+    margin:20px 0 0 0;
+    background-color: #fff;
+    @include wh(100%,520px);
+    text-align: center;
+    border: 1px solid #fff;
+    .equity_text{
+       margin: 35px 0 35px 0;
+       font-weight: bold;
+     }
+    .img_eq{
+      @include wh(600px,160px);
+    }
+    .img_price{
+      margin: 30px 0 0 0;
+      @include wh(630px,150px);
     }
     .member_price{
       width:100%;

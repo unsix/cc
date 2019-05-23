@@ -83,10 +83,14 @@ export default {
       if (maxAdvancedDays && maxAdvancedDays > minAdvancedDays) {
         endDay = maxAdvancedDays - minAdvancedDays;
       }
-      for (let i = 1; i <= endDay; i += 1) {
-        advancedDays.push(startTime + i * 24 * 3600 * 1000);
+      if(minAdvancedDays === maxAdvancedDays){
+        // advancedDays.push(startTime  * 24 * 3600 * 1000);
       }
-
+      else {
+        for (let i = 1; i <= endDay; i += 1) {
+          advancedDays.push(startTime + i * 24 * 3600 * 1000);
+        }
+      }
       let saveServers = [];
       if (payload.additionalServices && payload.additionalServices.length) {
         payload.additionalServices.forEach(ser => {

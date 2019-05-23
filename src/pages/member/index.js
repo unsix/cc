@@ -8,7 +8,7 @@ import VipYes from  '../../images/member/vip-yes.png'
 import VipNo from  '../../images/member/vip-no.png'
 import Tone from '../../images/member/5555.png'
 import Equity from '../../images/member/equity.png'
-import MemberPrice from '../../images/member/member_price.png'
+import EquPrice from '../../images/member/member_price.png'
 @connect(({ mine, member}) => ({
   ...mine,
   ...member
@@ -99,7 +99,12 @@ class Member extends Component{
           </View>
         </View>
         <View className='member_equity'>
-          <Image className='img' src={Equity} />
+          <View className='equity_text'>我的会员权益</View>
+          <Image className='img_eq' src={Equity} />
+          <View>
+            <Image className='img_price' src={EquPrice} />
+            <View className=''></View>
+          </View>
           {/*<View className='member_price'>*/}
           {/*  <Image className='img_price' src={MemberPrice} />*/}
           {/*</View>*/}

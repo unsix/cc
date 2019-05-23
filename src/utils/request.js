@@ -49,16 +49,13 @@ export default (options = { method: 'GET', data: {} }) => {
     }
   }
   let requesturl;
-  if(options.test == 'report'){
+  if(options.test === 'report'){
     requesturl = reportUrl+options.url   //本地联调
   }
-  else if(options.test == 'Detail'){
+  else if(options.test === 'Detail'){
     requesturl = 'http://192.168.132.103:8071/'+options.url
   }
-  else if(options.test == 'member'){
-    requesturl = 'http://192.168.132.103:8071/'+options.url
-  }
-  else if(options.test == 'userConfirmOrder'){
+  else if(options.test === 'member'){
     requesturl = 'http://192.168.132.103:8071/'+options.url
   }
   else{
