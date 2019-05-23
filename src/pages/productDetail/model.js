@@ -100,14 +100,18 @@ export default {
           return b.isMain - a.isMain;
         });
       }
-      if (payload.skus[0] && payload.skus[0].length) {
-        payload.skus[0].cyclePrices.sort((a, b) => {
-          return a.days - b.days;
-        })
+      
+      let cyclePricesArr = [...payload.skus[0].cyclePrices];
+      if (cyclePricesArr.length) {
+        cyclePricesArr = cyclePricesArr.filter(info => info.days >= payload.minRentCycle && info.days <= payload.maxRentCycle);
       }
-      const cyclePricesArr = [...payload.skus[0].cyclePrices];
-      cyclePricesArr.length && cyclePricesArr.sort((a,b)=>{
-        return a.days - b.days;
+      cyclePricesArr.length && cyclePricesArr.sort((a, b) => {
+        if(a.price === b.price){
+           return a.days - b.days;
+        }else{
+          return a.price - b.price;
+        }
+        // return a.price - b.price;
       });
       return {
         ...state,
