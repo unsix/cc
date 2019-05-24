@@ -133,10 +133,10 @@ class Mine extends Component {
             <Text className='text'>收货地址</Text>
             <AtIcon value='chevron-right' size='18' color='#cccccc' />
           </View>
-          <View onClick={this.member} className='mine-page-order-other'>
-            <Text className='text'>开通会员</Text>
-            <AtIcon value='chevron-right' size='18' color='#cccccc' />
-          </View>
+          {/*<View onClick={this.member} className='mine-page-order-other'>*/}
+          {/*  <Text className='text'>开通会员</Text>*/}
+          {/*  <AtIcon value='chevron-right' size='18' color='#cccccc' />*/}
+          {/*</View>*/}
         </View>
         <View className='mine-page-recommend'>
           <View className='header'>

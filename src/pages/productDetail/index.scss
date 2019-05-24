@@ -93,7 +93,8 @@ page {
       .dis_text{
         display: flex;
         align-items: center;
-        padding-left: 50px;
+        padding-left: 15px;
+        letter-spacing: 1px;
         @include wh(564px,76px);
         background-color: #FFB6B9;
         .dis_shop{
@@ -105,7 +106,6 @@ page {
         @include wh(186px,76px);
         background-color: #FAE3D9;
         .text{
-          font-size: 24px;
         }
         .ff{
           padding-left: 20px;

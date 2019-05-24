@@ -1,9 +1,14 @@
 @import "../../styles/mixin";
+page{
+  background-color: #f7f7f7;
 
+}
 .container_member{
+  @include wh(750px,100%);
   background: #F2F2F2;
   padding-bottom: 80px;
   .header{
+    box-sizing: border-box;
     @include wh(100%, 545px);
     background: #fff url(../../../images/member/bg.png) no-repeat;
     background-size: 100%;
@@ -101,6 +106,7 @@
   }
   //提示
   .tips{
+    box-sizing: border-box;
     @include wh(100%,260px);
     margin-top: 20px;
     background-color: #fff;
@@ -121,7 +127,8 @@
   .member_equity{
     margin:20px 0 0 0;
     background-color: #fff;
-    @include wh(100%,475px);
+    @include wh(100%,485px);
+    box-sizing: border-box;
     text-align: center;
     border: 1px solid #fff;
     position: relative;
@@ -153,6 +160,7 @@
   }
   //banner
   .member_banner{
+    box-sizing: border-box;
     margin-top: 20px;
     .swiper-img,img {
       height: 128px!important;
@@ -161,12 +169,13 @@
   }
   //商城
   .member_shop{
+    box-sizing: border-box;
     margin-top: 20px;
     width: 100%;
     .banner_shop{
      width: 100%;
       text-align: center;
-      margin: 20px 0;
+      margin: 16px 0 10px 0;
       .img{
         @include wh(700px,174px);
       }
@@ -176,11 +185,11 @@
       justify-content: center;
       .img{
         @include wh(337px,429px);
-        margin: 15px 15px;
+        margin: 5px 10px;
       }
     }
     .bottom_img{
-      margin-top: 100px;
+      margin-top: 50px;
       .img{
         @include wh(100%,97px)
       }
@@ -215,6 +224,7 @@
     }
   }
   .pay_member{
+    box-sizing: border-box;
     @include wh(100%,110px);
     background-color: #fff;
     margin: 0 25px 0 0;
@@ -235,6 +245,10 @@
       .bol{
         font-size: 24px;
       }
+      .nian{
+        font-size: 25px;
+        color: #848A8E;
+      }
     }
     .agreement{
       font-size: 22px;
@@ -254,6 +268,7 @@
 }
 
 .query_modal{
+  box-sizing: border-box;
   .at-modal__container{
     @include wh(520px,421px);
     background: #FFFFFF;

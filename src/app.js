@@ -53,7 +53,8 @@ class App extends Component {
       'pages/report/report_case/index',
       'pages/report/report_results/index',
       'pages/member/index',
-      'pages/webview/xieyi'
+      'pages/webview/xieyi',
+      'pages/webview/vipment'
     ],
     window: {
       titleBarColor: '#fff',
@@ -69,6 +70,12 @@ class App extends Component {
           pagePath: 'pages/home/index',
           icon: 'images/home/home.png',
           activeIcon: 'images/home/home_se.png',
+        },
+        {
+          name: '会员',
+          pagePath: 'pages/member/index',
+          icon: 'images/member/member_logo.png',
+          activeIcon: 'images/member/member_logo_r.png',
         },
         {
           name: '分类',

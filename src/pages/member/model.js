@@ -2,10 +2,12 @@ import Taro from '@tarojs/taro';
 import * as memberApi from './service'
 import { getUid } from '../../utils/localStorage'
 import { tradePay } from '../../utils/openApi'
+
 export default {
-  namespace: 'member',
+  namespace: 'members',
   state: {
-    memberIfn:{}
+    memberIfn:{},
+    date:''
   },
 
   effects: {
@@ -56,10 +58,10 @@ export default {
             icon: 'none',
           });
         }
-        Taro.showToast({
-          title: res.msg,
-          icon: 'none',
-        });
+        // Taro.showToast({
+        //   title: res.msg,
+        //   icon: 'none',
+        // });
         if(callback){
           callback(res.data)
         }
@@ -72,8 +74,10 @@ export default {
       // console.log(payload,'sjhfdghursfgyu')
       return {
         ...state,
-        memberIfn:payload
-      };
+        memberIfn:payload,
+        // date:formatDate(payload.userMembers[0].dueTime),
+        // date:formatDate(new Date(payload.userMembers[0].dueTime), 'yyyy年MM月dd')
+    };
     },
   },
 

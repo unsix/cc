@@ -117,11 +117,16 @@ class Confirmorder extends Component {
       });
     }
   }
-
+  //会员
+  member = () => {
+    Taro.navigateTo({
+      url : '/pages/member/index'
+    })
+  }
   render() {
     // console.log(this.state.isshow,'===>')
     const { confirmOrder, loading } = this.props;
-    const { defaultUserAddress, sku, product, priceList, additionalServices } = confirmOrder;
+    const { defaultUserAddress, sku, product, priceList, additionalServices,isVip } = confirmOrder;
     // eslint-disable-next-line no-undef
     (loading) ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
     return (
@@ -177,6 +182,23 @@ class Confirmorder extends Component {
             <View className='text'>优惠券</View>
             <View className='price'>-￥{priceList.couponPrice}</View>
           </View>
+          {isVip && isVip === '1'?
+            (
+              <View className='item member'>
+                <View className='text'>会员权益</View>
+                <View className='price'>-￥{priceList.vipEquity}</View>
+              </View>
+            ):
+            (
+              <View className='item member'>
+                <View className='text'>会员权益</View>
+                <View className='price' onClick={this.member}>
+                  暂无可用，开通会员既享优惠
+                  <Text> > </Text>
+                </View>
+              </View>
+            )
+          }
           <View className='item'>
             <View className='text'>第一期租金</View>
             <View className='price'>￥{priceList.firstPeriodsRentPrice}</View>
@@ -211,7 +233,11 @@ class Confirmorder extends Component {
             <View className='price'>¥{priceList.depositAmount}</View>
           </View>
         </View>
-        <View className='deposit-des'>提交订单，基于您的信用免除 <Text style={{ color: 'red' }}>¥0-{priceList.depositAmount}</Text>押金</View>
+          <View className='deposit-des'>提交订单，基于您的信用免除 <Text style={{ color: 'red' }}>¥0-{priceList.depositAmount}</Text>押金</View>
+          {isVip && isVip === '1'?
+            ( <View className='deposit-des deposit'>您将享受会员专属额外信用免除 <Text style={{ color: 'red' }}>¥{priceList.depositReduce}</Text>押金</View>)
+            :null
+          }
         {!confirmOrder.realNameStatus && (
           <View className='real-name' onClick={this.gotoRealName}>
             <View>实名认证</View>

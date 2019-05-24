@@ -1,8 +1,9 @@
 import Taro, { Component} from '@tarojs/taro'
 import { View, Image, Form, Swiper, SwiperItem, Button, Text } from '@tarojs/components'
-import { AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui';
+import { AtModal,  AtModalContent } from 'taro-ui';
 import { connect } from '@tarojs/redux'
 import './index.scss'
+import {formatStrDate} from '../../utils/utils'
 //img
 import VipYes from  '../../images/member/vip-yes.png'
 import VipNo from  '../../images/member/vip-no.png'
@@ -12,17 +13,12 @@ import Ttwo from '../../images/member/2222.png'
 import Tthree from '../../images/member/3333.png'
 import Tfour from '../../images/member/4444.png'
 import Tfive from '../../images/member/5555.png'
-import Equity from '../../images/member/equity.png'
-import EquPrice from '../../images/member/member_price.png'
-import MemTip from '../../images/member/mem_tips.png'
-import BannerOne from '../../images/member/banner_1.png'
 import More from '../../images/member/member_more.png'
-import Com from '../../images/report/comprehensive.png'
-import Erro from '../../images/report/erro.png'
-import Grade from '../../images/report/grade.png'
-@connect(({ mine, member}) => ({
+
+@connect(({ mine, members,loading}) => ({
   ...mine,
-  ...member
+  ...members,
+  loading: loading.models.members,
 }))
 class Member extends Component{
   config = {
@@ -32,11 +28,20 @@ class Member extends Component{
     isOpened:false
   }
   componentDidMount () {
-    const { dispatch } = this.props
-      dispatch({
-        type:'member/getMember'
-      })
+
+
   }
+  componentDidShow = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'mine/fetchAuthCode',
+      callback: () => {
+        dispatch({
+          type:'members/getMember'
+        })
+      },
+    });
+  };
   shouldComponentUpdate(nextProps, nextState) {
     if (this.props.memberIfn.userMembers !== nextProps.memberIfn.userMembers) {
       return true;
@@ -47,6 +52,12 @@ class Member extends Component{
   details = () => {
     this.setState({
       isOpened:true
+    })
+  }
+  //ment
+  ment = () =>{
+    Taro.navigateTo({
+      url:'/pages/webview/vipment'
     })
   }
   //确定
@@ -65,13 +76,13 @@ class Member extends Component{
   memberPay = () => {
     const { dispatch } = this.props
       dispatch({
-        type:'member/userMember',
+        type:'members/userMember',
         payload:{
           type: '1'
         },
         callback:()=>{
           dispatch({
-            type:'member/getMember'
+            type:'members/getMember'
           })
         }
       })
@@ -79,8 +90,14 @@ class Member extends Component{
 
   render () {
     // console.log(this.props,'99999999999999')
-    const { nickName,avatar,memberIfn} = this.props
+    const { nickName,avatar,memberIfn,loading} = this.props
     const { isOpened } = this.state
+    let date = null
+    // const date = memberIfn.userMembers &&  formatDate(new Date(memberIfn.userMembers[0].dueTime), 'yyyy年MM月dd')
+    if (memberIfn.userMembers && !!memberIfn.userMembers.length) {
+       date = `${formatStrDate(memberIfn.userMembers[0].dueTime, 'yyyy-MM-dd')}`
+    }
+    loading ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
     return(
       <View className='container container_member'>
         <View className='header'>
@@ -111,38 +128,42 @@ class Member extends Component{
             {/*}*/}
             {memberIfn&&memberIfn.userMembers && !!memberIfn.userMembers.length?
               ( <View  className='mem_time'>
-                会员有效期至2019-01-25
+                会员有效期至{date}
               </View>
               ):null
             }
-
           </View>
           <View className='make_times'>
             <View className='title'>会员商品任意用</View>
             <View className='member_t'>
               <View className='times_img'>
-                {memberIfn&&memberIfn.totalNumber&&memberIfn.totalNumber===0?
-                  (<Image className='img' src={Tz} />):null
-                }
-                {memberIfn&&memberIfn.totalNumber&&memberIfn.totalNumber===1?
-                  (<Image className='img' src={Tone} />):null
-                }
-                {memberIfn&&memberIfn.totalNumber&&memberIfn.totalNumber===2?
-                  (<Image className='img' src={Ttwo} />):null
-                }
-                {memberIfn&&memberIfn.totalNumber&&memberIfn.totalNumber===3?
-                  (<Image className='img' src={Tthree} />):null
-                }
-                {memberIfn&&memberIfn.totalNumber&&memberIfn.totalNumber===4?
-                  (<Image className='img' src={Tfour} />):null
-                }
-                {memberIfn&&memberIfn.totalNumber&&memberIfn.totalNumber===5?
-                  (<Image className='img' src={Tfive} />):null
+                {memberIfn&&memberIfn.userMembers && !!memberIfn.userMembers.length?
+                  (<View>
+                    {memberIfn&&memberIfn.totalNumber&&memberIfn.totalNumber===0?
+                      (<Image className='img' src={Tz} />):null
+                    }
+                    {memberIfn&&memberIfn.totalNumber&&memberIfn.totalNumber===1?
+                      (<Image className='img' src={Tone} />):null
+                    }
+                    {memberIfn&&memberIfn.totalNumber&&memberIfn.totalNumber===2?
+                      (<Image className='img' src={Ttwo} />):null
+                    }
+                    {memberIfn&&memberIfn.totalNumber&&memberIfn.totalNumber===3?
+                      (<Image className='img' src={Tthree} />):null
+                    }
+                    {memberIfn&&memberIfn.totalNumber&&memberIfn.totalNumber===4?
+                      (<Image className='img' src={Tfour} />):null
+                    }
+                    {memberIfn&&memberIfn.totalNumber&&memberIfn.totalNumber===5?
+                      (<Image className='img' src={Tfive} />):null
+                    }
+                  </View>): (<Image className='img' src={Tz} />)
+
                 }
               </View>
               <View className='times'>
                 <View>剩余使用次数</View>
-                <View className='num'>5/5次</View>
+                <View className='num'>{memberIfn&&memberIfn.userMembers && !!memberIfn.userMembers.length?'5/5次':'0/5次'}</View>
               </View>
             </View>
           </View>
@@ -152,15 +173,15 @@ class Member extends Component{
             <View>温馨提示</View>
           </View>
           <View>
-            <Image className='img' src={MemTip} />
+            <Image className='img' src='http://oss.huizustore.com/eb243f6725e74d54bb27e4a20dac9605.png' />
           </View>
         </View>
         <View className='member_equity'>
           <View className='equity_text'>我的会员权益</View>
-          <Image className='img_eq' src={Equity} />
+          <Image className='img_eq' src='http://oss.huizustore.com/9b965e89b52847178b810ea175b172f2.png' />
           <View>
-            <Image className='img_price' src={EquPrice} />
-            <View className=''></View>
+            <Image className='img_price' src='http://oss.huizustore.com/aa4f28f4a59749ab87e1b467098bda83.png' />
+            {/*<View className=''></View>*/}
           </View>
           <View className='member_price_b'>
           </View>
@@ -189,7 +210,7 @@ class Member extends Component{
             {/*))}*/}
             <SwiperItem key='1' >
               <View className='banner'>
-                <Image className="swiper-img" mode="widthFix" src={BannerOne} onClick={this.toReport}></Image>
+                <Image className="swiper-img" src='http://oss.huizustore.com/b86a57a4d8fa4a40a784c21188bb4356.png' onClick={this.toReport} />
               </View>
             </SwiperItem>
           </Swiper>
@@ -206,12 +227,12 @@ class Member extends Component{
           <View>
             <View>
               <View className='banner_shop'>
-                <Image className='img' src='http://oss.huizustore.com/b1f1113f6553457cbd60caaf96926acd.png'  />
+                <Image className='img' src='http://oss.huizustore.com/f730911867a6413e924789d60cb1dbb1.png'  />
               </View>
               <View>
                 <View className='goods_img'>
                   <View onClick={this.details}>
-                    <Image className='img' src='http://oss.huizustore.com/7f9f2fadb8d94e08abfcca60952c8089.png' />
+                    <Image className='img' src='http://oss.huizustore.com/480faf3834b1410db65ad7a9b2d450fe.png' />
                   </View>
                   <View onClick={this.details}>
                     <Image className='img' src='http://oss.huizustore.com/fd68ddd6b81d47f2867311f25fc72a0a.png' />
@@ -355,7 +376,8 @@ class Member extends Component{
             </View>
             <View className='price'>
               <Text className='bol'>¥</Text>399
-              <View className='agreement'>
+              <Text className='nian'>（一年）</Text>
+              <View className='agreement' onClick={this.ment}>
                 开通即同意《惠租会员协议》
               </View>
             </View>

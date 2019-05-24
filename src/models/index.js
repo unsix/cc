@@ -18,7 +18,7 @@ import freshman from '../pages/freshman/model';
 import unclaimed from '../pages/active_pages/unclaimedText/model';
 import claimed from '../pages/active_pages/unclaimed/model';
 import reportHome from  '../pages/report/home/model'
-import member from  '../pages/member/model'
+import members from  '../pages/member/model'
 export default [
   home,
   orderDetail,
@@ -40,5 +40,5 @@ export default [
   unclaimed,
   claimed,
   reportHome,
-  member
+  members
 ]

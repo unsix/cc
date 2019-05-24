@@ -374,12 +374,11 @@ class Productdetail extends Component {
         <View className='member_discount'>
           <View className='discount'>
             <View className='dis_text'>
-              ¥{currentSku.currentCyclePrice.price}元/天
-              <Text className='dis_shop'>会员商品</Text>
+              ¥{(Math.round(currentSku.currentCyclePrice.price*detail.membersDisCount * 100) / 100)}元/天
+              <Text className='dis_shop'>会员价</Text>
             </View>
             <View className='go_text' onClick={this.member}>
               <View className='text'>
-                <View>立即</View>
                 <View>进入</View>
               </View>
               <View className='ff'>></View>
@@ -446,13 +445,13 @@ class Productdetail extends Component {
                   </View>
                 </swiper-item>
             </swiper> */}
-          {/*<View className='item' onClick={this.onEnvelope.bind()}>*/}
-          {/*  <Image className='img' mode='aspectFit' src='http://oss.huizustore.com/79249b80547a4d9e9a8519ec47d420cf.png' />*/}
-          {/*</View>*/}
-          <View className='item' onClick={this.member}>
-            {/*<Image className='img' mode='aspectFit' src='http://oss.huizustore.com/79249b80547a4d9e9a8519ec47d420cf.png' />*/}
-            <Image className='img' mode='aspectFit' src='http://oss.huizustore.com/22e920340b2d498db33318219424cc1d.png' />
+          <View className='item' onClick={this.onEnvelope.bind()}>
+            <Image className='img' mode='aspectFit' src='http://oss.huizustore.com/79249b80547a4d9e9a8519ec47d420cf.png' />
           </View>
+          {/*<View className='item' onClick={this.member}>*/}
+          {/*  /!*<Image className='img' mode='aspectFit' src='http://oss.huizustore.com/79249b80547a4d9e9a8519ec47d420cf.png' />*!/*/}
+          {/*  <Image className='img' mode='aspectFit' src='http://oss.huizustore.com/22e920340b2d498db33318219424cc1d.png' />*/}
+          {/*</View>*/}
         </View>
         <View className='store-info' onClick={this.goInmeddiate.bind()}>
           <View className='channel-top'>
