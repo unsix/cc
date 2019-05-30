@@ -202,6 +202,7 @@ class Orderdetail extends Component {
     const createTiemStr = userOrders.createTime && formatDate(new Date(userOrders.createTimeStr), 'yyyy年MM月dd hh:mm');
     const rentStartStr = userOrders.rentStart && formatDate(new Date(userOrders.rentStartStr), 'yyyy年MM月dd');
     const unrentTimeStr = userOrders.unrentTime && formatDate(new Date(userOrders.unrentTimeStr), 'yyyy年MM月dd');
+    console.log(leftTimer('2019-06-15 '))
     const orderStatusInfo = (str, subStr) => {
       let title = orderStatus[str];
       if (subStr === 'USER_APPLICATION_CHANGE_SETTLEMENT') {

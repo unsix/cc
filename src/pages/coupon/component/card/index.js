@@ -13,6 +13,8 @@ class Card extends Component {
 
   render() {
     const { type, isNew, data } = this.props; // red, yellow
+    console.log(this.props,'77777777777777777777777777777')
+    console.log(type,'99999999999999999999999')
     const durationStr = `${formatStrDate(data.start, 'yyyy.MM.dd')}-${formatStrDate(data.end, 'yyyy.MM.dd')}`;
     return (
       <View className={'card ' + type}>

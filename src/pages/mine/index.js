@@ -156,9 +156,9 @@ class Mine extends Component {
         <View className='mine-page-bottom'>
           <Text className='text'> - 不要扯了，已经到底了 -  </Text>
         </View>
-        <View className='member_card' onClick={this.member}>
-          <Image  className='img' src={MemberCard} />
-        </View>
+        {/*<View className='member_card' onClick={this.member}>*/}
+        {/*  <Image  className='img' src={MemberCard} />*/}
+        {/*</View>*/}
       </View>
     )
   }

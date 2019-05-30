@@ -107,7 +107,7 @@ export const leftTimer = (dateStr) => {
     const days = parseInt(leftTime / 1000 / 60 / 60 / 24, 10); //计算剩余的天数 
     const hours = parseInt(leftTime / 1000 / 60 / 60 % 24, 10); //计算剩余的小时 
     const minutes = parseInt(leftTime / 1000 / 60 % 60, 10);//计算剩余的分钟 
-    return `${days}天${hours}小时${minutes}分钟`;
+    return `${days+1}天${hours}小时${minutes}分钟`;
   }
   return '';
 }

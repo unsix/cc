@@ -182,23 +182,23 @@ class Confirmorder extends Component {
             <View className='text'>优惠券</View>
             <View className='price'>-￥{priceList.couponPrice}</View>
           </View>
-          {isVip && isVip === '1'?
-            (
-              <View className='item member'>
-                <View className='text'>会员权益</View>
-                <View className='price'>-￥{priceList.vipEquity}</View>
-              </View>
-            ):
-            (
-              <View className='item member'>
-                <View className='text'>会员权益</View>
-                <View className='price' onClick={this.member}>
-                  暂无可用，开通会员既享优惠
-                  <Text> > </Text>
-                </View>
-              </View>
-            )
-          }
+          {/*{isVip && isVip === '1'?*/}
+          {/*  (*/}
+          {/*    <View className='item member'>*/}
+          {/*      <View className='text'>会员权益</View>*/}
+          {/*      <View className='price'>-￥{priceList.vipEquity}</View>*/}
+          {/*    </View>*/}
+          {/*  ):*/}
+          {/*  (*/}
+          {/*    <View className='item member'>*/}
+          {/*      <View className='text'>会员权益</View>*/}
+          {/*      <View className='price' onClick={this.member}>*/}
+          {/*        暂无可用，开通会员既享优惠*/}
+          {/*        <Text> > </Text>*/}
+          {/*      </View>*/}
+          {/*    </View>*/}
+          {/*  )*/}
+          {/*}*/}
           <View className='item'>
             <View className='text'>第一期租金</View>
             <View className='price'>￥{priceList.firstPeriodsRentPrice}</View>
