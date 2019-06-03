@@ -234,10 +234,10 @@ class Confirmorder extends Component {
           </View>
         </View>
           <View className='deposit-des'>提交订单，基于您的信用免除 <Text style={{ color: 'red' }}>¥0-{priceList.depositAmount}</Text>押金</View>
-          {isVip && isVip === '1'?
-            ( <View className='deposit-des deposit'>您将享受会员专属额外信用免除 <Text style={{ color: 'red' }}>¥{priceList.depositReduce}</Text>押金</View>)
-            :null
-          }
+          {/*{isVip && isVip === '1'?*/}
+          {/*  ( <View className='deposit-des deposit'>您将享受会员专属额外信用免除 <Text style={{ color: 'red' }}>¥{priceList.depositReduce}</Text>押金</View>)*/}
+          {/*  :null*/}
+          {/*}*/}
         {!confirmOrder.realNameStatus && (
           <View className='real-name' onClick={this.gotoRealName}>
             <View>实名认证</View>
