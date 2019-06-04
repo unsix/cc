@@ -52,7 +52,8 @@ class App extends Component {
       'pages/report/read/index',
       'pages/report/report_case/index',
       'pages/report/report_results/index',
-      'pages/member/index',
+      'pages/member/home/index',
+      'pages/member/success/index',
       'pages/webview/xieyi',
       'pages/webview/vipment'
     ],
@@ -70,6 +71,12 @@ class App extends Component {
           pagePath: 'pages/home/index',
           icon: 'images/home/home.png',
           activeIcon: 'images/home/home_se.png',
+        },
+        {
+          name: '会员',
+          pagePath: 'pages/member/home/index',
+          icon: 'images/member/member_logo.png',
+          activeIcon: 'images/member/member_logo_r.png',
         },
         {
           name: '分类',

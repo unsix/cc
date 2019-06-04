@@ -1,0 +1,95 @@
+
+@import "../../../styles/mixin";
+.container_success{
+  @include wh(100%,100vh);
+  .success_img{
+    .img{
+      @include wh(100%,297px);
+    }
+  }
+  .content{
+    @include wh(615px,690px);
+    margin: 0 auto;
+    background:  url(../../../images/member/success_con.png) no-repeat;
+    background-size: 100% 100% ;
+    position: relative;
+    border: rgba(255, 255, 255, 0) solid 1px;
+    top:-80px;
+    .price{
+      font-weight: bolder;
+      color: #333333;
+      font-size: 30px;
+      text-align: center;
+      margin-top: 35px;
+      .num{
+        text-align: center;
+        font-size: 60px;
+      }
+    }
+    .get_equity{
+      font-weight: bold;
+      color: #333333;
+      font-size: 40px;
+      text-align: center;
+      margin:50px 0 ;
+    }
+    .equity{
+      @include wh(500px,auto);
+      margin: 0 auto;
+      .item{
+        display: flex;
+        align-items: center;
+        margin-bottom: 30px;
+        .img{
+          @include wh(57px,57px);
+        }
+        .item-text{
+          margin-left: 15px;
+          width: 330px;
+          .text{
+            font-size: 26px;
+            color: #000;
+            font-weight: bold;
+            .num{
+              margin-left: 10px;
+            }
+          }
+          .word{
+            font-size: 26px;
+            color: #848A8E;
+          }
+        }
+        .get{
+          @include wh(128px,50px);
+          background: #F2F2F2;
+          border-radius: 10px;
+          text-align: center;
+          line-height: 50px;
+          font-size: 24px;
+          color: #9B9B9B;
+        }
+      }
+    }
+  }
+  .footer{
+    @include wh(615px,auto);
+    margin: 0 auto;
+    @include fj(space-between);
+    align-items: center;
+    .back{
+      @include wh(290px,95px);
+      border: 4px solid #FF8282;
+      border-radius: 46.5px;
+      font-size: 30px;
+      color: #FF8282;
+    }
+    .to-see{
+      @include wh(290px,95px);
+      background: #FF8282;
+      border: 4px solid #FF8282;
+      border-radius: 46.5px;
+      font-size: 30px;
+      color: #fff;
+    }
+  }
+}
