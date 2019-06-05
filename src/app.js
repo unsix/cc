@@ -54,6 +54,8 @@ class App extends Component {
       'pages/report/report_results/index',
       'pages/member/home/index',
       'pages/member/success/index',
+      'pages/member/orderExchange/index',
+      'pages/idcard/index',
       'pages/webview/xieyi',
       'pages/webview/vipment'
     ],

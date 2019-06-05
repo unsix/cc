@@ -1,0 +1,8 @@
+@import "../../styles/mixin";
+
+.container_idcard{
+  .img{
+    @include wh(500px,500px);
+    background: red;
+  }
+}

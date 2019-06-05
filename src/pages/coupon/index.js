@@ -1,5 +1,6 @@
 import Taro, { Component } from '@tarojs/taro';
 import { ScrollView } from '@tarojs/components';
+import { AtTabs, AtTabsPane } from 'taro-ui'
 import { connect } from '@tarojs/redux';
 
 import NoData from '../../components/noData/index'
@@ -16,6 +17,7 @@ class Coupon extends Component {
 
   state = {
     display: 'block', // none -> 没数据隐藏
+    current: 0,
   }
 
   componentDidMount = () => {
@@ -41,7 +43,14 @@ class Coupon extends Component {
     this.setDispatch(queryInfo, 'scroll');
   };
 
+  handleClick (value) {
+    this.setState({
+      current: value
+    })
+    console.log(value)
+  }
   render() {
+    const tabList = [{ title: '卡劵' }, { title: '权益' }]
     const { userPlatformCoupon, userShopCoupon } = this.props;
     const { display } = this.state;
     const systemInfo = Taro.getSystemInfoSync();
@@ -51,24 +60,31 @@ class Coupon extends Component {
     }
     const scrollHeight = Taro.getSystemInfoSync().windowHeight - fixedHeight;
     return (
-      <ScrollView
-        className='coupon-page'
-        scrollY
-        scrollWithAnimation
-        scrollTop='0'
-        style={`height: ${scrollHeight}px;`}
-        onScrollToLower={this.onScrollToLower}
-      >
-        {!!userPlatformCoupon && !!userPlatformCoupon.length && userPlatformCoupon.map(coupon =>
-          <Card key={coupon.id} type='red' isNew={coupon.id === 1} data={coupon} />
-        )}
-        {!!userShopCoupon && !!userShopCoupon.length && userShopCoupon.map(coupon =>
-          <Card key={coupon.id} type='yellow' isNew={coupon.id === 1} data={coupon} />
-        )}
-        {(!userPlatformCoupon || !userPlatformCoupon.length) && (!userShopCoupon || !userShopCoupon.length) && (
-          <NoData type='coupon' display={display} />
-        )}
-      </ScrollView>
+      <AtTabs current={this.state.current} tabList={tabList} onClick={this.handleClick.bind(this)}>
+        <AtTabsPane current={this.state.current} index={0} >
+          <ScrollView
+            className='coupon-page'
+            scrollY
+            scrollWithAnimation
+            scrollTop='0'
+            style={`height: ${scrollHeight}px;`}
+            onScrollToLower={this.onScrollToLower}
+          >
+            {!!userPlatformCoupon && !!userPlatformCoupon.length && userPlatformCoupon.map(coupon =>
+              <Card key={coupon.id} type='red' isNew={coupon.id === 1} data={coupon} />
+            )}
+            {!!userShopCoupon && !!userShopCoupon.length && userShopCoupon.map(coupon =>
+              <Card key={coupon.id} type='yellow' isNew={coupon.id === 1} data={coupon} />
+            )}
+            {(!userPlatformCoupon || !userPlatformCoupon.length) && (!userShopCoupon || !userShopCoupon.length) && (
+              <NoData type='coupon' display={display} />
+            )}
+          </ScrollView>
+        </AtTabsPane>
+        <AtTabsPane current={this.state.current} index={1}>
+          123
+        </AtTabsPane>
+      </AtTabs>
     )
   }
 }

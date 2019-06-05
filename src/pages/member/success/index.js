@@ -1,5 +1,6 @@
 import Taro, { Component} from '@tarojs/taro'
 import { View ,Image,Button,Text} from '@tarojs/components'
+import './index.scss'
 
 class paySuccess extends Component {
   config = {

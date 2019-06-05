@@ -120,3 +120,16 @@
     }
   }
 }
+
+.container_coupon{
+  @include wh(100%,auto);
+  margin:  0 auto;
+
+  .content{
+    @include wh(100%,175px);
+    background:  url(../../../../images/member/coupon.png) no-repeat;
+    background-size: 100%;
+    //background: red;
+  }
+
+}
