@@ -129,7 +129,56 @@
     @include wh(100%,175px);
     background:  url(../../../../images/member/coupon.png) no-repeat;
     background-size: 100%;
+    display: flex;
     //background: red;
+    .num{
+      @include wh(175px,175px);
+      text-align: center;
+      font-size: 56px;
+      color: #FC766B;
+      letter-spacing: 1.87px;
+      line-height: 175px;
+      font-weight: bold;
+      .bol{
+        font-size: 35px;
+      }
+    }
+    .item{
+      @include wh(343px,175px);
+      margin-left: 25px;
+      margin-right: 10px;
+      .item-title{
+        font-size: 28px;
+        color: #333333;
+        font-weight: bold;
+        margin-top: 20px;
+        overflow: hidden;/*超出部分隐藏*/
+        text-overflow:ellipsis;/* 超出部分显示省略号 */
+        white-space: nowrap;/*规定段落中的文本不进行换行 */
+      }
+      .item-use{
+        font-size: 24px;
+        color: #848A8E;
+        margin: 20px 0 15px 0 ;
+        width: 250px;
+        height: 30px;
+        overflow: hidden;/*超出部分隐藏*/
+        text-overflow:ellipsis;/* 超出部分显示省略号 */
+        white-space: nowrap;/*规定段落中的文本不进行换行 */
+      }
+      .time{
+        font-size: 24px;
+        color: #848A8E;
+      }
+    }
+    .pro_img{
+      //position: absolute;
+      //right: 45px;
+      .img{
+        @include wh(121px,121px);
+        margin-top: 20px;
+      }
+    }
   }
 
 }

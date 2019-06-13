@@ -27,6 +27,7 @@ export default {
       }
       const res = yield call(couponApi.getAllUserCouponList, { ...newPayload, uid: getUid() });
       if (res) {
+        console.log(payload,'================')
         if (payload.fetchType === 'scroll') {
           if (!res.data.userPlatformCoupon.length && !res.data.userShopCoupon.length) {
             Taro.showToast({
@@ -58,13 +59,65 @@ export default {
         });
       }
     },
+    * getUserMembersEquitiesByUid({ payload ,callback}, { call, put }) {
+      const res = yield call(couponApi.getUserMembersEquitiesByUid, { ...payload, uid:getUid() });
+      // console.log(getUid(),'2312312312312321')
+      if(res){
+        // if(res.code === 1){
+        //   Taro.showToast({
+        //     title:'兑换成功，请前往卡包查看'
+        //   })
+        // }
+        yield put({
+          type:'equity',
+          payload:res.data
+        })
+      }
+    },
+    * checkInvokeCode({ payload ,callback}, { call, put }) {
+      const res = yield call(couponApi.checkInvokeCode, { ...payload, uid:getUid() });
+      // console.log(getUid(),'2312312312312321')
+      if(res){
+        // if(res.code === 1){
+        //   Taro.showToast({
+        //     title:'兑换成功，请前往卡包查看'
+        //   })
+        // }
+        // yield put({
+        //   type:'equity',
+        //   payload:res.data
+        // })
+        if(callback){
+          callback(res)
+        }
+      }
+    },
+    * getRecordByReportNo({ payload ,callback}, { call, put }) {
+      const res = yield call(couponApi.getRecordByReportNo, { ...payload,  });
+      // console.log(getUid(),'2312312312312321')
+      if(res){
+        // if(res.code === 1){
+        //   Taro.showToast({
+        //     title:'兑换成功，请前往卡包查看'
+        //   })
+        // }
+        // yield put({
+        //   type:'equity',
+        //   payload:res.data
+        // })
+      }
+    },
   },
 
   reducers: {
     save(state, { payload }) {
       return { ...state, ...payload };
     },
-
+    equity(state, { payload }) {
+      return { ...state,
+        equity:payload
+      };
+    },
     concatCouponList(state, { payload }) {
       const userPlatformCoupon = [...state.userPlatformCoupon];
       const userShopCoupon = [...state.userShopCoupon];

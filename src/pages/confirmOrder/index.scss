@@ -141,8 +141,12 @@ page {
     .deposit-des {
       background-color: #fff;
       padding: 30px ;
+      line-height: 40px;
       color: #0199FE;
       font-size: 24px;
+    }
+    .deposit:nth-child(2){
+      padding: 0 ;
     }
     .deposit{
       margin-top: 0;

@@ -10,7 +10,7 @@ class Ment extends Component {
   }
   render () {
     return (
-      <WebView src='https://www.huizustore.com/huiyuan.html'  />
+      <WebView src='https://www.huizustore.com/member.html'  />
     )
   }
 }

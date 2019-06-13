@@ -1,7 +1,7 @@
 @import "../../styles/mixin";
 .container_enty{
   @include wh(100%, 100vh);
-  @include bg('../../../images/report/bg_enty.png');
+  @include bg('http://oss.huizustore.com/f1372c21ac9b40d9b18e7167942eb662.png');
   overflow:hidden;
   .content{
     background: #fff;

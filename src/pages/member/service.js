@@ -23,3 +23,24 @@ export const userPayMembers = (data) => Request({
   test:'member',
   data
 });
+export const memberCoupon = (data) => Request({
+  url: 'aliPay/platform/memberCoupon/list',
+  method: 'GET',
+  data
+});
+export const getUserMembersEquitiesAllByUid = (data) => Request({
+  url: 'aliPay/user/members/getUserMembersEquitiesAllByUid',
+  method: 'GET',
+  data
+});
+export const getPlatformMemberCoupon = (data) => Request({
+  url: 'aliPay/coupon/getPlatformMemberCoupon',
+  method: 'POST',
+  data
+});
+
+export const wingRecords = (data) => Request({
+  url: 'aliPay/user/members/wingRecords/list',
+  method: 'GET',
+  data
+});

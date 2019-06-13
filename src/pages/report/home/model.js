@@ -3,6 +3,7 @@ import * as HomeApi from './service';
 import Taro from '@tarojs/taro';
 import { formatName,forIdCard} from '../../../utils/utils'
 import { tradePay } from '../../../utils/openApi'
+import { getUid } from '../../../utils/localStorage'
 
 export default {
   namespace: 'reportHome',
@@ -87,6 +88,23 @@ export default {
     },
     * getResultById({payload,callback},{call,put}){
       const res =  yield call(HomeApi.getResultById, payload.reportId);
+      if (res) {
+        if(res.code === 1){
+          Taro.showToast({
+            title:'查询成功'
+          })
+        }
+        yield put({
+          type: 'saveReport',
+          payload: res.data,
+        });
+        if (callback) {
+          callback(res);
+        }
+      }
+    },
+    * getCheckResultByInvokeCode({payload,callback},{call,put}){
+      const res =  yield call(HomeApi.getCheckResultByInvokeCode, {...payload,uid: getUid()});
       if (res) {
         Taro.showToast({
           title:res.msg

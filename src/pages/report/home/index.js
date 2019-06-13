@@ -76,13 +76,45 @@ class  Index extends Component{
     Taro.switchTab({ url: '/pages/home/index' })
   }
   formSubmit = (e) => {
+    const { dispatch } = this.props
     const { name,idCord,phone} = e.detail.value;
+    let params = this.$router.params
+    console.log(params,'-==============')
     this.setState({
       names:blankSpace(name),
       idCards:blankSpace(idCord),
       phones:blankSpace(phone),
     })
-      this.props.dispatch({
+    if(params.invokeCode){
+      dispatch({
+        type:'reportHome/checkParams',
+        payload: {
+          userName:blankSpace(name),
+          phone:blankSpace(phone),
+          idCardNo:blankSpace(idCord),
+        },
+        callback:(res)=>{
+          if(res.code === 1){
+            dispatch({
+              type:'reportHome/getCheckResultByInvokeCode',
+              payload:{
+                userName:blankSpace(name),
+                phone:blankSpace(phone),
+                idCardNo:blankSpace(idCord),
+                invokeCode:params.invokeCode
+              },
+              callback:(res)=>{
+                if(res.code === 1){
+                  Taro.redirectTo({ url: '/pages/report/report_results/index' });
+                }
+              }
+            })
+          }
+        }
+      })
+    }
+    else {
+        dispatch({
         type:'reportHome/checkParams',
         payload: {
           userName:blankSpace(name),
@@ -98,6 +130,7 @@ class  Index extends Component{
           }
         }
       })
+    }
   }
 
   connectService = (number) => {
@@ -135,10 +168,12 @@ class  Index extends Component{
       },
     })
   }
+
   //协议
   read = () =>{
-    Taro.navigateTo({ url: '/pages/report/read/index' });
+    Taro.navigateTo({ url: '/pages/webview/report' });
   }
+
   // config = {
   //   navigationBarTitleText: '新人领券',
   // };

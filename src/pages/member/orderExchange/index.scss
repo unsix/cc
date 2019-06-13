@@ -4,7 +4,7 @@
   @include wh(100%,100vh);
   .header{
     @include wh(100%,280px);
-    background: url(../../../images/member/orderExchange.png) no-repeat;
+    background: url(http://oss.huizustore.com/22ac37f4433d41708fd5b429cc8875de.png) no-repeat;
     background-size: 100%;
     box-sizing: border-box;
     padding-top:1px;
@@ -42,6 +42,8 @@
   .content{
     @include wh(100%,auto);
     background: #F7F7F7;
+    position: relative;
+
     .title{
       @include wh(100%,74px);
       background: #FFFFFF;
@@ -50,15 +52,78 @@
         margin: 0 auto;
         @include fj(space-between);
         align-items: center;
+        font-weight: bold;
+        .down-all{
+          display: flex;
+          align-items: center;
+          .img{
+            margin-left: 20px;
+            @include wh(33px,33px);
+          }
+        }
       }
     }
     .item{
+      margin-top: 20px  ;
       text-align: center;
       min-height: 850px;
+      background:#fff;
+      @include wh(100%,auto);
       .img{
         @include wh(262px,262px);
         margin-top:100px;
       }
+      .item-list{
+        @include wh(650px,200px);
+        display: flex;
+        margin: 0 auto;
+        align-items: center;
+        border-bottom:2px solid #F2F2F2;;
+        .list-img{
+          @include wh(65px,65px);
+        }
+        .item-text{
+          margin:  0 0 0 50px;
+          line-height: 80px;
+          .text-title{
+            font-size: 30px;
+            color: #333333;
+            width: 250px;
+            overflow: hidden;/*超出部分隐藏*/
+            text-overflow:ellipsis;/* 超出部分显示省略号 */
+            white-space: nowrap;/*规定段落中的文本不进行换行 */
+          }
+          .text-time{
+            font-size: 26px;
+            color: #868686;
+          }
+        }
+        .item-bean{
+          font-weight: bolder;
+          font-size: 42px;
+          color: #333333;
+          margin: 0 0 0 120px;
+        }
+      }
+    }
+    //下拉菜单
+    .down-list{
+      @include wh(153px,170px);
+      position: absolute;
+      top:80px;
+      right: 50px;
+      border: 2px solid   rgba(0,0,0,.7);
+      box-sizing: border-box;
+      .text{
+        box-sizing: border-box;
+        @include wh(100%,52px);
+        line-height: 52px;
+        background: rgba(0,0,0,.7);
+        text-align: center;
+        color: #fff;
+        margin-bottom: 5px;
+      }
+
     }
   }
 }

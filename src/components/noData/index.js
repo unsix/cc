@@ -15,10 +15,16 @@ class NoData extends Component {
         }
 
         <View className='text-center'>
-          <Text className='text'>{type === 'order' ? '当前暂无订单' : '当前暂无优惠券可用'}</Text>
+          <Text className='text'>{type === 'order' ? '当前暂无订单' : null}</Text>
         </View>
         <View className='text-center'>
           <Text className='text'>{type === 'order' && '快去找自己心仪的商品下单吧'}</Text>
+        </View>
+        <View className='text-center'>
+          <Text className='text'>{type === 'coupon' ? '当前暂无优惠券可用':null}</Text>
+        </View>
+        <View className='text-center'>
+          <Text className='text'>{type === 'equity' ? '暂无权益可用':null}</Text>
         </View>
       </View>
     )

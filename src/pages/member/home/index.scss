@@ -7,9 +7,14 @@ page{
   font-family: PingFangSC-Regular;
   @include wh(100%,auto);
   padding-bottom: 80px;
-
+  .tips_img{
+    @include wh(100%,67px);
+    background:  url(../../../images/member/tips.png  ) no-repeat;
+    background-size: 100%;
+    box-shadow: 0 1px 7px 1px rgba(46,6,6,0.56);
+  }
   .header{
-    @include wh(100%,305px);
+    @include wh(100%,316px);
     background: #312A1E;
     position: relative;
     .person_inf{
@@ -19,10 +24,11 @@ page{
       position: absolute;
       bottom: 0;
       left: 37px;
+      margin: 0 auto;
       .doubt{
         position: absolute;
-        right: 20px;
-        top: 20px;
+        right: 10px;
+        top: 10px;
         .img{
           @include wh(40px,40px);
         }
@@ -59,10 +65,13 @@ page{
               @include wh(38px,36px);
               margin-right: 10px;
             }
+            .user{
+              padding-top: 5px;
+            }
           }
         }
         .time{
-          margin-left: 85px;
+          margin-left: 70px;
           font-size: 24px;
           color: #F2F2F2;
           .text{
@@ -82,8 +91,11 @@ page{
           .text{
             @include fj(space-between);
             text-align: center;
-            line-height: 35px;
-            width: 130px;
+            //line-height: 35px;
+            width: 150px;
+            .text-left{
+              @include wh(50px,auto);
+            }
             .img{
               text-align: center;
               @include wh(33px,33px);
@@ -122,21 +134,21 @@ page{
     box-sizing: border-box;
     background: #fff;
     .opt_price{
-      @include wh(674px,275px);
+      @include wh(698px,275px);
       //position: absolute;
       //left: 37px;
-      margin: 0 auto;
       display: flex;
+      margin: 0 auto;
       flex-wrap: wrap;
       text-align: center;
       .item_opt{
-        border: 1px solid #D8D8D8;
         border-radius: 4px;
-        margin:0 12px 12px 0;
+        margin:0 27px 27px 0;
+        box-shadow: 0 0 2px  rgba(46,6,6,0.3);
         @include wh(214px,143px);
         .num{
           margin: 25px 0 0 0;
-          font-size: 39px;
+          font-size: 30px;
           .text{
             font-size: 48px;
           }
@@ -149,43 +161,61 @@ page{
         margin-right: 0;
       }
       .item_active{
-        border: 1px solid #D8D8D8;
         border-radius: 4px;
         background: #FC766B;
-        margin:0 12px 12px 0;
+        margin:0 27px 27px 0;
         @include wh(214px,143px);
         color: #fff;
+        box-shadow: 0 1px 7px 1px rgba(46,6,6,0.56);
       }
     }
     .member_exc{
       @include wh(698px,400px);
-      position: relative;
-      left: 30px;
-      margin-top: 50px;
+      //position: relative;
+      //left: 30px;
+      //margin-top: 50px;
       //margin: 50px 0 0 0;
+      margin: 50px auto 0 auto;
       background: url(../../../images/member/member_exc.png) no-repeat;
       background-size: 100%;
       .exclusive{
         box-sizing: border-box;
         @include fj(space-between);
         flex-wrap: wrap;
+        .sive:nth-child(1),.sive:nth-child(3){
+          @include wh(335px,150px);
+          margin-left: 30px;
+        }
         .sive{
-          @include wh(300px,150px);
+          @include wh(280px,150px);
+          margin-left: 50px;
+          //margin:  0 auto;
           .text{
+            //margin-left: 50px;
+            //margin-right: 50px;
             display: flex;
-            font-size: 28px;
+            font-size: 26px;
             color: #333333;
             .img{
               margin: 9px 0 0 0;
             }
             .img_1 {
-              @include wh(41px,41px);
+              @include wh(39px,38px);
+            }
+            .img_2 {
+              @include wh(37px,37px);
+            }
+            .img_3 {
+              @include wh(38px,38px);
+            }
+            .img_4 {
+              @include wh(43px,43px);
             }
             .word{
-              margin: 0 0 0 15px;
+              margin: 0 0 0 20px;
               line-height: 40px;
               .bold{
-                font-size: 32px;
+                font-size: 28px;
                 color: #333333;
                 font-weight: bold;
               }
@@ -214,9 +244,12 @@ page{
         text-align: center;
         .item-content{
           flex: 1;
+          font-size: 26px;
+          text-align: center;
           @include wh(150px,auto);
           .img{
-            @include wh(80px,80px)
+            @include wh(80px,80px);
+            margin-bottom: 30px;
           }
         }
       }
@@ -225,10 +258,11 @@ page{
   .member_shop{
     @include wh(100%,auto);
     background: #fff;
-    margin-top: 35px;
-    padding: 0 0 80px 0 ;
+    margin-bottom: 25px;
+    //padding: 0 0 20px 0 ;
     .shop{
       .title{
+        margin-top: 20px;
         height: 100px;
         line-height: 100px;
         text-align: center;
@@ -237,72 +271,12 @@ page{
         font-weight: bold;
         letter-spacing: 1px;
       }
-      .shop-list{
-        @include wh(664px,212px);
-        margin: 0 auto;
-        box-shadow: 0 1px 4px 2px rgba(190,190,190,0.91);
-        border-radius: 10px;
-        padding: 15px;
-        .item{
-          display: flex;
-          .item-img{
-            @include wh(212px,212px);
-            background:#D8D8D8;
-          }
-          .item-text{
-            @include wh(400px,212px);
-            margin-left: 20px;
-            .text-bold{
-              font-size: 28px;
-              color: #333333;
-              letter-spacing: 0.93px;
-              font-weight: bolder;
-            }
-            .text-shallow{
-              margin-top: 8px;
-              font-size: 26px;
-              color: #848A8E;
-              letter-spacing: 0.87px;
-            }
-            .text-time{
-              margin-top: 20px;
-              text-align: right;
-              font-size: 24px;
-              color: #848A8E;
-              letter-spacing: 0.86px;
-            }
-            .text-beans{
-              font-size: 30px;
-              color: #FC766B;
-              letter-spacing: 1px;
-              font-weight: bolder;
-            }
-            .text-sales{
-              @include wh(420px,auto);
-              @include fj(space-between);
-              align-items: center;
-              .sales{
-                font-size: 24px;
-                color: #848A8E;
-                letter-spacing: 0.86px;
-                margin-top: 30px;
-              }
-              .exchange{
-                .exchange_btn{
-                 @include wh(155px,55px);
-                  font-size: 28px;
-                  letter-spacing: 1.17px;
-                  color: #FFFFFF;
-                  background-image: linear-gradient(0deg, #FFA29B 0%, #FF574A 46%, #FFAAA2 93%);
-                  border-radius: 10px;
-                  text-align: center;
-                  line-height: 55px;
-                }
-              }
-            }
-          }
-        }
-      }
+    }
+    .no-more{
+      height: 100px;
+      line-height: 100px;
+      text-align: center;
+      color: #777;
     }
   }
   .pay_member{
@@ -351,38 +325,50 @@ page{
 
 .query_modal{
   box-sizing: border-box;
+
   .at-modal__container{
-    @include wh(520px,421px);
+    position: relative;
+    z-index: 213123;
+    @include wh(620px,1000px);
+    overflow-y: auto;
     background: #FFFFFF;
     box-shadow: 0 0 10px 4px rgba(176,176,176,0.50);
     border-radius: 22px;
     border: none;
-    text-align: center;
     font-size: 32px;
     color: #333333;
+    .close{
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      .img{
+        @include wh(60px,60px)
+      }
+    }
     .title{
       font-weight: bold;
-    }
-    .titles{
+      text-align: center;
       line-height: 60px;
     }
+    .titles{
+    }
     .online{
-      margin-top: 70px;
-      .time{
-        font-size: 34px;
-        color: #FC766B;
-      }
+      margin-top: 20px;
+      font-size: 25px;
+      line-height: 35px;
+      color: #555;
     }
     .con{
       width: 100%;
     }
     .confirm{
-      margin: 0 auto;
+      margin:  20px auto 0 auto;
       @include wh(300px,76px);
       background: #FC766B;
       border-radius: 40px;
       color: #fff;
       line-height: 76px;
+
     }
   }
   //AtModalAction改变flex布局
@@ -402,9 +388,10 @@ page{
 .content{
   //margin:  0 auto;
   .title{
+    text-align: center;
     .img{
       @include wh(720px,42px);
-      margin:  20px auto 0 auto;
+      margin:  20px auto 10px  auto;
     }
   }
 }
@@ -412,3 +399,6 @@ page{
 //  position: relative;
 //  left: 37px;
 //}
+  //.scroll-view{
+  //  margin: 20px;
+  //}

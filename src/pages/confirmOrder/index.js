@@ -120,7 +120,7 @@ class Confirmorder extends Component {
   //会员
   member = () => {
     Taro.navigateTo({
-      url : '/pages/member/index'
+      url : '/pages/member/home/index'
     })
   }
   render() {
@@ -182,23 +182,23 @@ class Confirmorder extends Component {
             <View className='text'>优惠券</View>
             <View className='price'>-￥{priceList.couponPrice}</View>
           </View>
-          {/*{isVip && isVip === '1'?*/}
-          {/*  (*/}
-          {/*    <View className='item member'>*/}
-          {/*      <View className='text'>会员权益</View>*/}
-          {/*      <View className='price'>-￥{priceList.vipEquity}</View>*/}
-          {/*    </View>*/}
-          {/*  ):*/}
-          {/*  (*/}
-          {/*    <View className='item member'>*/}
-          {/*      <View className='text'>会员权益</View>*/}
-          {/*      <View className='price' onClick={this.member}>*/}
-          {/*        暂无可用，开通会员既享优惠*/}
-          {/*        <Text> > </Text>*/}
-          {/*      </View>*/}
-          {/*    </View>*/}
-          {/*  )*/}
-          {/*}*/}
+          {isVip && isVip === '1'?
+            (
+              <View className='item member'>
+                <View className='text'>会员权益</View>
+                <View className='price'>-￥{priceList.vipEquity}</View>
+              </View>
+            ):
+            (
+              <View className='item member'>
+                <View className='text'>会员权益</View>
+                <View className='price' onClick={this.member}>
+                  暂无可用，开通会员既享优惠
+                  <Text> > </Text>
+                </View>
+              </View>
+            )
+          }
           <View className='item'>
             <View className='text'>第一期租金</View>
             <View className='price'>￥{priceList.firstPeriodsRentPrice}</View>
@@ -233,11 +233,14 @@ class Confirmorder extends Component {
             <View className='price'>¥{priceList.depositAmount}</View>
           </View>
         </View>
-          <View className='deposit-des'>提交订单，基于您的信用免除 <Text style={{ color: 'red' }}>¥0-{priceList.depositAmount}</Text>押金</View>
-          {/*{isVip && isVip === '1'?*/}
-          {/*  ( <View className='deposit-des deposit'>您将享受会员专属额外信用免除 <Text style={{ color: 'red' }}>¥{priceList.depositReduce}</Text>押金</View>)*/}
-          {/*  :null*/}
-          {/*}*/}
+        <View  className='deposit-des'>
+          <View>提交订单，基于您的信用免除 <Text style={{ color: 'red' }}>¥0-{priceList.depositAmount}</Text>押金</View>
+          {isVip && isVip === '1'?
+            ( <View >您将享受会员专属额外信用免除 <Text style={{ color: 'red' }}>¥{priceList.depositReduce}</Text>押金</View>)
+            :null
+          }
+        </View>
+
         {!confirmOrder.realNameStatus && (
           <View className='real-name' onClick={this.gotoRealName}>
             <View>实名认证</View>

@@ -29,6 +29,7 @@ export const orderStatus = {
   ALREADY_EVALUATION: '已评价',
   PENALTY_WAITING_SETTLEMENT: '违约金结算中',
   WAITING_BUCKLE_SETTLEMENT: '代扣结算中',
+  RC_REJECT :'风控关单退款'
 };
 
 

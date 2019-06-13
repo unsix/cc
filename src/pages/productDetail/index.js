@@ -3,7 +3,7 @@ import { View, Image, Text, ScrollView, Input,Button,Form} from '@tarojs/compone
 import { connect } from '@tarojs/redux';
 import { AtIcon, AtFloatLayout } from 'taro-ui';
 
-import { formatDate } from '../../utils/utils';
+import { formatDate,blankSpace } from '../../utils/utils';
 import { customerServiceTel } from '../../assets/Constant';
 
 import ParseComponent from './wxParseComponent'
@@ -171,7 +171,7 @@ class Productdetail extends Component {
     const { daysValue } = this.state;
     if (daysValue) {
       const { detail: { minRentCycle, maxRentCycle }, dispatch } = this.props;
-      let newValue = daysValue;
+      let newValue = blankSpace(daysValue);
       if (newValue < minRentCycle) {
         newValue = minRentCycle;
       }
@@ -288,7 +288,7 @@ class Productdetail extends Component {
   //会员
     member = () => {
       Taro.navigateTo({
-        url: '/pages/member/index'
+        url: '/pages/member/home/index'
       })
   }
 
@@ -371,20 +371,20 @@ class Productdetail extends Component {
             </View>
           </View>
         </View>
-        {/*<View className='member_discount'>*/}
-        {/*  <View className='discount'>*/}
-        {/*    <View className='dis_text'>*/}
-        {/*      ¥{(Math.round(currentSku.currentCyclePrice.price*detail.membersDisCount * 100) / 100)}元/天*/}
-        {/*      <Text className='dis_shop'>会员价</Text>*/}
-        {/*    </View>*/}
-        {/*    <View className='go_text' onClick={this.member}>*/}
-        {/*      <View className='text'>*/}
-        {/*        <View>进入</View>*/}
-        {/*      </View>*/}
-        {/*      <View className='ff'>></View>*/}
-        {/*    </View>*/}
-        {/*  </View>*/}
-        {/*</View>*/}
+        <View className='member_discount'>
+          <View className='discount'>
+            <View className='dis_text'>
+              ¥{(Math.round(currentSku.currentCyclePrice.price*detail.membersDisCount * 100) / 100)}元/天
+              <Text className='dis_shop'>会员价</Text>
+            </View>
+            <View className='go_text' onClick={this.member}>
+              <View className='text'>
+                <View>进入</View>
+              </View>
+              <View className='ff'>></View>
+            </View>
+          </View>
+        </View>
         <View className='integral'>
           <View className='grade'>
             600分

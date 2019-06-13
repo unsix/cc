@@ -1,0 +1,61 @@
+@import '../../../../styles/mixin.scss';
+
+.equity{
+  .container_equity{
+    position: relative;
+    .item{
+      @include wh(80%,auto);
+      @include fj(space-between);
+      margin: 50px auto 0 auto;
+      color: #FFFFFF;
+      .title{
+        font-weight: bolder;
+        font-size: 32px;
+      }
+      .num{
+
+      }
+      .num_report{
+        font-size: 25px;
+        line-height: 40px;
+      }
+    }
+    .title-dec{
+      position: absolute;
+      left:10%;
+      top: 120px;
+      color: #fff;
+    }
+    .time{
+      @include wh(80%,auto);
+      margin: 145px auto 0 auto;
+      color: #fff;
+    }
+  }
+}
+
+
+.bg_1{
+  @include wh(100%,282px);
+  background: url(http://oss.huizustore.com/a11715e0ddc940229ee46104e6b01650.png) no-repeat;
+  background-size: 100% !important;
+  padding-top: 1px;
+}
+.bg_2{
+  @include wh(100%,282px);
+  background: url(http://oss.huizustore.com/6335750491314bff84dc112d3773e410.png) no-repeat;
+  background-size: 100% !important;
+  padding-top: 1px;
+}
+.bg_3{
+  @include wh(100%,282px);
+  background: url(http://oss.huizustore.com/6a857c05cc2d4e4f98c498ace17ee665.png) no-repeat;
+  background-size: 100% !important;
+  padding-top: 1px;
+}
+.bg_4{
+  @include wh(100%,282px);
+  background: url(http://oss.huizustore.com/b0b9f18c4a574ed6ace7888edea0792c.png) no-repeat;
+  background-size: 100% !important;
+  padding-top: 1px;
+}

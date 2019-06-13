@@ -42,3 +42,10 @@ export const getResultById = data => Request({
   method: 'GET',
   data,
 });
+export const getCheckResultByInvokeCode = data => Request({
+  url: 'getCheckResultByInvokeCode',
+  test:'report',
+  method: 'POST',
+  contentType: 'application/www',
+  data,
+});

@@ -32,7 +32,8 @@ class  Inc extends Component{
         }
       })
     }
-    else {
+
+    else if (params.reportId){
       this.props.dispatch({
         type:'reportHome/getResultById',
         payload:{

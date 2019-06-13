@@ -29,9 +29,9 @@
     .get_equity{
       font-weight: bold;
       color: #333333;
-      font-size: 40px;
+      font-size: 35px;
       text-align: center;
-      margin:50px 0 ;
+      margin:50px 0 50px 10px ;
     }
     .equity{
       @include wh(500px,auto);
@@ -40,8 +40,20 @@
         display: flex;
         align-items: center;
         margin-bottom: 30px;
-        .img{
+        //.img{
+        //  @include wh(57px,57px);
+        //}
+        .img_1{
           @include wh(57px,57px);
+        }
+        .img_2{
+          @include wh(61px,60px);
+        }
+        .img_3{
+          @include wh(63px,63px);
+        }
+        .img_4{
+          @include wh(73px,73px);
         }
         .item-text{
           margin-left: 15px;
@@ -50,6 +62,7 @@
             font-size: 26px;
             color: #000;
             font-weight: bold;
+            margin-bottom: 10px;
             .num{
               margin-left: 10px;
             }

@@ -5,10 +5,12 @@ import { connect } from '@tarojs/redux';
 
 import NoData from '../../components/noData/index'
 import Card from './component/card/index';
+import Equity from './component/equity/index'
 import './index.scss';
 
-@connect(({ coupon }) => ({
+@connect(({ coupon,loading }) => ({
   ...coupon,
+  loading: loading.models.members,
 }))
 class Coupon extends Component {
   config = {
@@ -21,17 +23,16 @@ class Coupon extends Component {
   }
 
   componentDidMount = () => {
-    const { queryInfo } = this.props;
+    const { queryInfo ,dispatch} = this.props;
     this.setDispatch(queryInfo);
+    dispatch({
+      type:'coupon/getUserMembersEquitiesByUid'
+    })
   };
 
   setDispatch(queryInfo, fetchType) {
     const { dispatch } = this.props;
     const info = { ...queryInfo };
-    if (fetchType === 'scroll') {
-      info.pageNumber += 1;
-      info.fetchType = fetchType;
-    }
     dispatch({
       type: 'coupon/getAllUserCouponList',
       payload: { ...info },
@@ -49,9 +50,53 @@ class Coupon extends Component {
     })
     console.log(value)
   }
+  goEquityClick = (type) => {
+    const { equity , dispatch } = this.props
+   if(type === '4'){
+     dispatch({
+       type:'coupon/checkInvokeCode',
+       payload: {
+         invokeCode:equity.equitit.reportNo
+       },
+       callback:(res)=>{
+         if(res && res.data === 1){
+           Taro.navigateTo({
+             url:`/pages/report/home/index?invokeCode=${equity.equitit.reportNo}`
+           })
+         }
+         else if(res && res.data === 2){
+           Taro.navigateTo({
+             // url:`/pages/report/home/index?invokeCode=${equity.reportNo}`
+             url:`/pages/report/report_results/index?reportId=${equity.equitit.reportNo}`
+           })
+         }
+         else {
+           Taro.showToast({
+             title:'风控自查无法使用，已过期'
+           })
+         }
+       }
+     })
+   }
+   else if(type === '1'){
+    Taro.navigateTo({
+      url: '/' + equity.jump.jumpUrl1
+    })
+   }
+   else if(type === '2'){
+     Taro.navigateTo({
+       url: '/' + equity.jump.jumpUrl2
+     })
+   }
+   else if(type === '3'){
+     Taro.navigateTo({
+       url: '/' + equity.jump.jumpUrl3
+     })
+   }
+  }
   render() {
     const tabList = [{ title: '卡劵' }, { title: '权益' }]
-    const { userPlatformCoupon, userShopCoupon } = this.props;
+    const { userPlatformCoupon, userShopCoupon , equity,  loading,} = this.props;
     const { display } = this.state;
     const systemInfo = Taro.getSystemInfoSync();
     let fixedHeight = 0;
@@ -59,6 +104,7 @@ class Coupon extends Component {
       fixedHeight = fixedHeight + 30;
     }
     const scrollHeight = Taro.getSystemInfoSync().windowHeight - fixedHeight;
+    loading ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
     return (
       <AtTabs current={this.state.current} tabList={tabList} onClick={this.handleClick.bind(this)}>
         <AtTabsPane current={this.state.current} index={0} >
@@ -82,7 +128,27 @@ class Coupon extends Component {
           </ScrollView>
         </AtTabsPane>
         <AtTabsPane current={this.state.current} index={1}>
-          123
+          <ScrollView
+            className='coupon-page'
+            scrollY
+            scrollWithAnimation
+            scrollTop='0'
+            style={`height: ${scrollHeight}px;`}
+            onScrollToLower={this.onScrollToLower}
+          >
+            {
+              equity &&  equity.status!==1?
+                ( <Equity
+                  data={equity}
+                  onClick={this.goEquityClick}
+                />
+                )
+                :
+                (
+                  <NoData type='equity' display={display} />
+                )
+            }
+          </ScrollView>
         </AtTabsPane>
       </AtTabs>
     )

@@ -1,0 +1,77 @@
+
+@import "../../../../styles/mixin";
+
+    .shop-list{
+      @include wh(664px,212px);
+      margin: 15px auto 0 auto;
+      box-shadow: 0 1px 4px 2px rgba(190,190,190,0.91);
+      border-radius: 10px;
+      padding: 15px;
+      .item{
+        display: flex;
+        .item-img{
+          @include wh(212px,212px);
+          background:#D8D8D8;
+          .img{
+            @include wh(212px,212px);
+          }
+        }
+        .item-text{
+          @include wh(400px,212px);
+          margin-left: 20px;
+          .text-bold{
+            font-size: 28px;
+            color: #333333;
+            letter-spacing: 0.93px;
+            font-weight: bolder;
+            width: 450px;
+            overflow: hidden;/*超出部分隐藏*/
+            text-overflow:ellipsis;/* 超出部分显示省略号 */
+            white-space: nowrap;/*规定段落中的文本不进行换行 */
+          }
+          .text-shallow{
+            margin-top: 8px;
+            font-size: 26px;
+            color: #848A8E;
+            letter-spacing: 0.87px;
+          }
+          .text-time{
+            margin-top: 20px;
+            text-align: right;
+            font-size: 24px;
+            color: #848A8E;
+            letter-spacing: 0.86px;
+          }
+          .text-beans{
+            font-size: 30px;
+            color: #FC766B;
+            letter-spacing: 1px;
+            font-weight: bolder;
+          }
+          .text-sales{
+            @include wh(420px,auto);
+            @include fj(space-between);
+            align-items: center;
+            .sales{
+              font-size: 24px;
+              color: #848A8E;
+              letter-spacing: 0.86px;
+              margin-top: 30px;
+            }
+            .exchange{
+              .exchange_btn{
+                @include wh(155px,55px);
+                font-size: 28px;
+                letter-spacing: 1.17px;
+                color: #FFFFFF;
+                background-image: linear-gradient(0deg, #FFA29B 0%, #FF574A 46%, #FFAAA2 93%);
+                border-radius: 10px;
+                text-align: center;
+                line-height: 55px;
+              }
+            }
+          }
+        }
+      }
+    }
+
