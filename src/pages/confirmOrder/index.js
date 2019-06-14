@@ -211,7 +211,8 @@ class Confirmorder extends Component {
           )}
           <View className='item'>
             <View className='text'>运费</View>
-            <View className='price'>￥{priceList.logisticPrice}</View>
+            {/*<View className='price'>￥{priceList.logisticPrice}</View>*/}
+            <View className='price'>到付</View>
           </View>
           {additionalServices && additionalServices.length && (
             <View>
