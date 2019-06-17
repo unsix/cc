@@ -21,7 +21,7 @@ import './index.scss';
 }))
 class Productdetail extends Component {
   config = {
-    navigationBarTitleText: '商品详情',
+    navigationBarTitleText: '惠租',
     usingComponents: {
       "popup": "../../npm/mini-antui/es/popup/index",
       "modal": "../../npm/mini-antui/es/modal/index"
@@ -792,6 +792,7 @@ class Productdetail extends Component {
           <View slot='header'>联系客服</View>
           <View style={{ textAlign: 'left', marginBottom: '10px', paddingLeft: '15px' }}>商家客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectService.bind(this, detail.shop.serviceTel)}>{detail.shop.serviceTel}</Text></View>
           <View style={{ textAlign: 'left', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectService.bind(this, customerServiceTel)}>{customerServiceTel}</Text></View>
+          <View style={{ textAlign: 'left', paddingLeft: '15px' }}>工作时间：<Text style={{ color: '#51A0F9' }} >工作时间 10:30 - 19:30</Text></View>
           <View slot='footer'>取消拨打</View>
         </modal>
 

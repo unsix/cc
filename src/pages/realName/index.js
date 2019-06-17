@@ -111,24 +111,41 @@ class Realname extends Component {
       this.showToast('请输入18位身份证号码');
       return;
     }
-    if (!mobile || mobile.length !== 11) {
-      this.showToast('请输入正确的手机号');
-      return;
+    if(!getTelephone()){
+      if (!mobile || mobile.length !== 11) {
+        this.showToast('请输入正确的手机号');
+        return;
+      }
+      if (!smsCode) {
+        this.showToast('请输入短信验证码');
+        return;
+      }
     }
-    if (!smsCode) {
-      this.showToast('请输入短信验证码');
-      return;
+    if(getTelephone()){
+      dispatch({
+        type: 'realName/userCertificationAuth',
+        payload: {
+          userName, idcard, codeTime, codeKey,
+          // mobile:getTelephone(),
+          uid: getUid(),
+        },
+        callback: () => {
+          Taro.navigateBack();
+        },
+      });
     }
-    dispatch({
-      type: 'realName/userCertificationAuth',
-      payload: {
-        userName, idcard, mobile, smsCode, codeTime, codeKey,
-        uid: getUid(),
-      },
-      callback: () => {
-        Taro.navigateBack();
-      },
-    });
+    else {
+      dispatch({
+        type: 'realName/userCertificationAuth',
+        payload: {
+          userName, idcard, mobile, smsCode, codeTime, codeKey,
+          uid: getUid(),
+        },
+        callback: () => {
+          Taro.navigateBack();
+        },
+      });
+    }
   }
 
 
@@ -150,40 +167,55 @@ class Realname extends Component {
               <View>身份证</View>
               <Input className='content-item-input' placeholder='请输入18位身份证号' name='idcard' />
             </View>
-            <View className='content-item'>
-              <View>手机号</View>
-              <Input className='content-item-input' placeholder='请输入手机号' value={getTelephone()} name='mobile' onInput={this.handleMobile} />
-            </View>
-            <View className='content-item'>
-              <View>图形验证码</View>
-              <View className='content-item-inner' style={{ flexGrow: 1 }}>
-                <Input style={{ width: '1.5rem' }} className='content-item-inner-input' placeholder='请输入' onInput={this.handleValidateCode} />
-                <Image
-                  className='content-item-inner-image'
-                  mode='aspectFit'
-                  src={validateImage}
-                />
-                <View onClick={this.reloadValidate}>
-                  <am-icon type='reload' size={22} color='#FC766B' />
-                </View>
+            {!getTelephone()?
+              (
+                <View className='content-item'>
+                <View>手机号</View>
+                <Input className='content-item-input' placeholder='请输入手机号' value={getTelephone()} name='mobile' onInput={this.handleMobile} />
               </View>
-            </View>
-            <View className='content-item' style={{ borderBottom: 0 }}>
-              <View>短信验证码</View>
-              <View className='content-item-inner' style={{ flexGrow: 1 }}>
-                <Input
-                  className='content-item-inner-input'
-                  placeholder='请输入短信验证码'
-                  name='smsCode'
-                />
-                {count ? (
-                  <View className='content-item-inner-small'>{count}S</View>
-                ) :
-                  (
-                    <View className='content-item-inner-small' onClick={this.submitSmsCode}>短信验证</View>
-                  )}
-              </View>
-            </View>
+              )
+              :
+              (null)
+            }
+            {
+              !getTelephone()?
+                (
+                  <View>
+                    <View className='content-item'>
+                      <View>图形验证码</View>
+                      <View className='content-item-inner' style={{ flexGrow: 1 }}>
+                        <Input style={{ width: '1.5rem' }} className='content-item-inner-input' placeholder='请输入' onInput={this.handleValidateCode} />
+                        <Image
+                          className='content-item-inner-image'
+                          mode='aspectFit'
+                          src={validateImage}
+                        />
+                        <View onClick={this.reloadValidate}>
+                          <am-icon type='reload' size={22} color='#FC766B' />
+                        </View>
+                      </View>
+                    </View>
+                    <View className='content-item' style={{ borderBottom: 0 }}>
+                      <View>短信验证码</View>
+                      <View className='content-item-inner' style={{ flexGrow: 1 }}>
+                        <Input
+                          className='content-item-inner-input'
+                          placeholder='请输入短信验证码'
+                          name='smsCode'
+                        />
+                        {count ? (
+                            <View className='content-item-inner-small'>{count}S</View>
+                          ) :
+                          (
+                            <View className='content-item-inner-small' onClick={this.submitSmsCode}>短信验证</View>
+                          )}
+                      </View>
+                    </View>
+                 </View>
+                )
+                :
+                null
+            }
           </View>
           {/* <View className='forget'>忘记<Text className='forget-text'>服务密码?</Text></View> */}
           <Button className='bottom-button' formType='submit'>提交</Button>

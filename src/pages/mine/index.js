@@ -5,6 +5,7 @@ import { AtIcon, AtBadge } from 'taro-ui'
 import Card from './components/card/index';
 import menuList from './menu.js';
 import './index.scss';
+import { customerServiceTel } from '../../assets/Constant';
 import MemberCard from '../../images/mine/member_card.png'
 @connect(({ mine, loading }) => ({
   ...mine,
@@ -13,8 +14,21 @@ import MemberCard from '../../images/mine/member_card.png'
 class Mine extends Component {
   config = {
     navigationBarTitleText: '我的',
+    usingComponents: {
+      "modal": "../../npm/mini-antui/es/modal/index"
+    }
   };
+  state = {
+    showServicePhone: false,
+  }
+  //联系客服弹窗
+  onClosePhoneModal = () => {
+    this.setState({ showServicePhone: false });
+  }
 
+  onShowPhoneModal = () => {
+    this.setState({ showServicePhone: true });
+  }
   componentDidShow = () => {
     const { dispatch } = this.props;
     dispatch({
@@ -63,6 +77,7 @@ class Mine extends Component {
   }
   render() {
     const { nickName, avatar, isCertified, loading, productList, statusNumInfo } = this.props;
+    const { showServicePhone } = this.state;
     const menuNumList = menuList.map(menu => {
       const newMenu = { ...menu };
       if (menu.cname === 'settle') {
@@ -133,10 +148,10 @@ class Mine extends Component {
             <Text className='text'>收货地址</Text>
             <AtIcon value='chevron-right' size='18' color='#cccccc' />
           </View>
-          {/*<View onClick={this.member} className='mine-page-order-other'>*/}
-          {/*  <Text className='text'>开通会员</Text>*/}
-          {/*  <AtIcon value='chevron-right' size='18' color='#cccccc' />*/}
-          {/*</View>*/}
+          <View  onClick={this.onShowPhoneModal} className='mine-page-order-other' >
+            <Text className='text'>联系客服</Text>
+            <AtIcon value='chevron-right' size='18' color='#cccccc' />
+          </View>
         </View>
         <View className='mine-page-recommend'>
           <View className='header'>
@@ -159,6 +174,17 @@ class Mine extends Component {
         {/*<View className='member_card' onClick={this.member}>*/}
         {/*  <Image  className='img' src={MemberCard} />*/}
         {/*</View>*/}
+        <modal
+          show={showServicePhone}
+          showClose={false}
+          onModalClick={this.onClosePhoneModal}
+          onModalClose={this.onClosePhoneModal}
+        >
+          <View slot='header'>联系客服</View>
+          <View style={{ textAlign: 'left', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectService.bind(this,customerServiceTel )}>{customerServiceTel}</Text></View>
+          <View style={{ textAlign: 'left', paddingLeft: '15px' }}>工作时间：<Text style={{ color: '#51A0F9' }} > 10:30 - 19:30</Text></View>
+          <View slot='footer'>取消拨打</View>
+        </modal>
       </View>
     )
   }

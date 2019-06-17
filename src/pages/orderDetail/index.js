@@ -195,7 +195,12 @@ class Orderdetail extends Component {
   onClosePhoneModal = () => {
     this.setState({ showServicePhone: false });
   }
-
+  goShop = (val) => {
+    // const shopld = JSON.stringify(val)
+    Taro.navigateTo({
+      url:`/pages/shops/index?shopId=${val}`
+    })
+  }
   render() {
     const { cancelOrderDisplay, receiveDoodsDisplay, modifySettlementDisplay, countDownStr, showServicePhone } = this.state;
     const { cashes, product, userAddress, userOrders, loading } = this.props;
@@ -250,7 +255,7 @@ class Orderdetail extends Component {
         </View>
         <View className='address-bottom' />
         <View className='goods-area'>
-          <View className='shop-info'>
+          <View className='shop-info' onClick={this.goShop.bind(this,product.shop.shopId)}>
             <Image className='img' mode='aspectFit' src={product.shop.logo} />
             <View className='name'>{product.shop.name}</View>
             <AtIcon value='chevron-right' size='20' color='#ccc' />

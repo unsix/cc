@@ -30,6 +30,10 @@ export default {
           payload: 'T',
         });
         callback();
+        Taro.showToast({
+          title:res.msg,
+          icon:'none'
+        })
       }
     },
     * effectsDemo(_, { call, put }) {

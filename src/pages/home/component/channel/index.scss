@@ -65,7 +65,9 @@
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 2;
             overflow: hidden;
-            height: 55px;
+            text-overflow:ellipsis;/* 超出部分显示省略号 */
+            white-space: nowrap;/*规定段落中的文本不进行换行 */
+            height: 60px;
           }
         }
         .desc {

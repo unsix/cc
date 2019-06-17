@@ -79,7 +79,24 @@ class Home extends Component {
   }
 
   handleGotoClassify = (url) => {
-    Taro.navigateTo({ url });
+    if (url.indexOf('alipays://') === 0) {
+      const index = url.indexOf('appId=');
+      const appId = url.substr(index + 6);
+      if(appId==='77700148&query=tabId%3Drent'){
+        my.ap.navigateToAlipayPage({
+          path:'alipays://platformapi/startapp?appId=77700148&query=tabId%3Drent',
+        });
+      }
+      else {
+        my.navigateToMiniProgram({
+          appId,
+        });
+      }
+    }
+    else {
+      Taro.navigateTo({ url });
+    }
+
   }
   formSubmit = (e) => {
     let formId = e.detail.formId

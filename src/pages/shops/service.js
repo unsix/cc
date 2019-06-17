@@ -9,7 +9,7 @@ export const demo = (data) => {
 };
 
 export const selectShopProductList = data => Request({
-  url: 'aliPay/product/selectShopProductList',
+  url: 'aliPay/product/selectShopProductListAndShop',
   method: 'GET',
   data,
 });

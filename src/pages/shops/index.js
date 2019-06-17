@@ -128,6 +128,7 @@ class Shops extends Component {
           <View slot='header'>联系客服</View>
           <View style={{ textAlign: 'left', marginBottom: '10px', paddingLeft: '15px' }}>商家客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectService.bind(this, shop.serviceTel)}>{shop.serviceTel}</Text></View>
           <View style={{ textAlign: 'left', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectService.bind(this,customerServiceTel )}>{customerServiceTel}</Text></View>
+          <View style={{ textAlign: 'left', paddingLeft: '15px' }}>工作时间：<Text style={{ color: '#51A0F9' }} >工作时间 10:30 - 19:30</Text></View>
           <View slot='footer'>取消拨打</View>
         </modal>
       </View>
