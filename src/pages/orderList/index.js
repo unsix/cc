@@ -205,8 +205,8 @@ class Orderlist extends Component {
           }
         </ScrollView>
         {!list.length ? (
-          <NoData type='order' display={display} />
-        ) :
+            <NoData type='order' display={display} />
+          ) :
           (
             <ScrollView
               scrollY

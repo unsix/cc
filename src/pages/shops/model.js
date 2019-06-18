@@ -20,12 +20,20 @@ export default {
         if (payload.fetchType === 'scroll') {
           yield put({
             type: 'concatList',
-            payload: res.data,
+            payload: res.data.productPage,
+          });
+          yield put({
+            type: 'setShop',
+            payload: res.data.shop,
           });
         } else {
           yield put({
             type: 'saveList',
-            payload: { data: res.data, queryInfo: payload },
+            payload: { data: res.data.productPage, queryInfo: payload },
+          });
+          yield put({
+            type: 'setShop',
+            payload: res.data.shop,
           });
         }
       }

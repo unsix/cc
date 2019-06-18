@@ -201,6 +201,12 @@ class Orderdetail extends Component {
       url:`/pages/shops/index?shopId=${val}`
     })
   }
+  handleCancelExpress = () =>{
+    const { orderId } = this.$router.params;
+    Taro.navigateTo({
+      url:`/pages/express/index?orderId=${orderId}`
+    })
+  }
   render() {
     const { cancelOrderDisplay, receiveDoodsDisplay, modifySettlementDisplay, countDownStr, showServicePhone } = this.state;
     const { cashes, product, userAddress, userOrders, loading } = this.props;
@@ -394,6 +400,7 @@ class Orderdetail extends Component {
         {
           userOrders.status === 'WAITING_USER_RECEIVE_CONFIRM' && (
             <View className='end-banner'>
+              <View className='button-bar' onClick={this.handleCancelExpress}>查询物流</View>
               <View className='button-bar' onClick={this.onClickBillDetail}>分期账单</View>
               <View className='button-bar' onClick={this.connectService}>联系客服</View>
               <View className='button-bar-active' onClick={this.onClickReceiveGoods}>确认收货</View>

@@ -19,6 +19,7 @@ import unclaimed from '../pages/active_pages/unclaimedText/model';
 import claimed from '../pages/active_pages/unclaimed/model';
 import reportHome from  '../pages/report/home/model'
 import members from  '../pages/member/model'
+import express from  '../pages/express/model'
 export default [
   home,
   orderDetail,
@@ -40,5 +41,6 @@ export default [
   unclaimed,
   claimed,
   reportHome,
-  members
+  members,
+  express
 ]

@@ -1,7 +1,6 @@
 import Taro, { Component} from '@tarojs/taro'
 import { View, Image,  Button, Text, ScrollView } from '@tarojs/components'
 import { AtModal, AtModalContent, AtNoticebar, AtTabsPane } from 'taro-ui'
-import { formatStrDate } from '../../../utils/utils'
 import { connect } from '@tarojs/redux'
 import './index.scss'
 // import {formatStrDate} from '../../utils/utils'

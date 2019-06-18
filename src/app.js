@@ -57,7 +57,8 @@ class App extends Component {
       'pages/member/orderExchange/index',
       'pages/idcard/index',
       'pages/webview/xieyi',
-      'pages/webview/vipment'
+      'pages/webview/vipment',
+      'pages/express/index'
     ],
     window: {
       titleBarColor: '#fff',

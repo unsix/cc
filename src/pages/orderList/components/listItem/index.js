@@ -36,6 +36,11 @@ class ListItem extends Component {
     onClickSendBack(order);
   }
 
+  handleClickExpress = (order) =>{
+   Taro.navigateTo({
+     url:`/pages/express/index?orderId=${order}`
+   })
+  }
   render() {
     const { data } = this.props;
     return (
@@ -79,6 +84,7 @@ class ListItem extends Component {
           )}
           {data.status === 'WAITING_USER_RECEIVE_CONFIRM' && (
             <View className='list-item-content-btn'>
+              <Button className='btn'  onClick={this.handleClickExpress.bind(this, data.orderId)} >查询物流</Button>
               <Button className='btn' onClick={this.handleClickBillDetail.bind(this, data)}>分期账单</Button>
               <Button className='btn careful' onClick={this.handleClickReceiveGoods.bind(this, data.orderId)}>确认收货</Button>
             </View>
