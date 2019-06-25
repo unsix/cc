@@ -58,7 +58,12 @@ class App extends Component {
       'pages/idcard/index',
       'pages/webview/xieyi',
       'pages/webview/vipment',
-      'pages/express/index'
+      'pages/express/index',
+      'pages/Certificates/index',
+      'pages/recharge/index',
+      'pages/deposit/index',
+      'pages/buyout/index',
+      'pages/renewal/index'
     ],
     window: {
       titleBarColor: '#fff',

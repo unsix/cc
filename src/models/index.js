@@ -20,6 +20,9 @@ import claimed from '../pages/active_pages/unclaimed/model';
 import reportHome from  '../pages/report/home/model'
 import members from  '../pages/member/model'
 import express from  '../pages/express/model'
+import recharge from  '../pages/recharge/model'
+import certificate from  '../pages/Certificates/model'
+import deposit from  '../pages/deposit/model'
 export default [
   home,
   orderDetail,
@@ -42,5 +45,8 @@ export default [
   claimed,
   reportHome,
   members,
-  express
+  express,
+  recharge,
+  certificate,
+  deposit
 ]

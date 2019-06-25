@@ -169,13 +169,18 @@ class Realname extends Component {
             </View>
             {!getTelephone()?
               (
-                <View className='content-item'>
+              <View className='content-item'>
                 <View>手机号</View>
                 <Input className='content-item-input' placeholder='请输入手机号' value={getTelephone()} name='mobile' onInput={this.handleMobile} />
               </View>
               )
               :
-              (null)
+              (
+                <View className='content-item'>
+                  <View>已绑定手机号</View>
+                  <Input className='content-item-input' placeholder='请输入手机号' value={getTelephone()} name='mobile' disabled />
+                </View>
+              )
             }
             {
               !getTelephone()?

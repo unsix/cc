@@ -9,6 +9,7 @@ import CancelOrder from '../../components/cancelOrder';
 
 import nav from './nav';
 import './index.scss';
+import { customerServiceTel } from '../../assets/Constant'
 
 @connect(({ orderList, loading }) => ({
   ...orderList,
@@ -17,6 +18,9 @@ import './index.scss';
 class Orderlist extends Component {
   config = {
     navigationBarTitleText: '全部订单',
+    usingComponents: {
+      "modal": "../../npm/mini-antui/es/modal/index"
+    }
   };
 
   state = {
@@ -24,6 +28,10 @@ class Orderlist extends Component {
     display: 'block', // none -> 没数据隐藏
     cancelOrderDisplay: false,
     receiveDoodsDisplay: false,
+    showServicePhone:false
+    // position: 'bottomLeft',
+    // show: false,
+    // showMask: true,
   }
 
   componentDidMount = () => {
@@ -136,11 +144,7 @@ class Orderlist extends Component {
   }
 
   onClickFrezzAgain = (orderId) => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'orderDetail/userFrezzAgain',
-      payload: { orderId },
-    });
+    Taro.navigateTo({ url: `/pages/orderDetail/index?orderId=${orderId}` });
   }
 
   onClickReceiveGoods = (orderId) => {
@@ -179,8 +183,50 @@ class Orderlist extends Component {
     this.setState({ receiveDoodsDisplay: false, clickedOrderId: null });
   }
 
+  connectService = (val) => {
+    if(val.business){
+      this.setState({
+        serviceTel:val.business,
+        showServicePhone:true
+      }
+      // ,()=>{
+      //   let num = String(val);
+      //   if (val === 'business'){
+      //     my.makePhoneCall({ number:serviceTel });
+      //   }
+      //   else {
+      //     my.makePhoneCall({ number:num });
+      //   }
+      // }
+      )
+    }
+    // const { serviceTel } = this.state
+  }
+  connectServices = (val) => {
+      const { serviceTel } = this.state
+      let num = String(val);
+      if (val === 'business'){
+        my.makePhoneCall({ number:serviceTel });
+      }
+      else {
+        my.makePhoneCall({ number:num });
+      }
+  }
+  // onMaskClick = () => {
+  //   this.setState({
+  //     show: false,
+  //   })
+  // }
+  onShowPopoverTap = () => {
+    this.setState({
+      show: true,
+    })
+  }
+  onClosePhoneModal = () => {
+    this.setState({ showServicePhone: false });
+  }
   render() {
-    const { type, display, cancelOrderDisplay, receiveDoodsDisplay } = this.state;
+    const { type, display, cancelOrderDisplay, receiveDoodsDisplay,showServicePhone ,serviceTel} = this.state;
     const { list, loading } = this.props;
     const systemInfo = Taro.getSystemInfoSync();
     let fixedHeight = 43;
@@ -197,7 +243,12 @@ class Orderlist extends Component {
             nav.map(item => {
               return (
                 <View onClick={this.switchTab.bind(this, item)} key={item.id} id={item.id} className='order-list-nav-container'>
-                  <Text className='text'>{item.text}</Text>
+                  <Text
+                    // className='text'
+                    className={`text ${type === item.id && 'text-active'}`}
+                  >
+                    {item.text}
+                  </Text>
                   {type === item.id && <View className='border-bottom'></View>}
                 </View>
               )
@@ -215,16 +266,18 @@ class Orderlist extends Component {
               style={`height: ${scrollHeight}px;`}
               onScrollToLower={this.onScrollToLower}
             >
-              {list.map(data => (
+              {list.map((data,show) => (
                 <ListItem
                   key={data.orderId}
                   data={data}
+                  show={show}
                   onClickItem={this.onClickItem}
                   onClickCancelOrder={this.onClickCancelOrder}
                   onClickBillDetail={this.onClickBillDetail}
                   onClickFrezzAgain={this.onClickFrezzAgain}
                   onClickReceiveGoods={this.onClickReceiveGoods}
                   onClickSendBack={this.onClickSendBack}
+                  onClickService={this.connectService}
                 />
               ))}
             </ScrollView>
@@ -244,6 +297,18 @@ class Orderlist extends Component {
             <Button className='conform' onClick={this.handleOkGoods}>确定</Button>
           </AtModalAction>
         </AtModal>
+        <modal
+          show={showServicePhone}
+          showClose={false}
+          onModalClick={this.onClosePhoneModal}
+          onModalClose={this.onClosePhoneModal}
+        >
+          <View slot='header'>联系客服</View>
+          <View style={{ textAlign: 'left', marginBottom: '10px', paddingLeft: '15px' }}>商家客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectServices.bind(this,'business')}>{serviceTel}</Text></View>
+          <View style={{ textAlign: 'left', marginBottom: '10px', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectServices.bind(this, customerServiceTel)}>{customerServiceTel}</Text></View>
+          <View style={{ textAlign: 'left', paddingLeft: '15px' }}>工作时间：<Text style={{ color: '#777' }} >10:30 - 19:30</Text></View>
+          <View slot='footer'>取消拨打</View>
+        </modal>
       </View>
     )
   }

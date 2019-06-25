@@ -1,0 +1,17 @@
+@import "../../styles/mixin";
+.container-deposit{
+
+  .item{
+    box-sizing: border-box;
+    @include wh(100%,100px);
+    @include fj(space-between);
+    padding:10px 60px;
+    line-height: 40px;
+    border-bottom: 1px solid #eee;
+  }
+}
+
+.no-data{
+  @include wh(600px,300px);
+  margin: 0 auto;
+}

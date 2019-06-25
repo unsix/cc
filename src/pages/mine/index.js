@@ -6,7 +6,6 @@ import Card from './components/card/index';
 import menuList from './menu.js';
 import './index.scss';
 import { customerServiceTel } from '../../assets/Constant';
-import MemberCard from '../../images/mine/member_card.png'
 @connect(({ mine, loading }) => ({
   ...mine,
   loading: loading.models.mine,
@@ -63,6 +62,7 @@ class Mine extends Component {
         url: `/pages/${id}/index`
       })
     }
+
   }
 
   gotoProductDetail = (itemId) => {
@@ -75,8 +75,13 @@ class Mine extends Component {
       url: '/pages/member/index'
     })
   }
+  //客服
+  connectService = (number) => {
+    let num = String(number);
+    my.makePhoneCall({ number:num });
+  }
   render() {
-    const { nickName, avatar, isCertified, loading, productList, statusNumInfo } = this.props;
+    const { nickName, avatar, isCertified, loading, productList, statusNumInfo ,idCardPhotoStatus} = this.props;
     const { showServicePhone } = this.state;
     const menuNumList = menuList.map(menu => {
       const newMenu = { ...menu };
@@ -92,6 +97,7 @@ class Mine extends Component {
       }
       return newMenu;
     });
+    console.log(idCardPhotoStatus)
     // eslint-disable-next-line no-undef
     loading ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
     return (
@@ -144,12 +150,25 @@ class Mine extends Component {
                 <Text className='text' style={{ color: '#999999' }}>已实名</Text>
               )}
           </View>
-          <View onClick={this.skipOtherPage.bind(this, 'address')} className='mine-page-order-other'>
-            <Text className='text'>收货地址</Text>
-            <AtIcon value='chevron-right' size='18' color='#cccccc' />
-          </View>
           <View  onClick={this.onShowPhoneModal} className='mine-page-order-other' >
             <Text className='text'>联系客服</Text>
+            <AtIcon value='chevron-right' size='18' color='#cccccc' />
+          </View>
+          <View onClick={this.skipOtherPage.bind(this, 'Certificates')} className='mine-page-order-other'>
+            <Text className='text'>身份信息</Text>
+            {idCardPhotoStatus === 0? (
+                <AtIcon value='chevron-right' size='18' color='#cccccc' />
+              ) :
+              (
+                <Text className='text' style={{ color: '#999999' }}>已上传</Text>
+              )}
+          </View>
+          <View onClick={this.skipOtherPage.bind(this, 'recharge')} className='mine-page-order-other'>
+            <Text className='text'>押金充值</Text>
+            <AtIcon value='chevron-right' size='18' color='#cccccc' />
+          </View>
+          <View onClick={this.skipOtherPage.bind(this, 'address')} className='mine-page-order-other'>
+            <Text className='text'>收货地址</Text>
             <AtIcon value='chevron-right' size='18' color='#cccccc' />
           </View>
         </View>
@@ -181,8 +200,8 @@ class Mine extends Component {
           onModalClose={this.onClosePhoneModal}
         >
           <View slot='header'>联系客服</View>
-          <View style={{ textAlign: 'left', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectService.bind(this,customerServiceTel )}>{customerServiceTel}</Text></View>
-          <View style={{ textAlign: 'left', paddingLeft: '15px' }}>工作时间：<Text style={{ color: '#51A0F9' }} > 10:30 - 19:30</Text></View>
+          <View style={{ textAlign: 'left', paddingLeft: '15px',marginBottom: '10px',marginTop: '10px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectService.bind(this,customerServiceTel )}>{customerServiceTel}</Text></View>
+          <View style={{ textAlign: 'left', paddingLeft: '15px' }}>工作时间：<Text style={{ color: '#777' }} >10:30 - 19:30</Text></View>
           <View slot='footer'>取消拨打</View>
         </modal>
       </View>

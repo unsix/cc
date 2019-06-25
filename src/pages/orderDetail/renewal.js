@@ -3,7 +3,7 @@ import { View, Text, Image, Button } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import { AtIcon, AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
 
-import { formatDate, leftTimer, leftTimerMS ,transdate} from '../../utils/utils';
+import { formatDate, leftTimer, leftTimerMS } from '../../utils/utils';
 import { orderStatus, customerServiceTel } from '../../assets/Constant';
 
 import CancelOrder from '../../components/cancelOrder';
@@ -14,9 +14,9 @@ import './index.scss';
   ...orderDetail,
   loading: loading.models.orderDetail,
 }))
-class Orderdetail extends Component {
+class ReneWal extends Component {
   config = {
-    navigationBarTitleText: '订单详情页',
+    navigationBarTitleText: '买断',
     'usingComponents': {
       "am-icon": "../../npm/mini-antui/es/am-icon/index",
       "popover": "../../npm/mini-antui/es/popover/index",
@@ -30,9 +30,6 @@ class Orderdetail extends Component {
     receiveDoodsDisplay: false, // 确认收货模块显示
     modifySettlementDisplay: false, // 确认修改结算单模块显示
     showServicePhone: false,//model客服
-    position: 'topLeft',
-    show: false,
-    showMask: true,
   }
 
   componentDidMount = () => {
@@ -146,27 +143,7 @@ class Orderdetail extends Component {
       },
     });
   }
-  onMaskClick = () => {
-    this.setState({
-      show: false,
-    })
-  }
-  onShowPopoverTap = () => {
-    const { onShowPopoverTap } = this.props;
-    onShowPopoverTap();
-    this.setState({
-      show: true,
-    })
-  }
-  // connectService = (number) => {
-  //   let { serviceTel } = this.props.data
-  //   console.log(serviceTel)
-  //   let num = String(serviceTel);
-  //   my.makePhoneCall({ number:num });
-  //   // const { connectService } = this.props;
-  //   // connectService(number);
-  //
-  // }
+
   connectService = () => {
     this.setState({
       showServicePhone: true
@@ -184,9 +161,8 @@ class Orderdetail extends Component {
     //   },
     // });
   }
-  connectServices = (val) => {
-    let num = String(val);
-    my.makePhoneCall({ number: val });
+  connectServices = () => {
+    my.makePhoneCall({ number: customerServiceTel });
   }
 
   handleHelpDJ = () => {
@@ -237,46 +213,13 @@ class Orderdetail extends Component {
       url:`/pages/express/index?orderId=${orderId}`
     })
   }
-  againBuy = (type) => {
-    const { orderId } = this.$router.params;
-    if(type === 'buyout'){
-      Taro.navigateTo({
-        url:`/pages/buyout/index?orderId=${orderId}`
-      })
-    }
-    else {
-      Taro.navigateTo({
-        url:`/pages/renewal/index?orderId=${orderId}`
-      })
-    }
-  }
-  connectBService = (number) => {
-    let { serviceTel } = this.props.data
-    console.log(serviceTel)
-    let num = String(serviceTel);
-    my.makePhoneCall({ number:num });
-    // const { connectService } = this.props;
-    // connectService(number);
-
-  }
-  connectPService = () =>{
-    my.makePhoneCall({ number:customerServiceTel });
-  }
   render() {
-    const { cancelOrderDisplay, receiveDoodsDisplay, modifySettlementDisplay, countDownStr, showServicePhone , position,  show , showMask} = this.state;
+    const { cancelOrderDisplay, receiveDoodsDisplay, modifySettlementDisplay, countDownStr, showServicePhone } = this.state;
     const { cashes, product, userAddress, userOrders, loading } = this.props;
     const createTiemStr = userOrders.createTime && formatDate(new Date(userOrders.createTimeStr), 'yyyy年MM月dd hh:mm');
     const rentStartStr = userOrders.rentStart && formatDate(new Date(userOrders.rentStartStr), 'yyyy年MM月dd');
     const unrentTimeStr = userOrders.unrentTime && formatDate(new Date(userOrders.unrentTimeStr), 'yyyy年MM月dd');
-    const rentStartStrs =  formatDate(new Date(userOrders.unrentTimeStr), 'yyyy-MM-dd hh:mm');
-    const newTime  =  formatDate(new Date(), 'yyyy-MM-dd hh:mm');
-    let dueTime = transdate(rentStartStrs)-transdate(newTime)
-    console.log(newTime,rentStartStrs)
-    console.log(transdate(rentStartStrs)-transdate(newTime))
     console.log(leftTimer('2019-06-15 '))
-    // console.log(transdate(userOrders.rentStart) - transdate('2019-06-15'))
-    console.log()
-      // console.log(userOrders.rentStart().getTime())
     const orderStatusInfo = (str, subStr) => {
       let title = orderStatus[str];
       if (subStr === 'USER_APPLICATION_CHANGE_SETTLEMENT') {
@@ -307,19 +250,7 @@ class Orderdetail extends Component {
               <View className='bott-content'>订单{countDownStr}后将自动取消，请尽快支付</View>
             )}
             {userOrders.status === 'WAITING_GIVE_BACK' && (
-              <View className='bott-content'>
-                {dueTime>0?
-                (
-                  <View>
-                    还有{leftTimer(userOrders.unrentTimeStr)}租期结束
-                  </View>
-                    ):(
-                      <View>
-                        租期已结束，请及时归还，如有问题请联系客服
-                      </View>
-                  )
-                }
-              </View>
+              <View className='bott-content'>还有{leftTimer(userOrders.unrentTimeStr)}租期结束</View>
             )}
           </View>
           <View><AtIcon value='chevron-right' color='#fff' /></View>
@@ -352,38 +283,38 @@ class Orderdetail extends Component {
         </View>
         {
           userOrders.status !== 'WAITING_SETTLEMENT' && userOrders.status !== 'WAITING_SETTLEMENT_PAYMENT' ? (
-            <View className='price-area'>
-              {!!cashes.couponPrice && (
-                <View className='gray-info margin-bottom-37'>
-                  <View className='left-text'>优惠券</View><View className='right-text'>-￥{cashes.couponPrice.toFixed(2)}</View>
+              <View className='price-area'>
+                {!!cashes.couponPrice && (
+                  <View className='gray-info margin-bottom-37'>
+                    <View className='left-text'>优惠券</View><View className='right-text'>-￥{cashes.couponPrice.toFixed(2)}</View>
+                  </View>
+                )}
+                <View className='black-info margin-bottom-36'>
+                  <View className='left-text'>第一期租金</View><View className='right-text'>￥{cashes.firtOrderStagsPrice ? cashes.firtOrderStagsPrice.toFixed(2) : '0.00'}</View>
                 </View>
-              )}
-              <View className='black-info margin-bottom-36'>
-                <View className='left-text'>第一期租金</View><View className='right-text'>￥{cashes.firtOrderStagsPrice ? cashes.firtOrderStagsPrice.toFixed(2) : '0.00'}</View>
-              </View>
-              <View className='gray-info margin-bottom-30'>
-                {/*<View className='left-text'>运费</View><View className='right-text'>￥{cashes.freightPrice ? cashes.freightPrice.toFixed(2) : '0.00'}</View>*/}
-                <View className='left-text'>运费</View><View className='right-text'>到付</View>
-              </View>
-              <View className='gray-info margin-bottom-25'>
-                <View className='left-text'>安心服务</View><View className='right-text'>￥{cashes.additionalServicesPrice ? cashes.additionalServicesPrice.toFixed(2) : '0.00'}</View>
-              </View>
-              <View className='black-info margin-bottom-30'>
-                <View className='left-text'>首期实付款</View><View className='right-text'>￥{cashes.actualPayment ? cashes.actualPayment.toFixed(2) : '0.00'}</View>
-              </View>
-              <View className='gray-info margin-bottom-30'>
-                <View className='left-text'>冻结押金</View>
-                <View className='right-text' onClick={this.handleHelpDJ}>
-                  <Text style={{ paddingRight: '5px' }}>￥{cashes.deposit ? cashes.deposit.toFixed(2) : '0.00'}</Text>
-                  <am-icon type='help' size='{{18}}' color='#999' />
+                <View className='gray-info margin-bottom-30'>
+                  {/*<View className='left-text'>运费</View><View className='right-text'>￥{cashes.freightPrice ? cashes.freightPrice.toFixed(2) : '0.00'}</View>*/}
+                  <View className='left-text'>运费</View><View className='right-text'>到付</View>
+                </View>
+                <View className='gray-info margin-bottom-25'>
+                  <View className='left-text'>安心服务</View><View className='right-text'>￥{cashes.additionalServicesPrice ? cashes.additionalServicesPrice.toFixed(2) : '0.00'}</View>
+                </View>
+                <View className='black-info margin-bottom-30'>
+                  <View className='left-text'>首期实付款</View><View className='right-text'>￥{cashes.actualPayment ? cashes.actualPayment.toFixed(2) : '0.00'}</View>
+                </View>
+                <View className='gray-info margin-bottom-30'>
+                  <View className='left-text'>冻结押金</View>
+                  <View className='right-text' onClick={this.handleHelpDJ}>
+                    <Text style={{ paddingRight: '5px' }}>￥{cashes.deposit ? cashes.deposit.toFixed(2) : '0.00'}</Text>
+                    <am-icon type='help' size='{{18}}' color='#999' />
+                  </View>
+                </View>
+                <View className='dividing margin-bottom-30' />
+                <View className='black-info'>
+                  <View className='left-text'>合计支付</View><View className='right-text' style={{ color: '#FC766B' }}>￥{cashes.total ? cashes.total.toFixed(2) : '0.00'}</View>
                 </View>
               </View>
-              <View className='dividing margin-bottom-30' />
-              <View className='black-info'>
-                <View className='left-text'>合计支付</View><View className='right-text' style={{ color: '#FC766B' }}>￥{cashes.total ? cashes.total.toFixed(2) : '0.00'}</View>
-              </View>
-            </View>
-          ) :
+            ) :
             (
               <View>
                 <View className='price-area'>
@@ -430,6 +361,7 @@ class Orderdetail extends Component {
               </View>
             )
         }
+
         <View className='order-info'>
           <View className='gray-info margin-bottom-30'>
             <View className='left-text'>订单编号</View>
@@ -484,30 +416,9 @@ class Orderdetail extends Component {
         {
           userOrders.status === 'WAITING_GIVE_BACK' && (
             <View className='end-banner'>
-              {/*<popover*/}
-              {/*  className='popover'*/}
-              {/*  position={position}*/}
-              {/*  show={show}*/}
-              {/*  showMask={showMask}*/}
-              {/*  onMaskClick={this.onMaskClick}*/}
-              {/*>*/}
-              {/*  <View  onClick={this.onShowPopoverTap}>*/}
-              {/*    <Image className='img' src={require('../../images/order/popover.png')} />*/}
-              {/*  </View>*/}
-              {/*  <View slot='items' >*/}
-              {/*    <popover-item onItemClick={this.connectBService}>*/}
-              {/*      <text>联系商家</text>*/}
-              {/*    </popover-item>*/}
-              {/*    <popover-item  onItemClick={this.connectPService}>*/}
-              {/*      <text>联系平台</text>*/}
-              {/*    </popover-item>*/}
-              {/*  </View>*/}
-              {/*</popover>*/}
+              <View className='button-bar' onClick={this.onClickBillDetail}>分期账单</View>
               <View className='button-bar' onClick={this.connectService}>联系客服</View>
-              <View className='button-bar' onClick={this.onClickSendBack} >提前归还</View>
-              <View className='button-bar-active' onClick={this.onClickBillDetail}>分期账单</View>
-              {/*<View className='button-bar' onClick={this.againBuy.bind(this,'buyout')} >买断</View>*/}
-              {/*<View className='button-bar-active' onClick={this.againBuy.bind(this,'renewal')} >续租</View>*/}
+              <View className='button-bar-active' onClick={this.onClickSendBack}>归还</View>
             </View>
           )
         }
@@ -570,8 +481,7 @@ class Orderdetail extends Component {
         >
           <View slot='header'>联系客服</View>
           <View style={{ textAlign: 'left', marginBottom: '10px', paddingLeft: '15px' }}>商家客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectServices.bind(this, product.shop.serviceTel)}>{product.shop.serviceTel}</Text></View>
-          <View style={{ textAlign: 'left',marginBottom: '10px', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectServices.bind(this, customerServiceTel)}>{customerServiceTel}</Text></View>
-          <View style={{ textAlign: 'left', paddingLeft: '15px' }}>工作时间：<Text style={{ color: '#777' }} >10:30 - 19:30</Text></View>
+          <View style={{ textAlign: 'left', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectServices.bind(this, customerServiceTel)}>{customerServiceTel}</Text></View>
           <View slot='footer'>取消拨打</View>
         </modal>
       </View >
@@ -579,4 +489,4 @@ class Orderdetail extends Component {
   }
 }
 
-export default Orderdetail;
+export default ReneWal;

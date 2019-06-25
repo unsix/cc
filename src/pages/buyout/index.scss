@@ -122,7 +122,7 @@ page {
           }
         }
       }
-    } 
+    }
   }
 
   @mixin lp($color: #999999, $rightSize: 28px, $rightWeight:bold, $leftSize: 28px){
@@ -160,7 +160,7 @@ page {
     .black-info {
       @include lp(#333333, 30px);
     }
-    
+
     .dividing {
       height: 1px;
       border-bottom: 1px #E4E4E4 solid;

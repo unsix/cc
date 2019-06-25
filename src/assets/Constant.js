@@ -1,5 +1,6 @@
 export const customerServiceTel = '15158129875'; // 客服电话
 export const orderStatus = {
+  ORDER_VERDUE:'逾期',
   WAITING_PAYMENT: '待付款',
   USER_OVERTIME_PAYMENT_CLOSED: '支付超时取消',
   USER_DELETE_ORDER: '用户删除订单',

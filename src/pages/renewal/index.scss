@@ -1,0 +1,72 @@
+@import "../../styles/mixin";
+.container_cer{
+  @include wh(100%,100vh);
+  background: #F5F5F5;
+  font-family: PingFangSC-Regular;
+  padding-top: 1px;
+  .header{
+    box-sizing: border-box;
+    @include wh(669px,100px);
+    background: #FFFFFF;
+    border-radius: 2px;
+    margin: 25px auto 0 auto;
+    font-size: 24px;
+    color: #5D6162;
+    letter-spacing: 0.5px;
+    .text{
+      width: 600px;
+      margin: 0 auto;
+      padding-top: 17px;
+      line-height: 35px;
+      .color {
+        color: #FC766B;
+      }
+    }
+  }
+  .item{
+    display: flex;
+    position: relative;
+    .edit{
+      @include wh(100px,50px);
+      position: absolute;
+      left: 80px;
+      top: 175px;
+      background: #FC766B;
+      border-radius: 42px;
+      color: #fff;
+      text-align: center;
+      line-height: 50px;
+    }
+    .update{
+      @include wh(350px,220px);
+      margin: 0 auto;
+      background: url("http://oss.huizustore.com/86b90ace7f004fe3951a7471325258fb.png");
+      background-size: 100% 100%;
+      display: flex;
+    }
+    .update-img{
+      @include wh(100%,100%);
+    }
+    .update-fir{
+      margin-top: 80px;
+    }
+    .update-sed{
+      margin-top: 80px ;
+    }
+    .update-thr{
+      margin: 80px auto 80px auto;
+    }
+  }
+  .sumbit{
+    @include wh(670px,85px);
+    margin: 0 auto;
+    color: #fff;
+    background: #FC766B;
+    border-radius: 42px;
+    line-height: 85px;
+  }
+.img{
+  @include wh(100px,100px);
+  background: #999;
+  }
+}

@@ -1,11 +1,21 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View, Image, Text, Button } from '@tarojs/components';
-import { AtIcon } from 'taro-ui'
-import { orderStatus } from '../../../../assets/Constant';
+import { orderStatus ,customerServiceTel} from '../../../../assets/Constant';
 import './index.scss';
-
 class ListItem extends Component {
-
+  config = {
+    usingComponents: {
+      "popover": "/npm/mini-antui/es/popover/index",
+      "popover-item": "/npm/mini-antui/es/popover/popover-item/index",
+      // "modal": "../../npm/mini-antui/es/modal/index"
+    }
+  };
+  state = {
+    position: 'bottomLeft',
+    show: false,
+    showMask: true,
+    showServicePhone:false
+  }
   handleClickItem = (orderId) => {
     const { onClickItem } = this.props;
     onClickItem(orderId);
@@ -31,9 +41,21 @@ class ListItem extends Component {
     onClickReceiveGoods(orderId);
   }
 
-  handleClickSendBack = (order) => {
-    const { onClickSendBack } = this.props;
-    onClickSendBack(order);
+  handleClickSendBack = () => {
+    const { onClickSendBack,data } = this.props;
+    onClickSendBack(data);
+    // const { dispatch , data} = this.props;
+    // const product = {
+    //   ...data,
+    // };
+    // const userOrders = {
+    //   orderId: data.orderId,
+    // };
+    // dispatch({
+    //   type: 'sendBack/saveProductAndOrder',
+    //   payload: { product, userOrders },
+    // });
+    // Taro.navigateTo({ url: `/pages/sendBack/index?orderId=${data.orderId}` });
   }
 
   handleClickExpress = (order) =>{
@@ -41,16 +63,80 @@ class ListItem extends Component {
      url:`/pages/express/index?orderId=${order}`
    })
   }
+  onMaskClick = () => {
+    this.setState({
+      show: false,
+    })
+  }
+  onShowPopoverTap = () => {
+    const { onShowPopoverTap } = this.props;
+    onShowPopoverTap();
+    this.setState({
+      show: true,
+    })
+  }
+  connectService = (val) => {
+    let obj = {
+      business:val
+    }
+    // let business = val
+    const { onClickService } = this.props;
+    onClickService(obj)
+    // this.setState({
+    //   showServicePhone: true
+    // })
+    // eslint-disable-next-line no-undef
+    // console.log(customerServiceTel)
+    // my.makePhoneCall({ number: customerServiceTel });
+    // my.confirm({
+    //   title: '联系客服',
+    //   content: '服务时间9:00 - 20:00 ' + { customerServiceTel },
+    //   confirmButtonText: '拨打',
+    //   cancelButtonText: '取消',
+    //   success: () => {
+    //     my.makePhoneCall({ number: customerServiceTel });
+    //   },
+    // });
+  }
+  connectCService = (number) => {
+    let { serviceTel } = this.props.data
+    console.log(serviceTel)
+    let num = String(serviceTel);
+    my.makePhoneCall({ number:num });
+    // const { connectService } = this.props;
+    // connectService(number);
+
+  }
+  connectPService = () =>{
+    my.makePhoneCall({ number:customerServiceTel });
+  }
+  //续租
+  handleClickRenewal = (type) => {
+    const { data } = this.props
+    if(type === 'renewal'){
+      Taro.navigateTo({
+        url:`/pages/buyout/index?orderId=${data.orderId}`
+      })
+    }
+    else {
+      Taro.navigateTo({
+        url:`/pages/renewal/index?orderId=${data.orderId}`
+      })
+    }
+  }
   render() {
     const { data } = this.props;
+    const { showServicePhone , position, show, showMask,} = this.state
+    // console.log(data.serviceTel)
     return (
       <View className='list-item'>
         <View className='list-item-header'>
-          <View>
+          <View className='top'>
+            <Image className='img' src={require('../../../../images/order/time.png')} />
             <Text className='text'>{data.createTime}</Text>
           </View>
-          <View>
-            <Text className='text'>{orderStatus[data.status]}</Text>
+          <View className='top'>
+            <Text className='text text-status'>{orderStatus[data.status]}</Text>
           </View>
         </View>
         <View className='list-item-content'>
@@ -58,17 +144,17 @@ class ListItem extends Component {
             <Image className='img' mode='aspectFit' src={data.images[0].src} />
             <View className='list-item-content-info-box'>
               <View className='title-info'>
-                <View>
+                <View className='title name'>
                   <Text className='name'>{data.productName}</Text>
                 </View>
                 <View className='device-type'>
                   <Text className='name type'>规格：{data.skuTitle}</Text>
                 </View>
-                <View>
-                  <Text className='name'>总租金：<Text>&yen; {data.totalRent}</Text> </Text>
+                <View className='price'>
+                  <Text className='name '>总租金：<Text>&yen; {data.totalRent}</Text> </Text>
                 </View>
               </View>
-              <AtIcon value='chevron-right' size='18' color='#d8d8d8' />
+              {/*<AtIcon value='chevron-right' size='18' color='#d8d8d8' />*/}
             </View>
           </View>
           {data.status === 'WAITING_PAYMENT' && (
@@ -91,8 +177,31 @@ class ListItem extends Component {
           )}
           {data.status === 'WAITING_GIVE_BACK' && (
             <View className='list-item-content-btn'>
-              <Button className='btn' onClick={this.handleClickBillDetail.bind(this, data)}>分期账单</Button>
-              <Button className='btn careful' onClick={this.handleClickSendBack.bind(this, data)}>归还</Button>
+            {/*<popover*/}
+            {/*  className='popover'*/}
+            {/*  position={position}*/}
+            {/*  show={show}*/}
+            {/*  showMask={showMask}*/}
+            {/*  onMaskClick={this.onMaskClick}*/}
+            {/*>*/}
+              <View  onClick={this.onShowPopoverTap}>
+                <Image className='img' src={require('../../../../images/order/popover.png')} />
+              </View>
+              <View slot='items' >
+                <popover-item onItemClick={this.handleClickRenewal}>
+                  <text>买断</text>
+                </popover-item>
+                <popover-item  onItemClick={this.handleClickRenewal}>
+                  <text>续租</text>
+                </popover-item>
+              </View>
+            </popover>
+              {/*<Button className='btn ' onClick={this.handleClickSendBack}>买断</Button>*/}
+              {/*<Button className='btn ' onClick={this.handleClickFrezzAgain.bind(this, data.orderId)}>买断</Button>*/}
+              {/*<Button className='btn ' onClick={this.handleClickRenewal.bind(this, 'renewal')}>续租</Button>*/}
+              <Button className='btn ' onClick={this.connectService.bind(this,data.serviceTel)}>联系客服</Button>
+              <Button className='btn ' onClick={this.handleClickSendBack}>提前归还</Button>
+              <Button className='btn careful' onClick={this.handleClickBillDetail.bind(this, data)}>分期账单</Button>
             </View>
           )}
           {data.status === 'SETTLEMENT_RETURN_CONFIRM_PAY' && (

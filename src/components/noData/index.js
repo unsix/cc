@@ -26,6 +26,9 @@ class NoData extends Component {
         <View className='text-center'>
           <Text className='text'>{type === 'equity' ? '暂无权益可用':null}</Text>
         </View>
+        <View className='text-center'>
+          <Text className='text'>{type === 'deposit' ? '当前无充值记录':null}</Text>
+        </View>
       </View>
     )
   }

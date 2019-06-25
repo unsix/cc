@@ -1,0 +1,132 @@
+@import "../../styles/mixin";
+
+.container_recharge {
+  font-family: PingFangHK-Regular;
+  @include wh(100%,100vh);
+  background: #F5F5F5;
+  .header{
+    @include wh(100%,450px);
+    padding-top: 1px;
+    background-image: linear-gradient(90deg, #FA4E62 0%, #FC766B 100%);
+    position: relative;
+    .title{
+      font-family: PingFangHK-Regular;
+      font-size: 30px;
+      color: #EEC5C2;
+      margin-top: 100px;
+      margin-left: 30px;
+    }
+    .num{
+      color: #fff;
+      font-size: 150px;
+      margin-top: 30px;
+      margin-left: 50px;
+    }
+    .definite{
+      position: absolute;
+      top: 20px;
+      right: 50px;
+      font-size: 32px;
+      color: #FFFFFF;
+      border-radius: 30px;
+      padding: 10px;
+      background: rgba(255,0,0,0.6);
+    }
+  }
+  .content{
+    background: #FFFFFF;
+    .item{
+      @include wh(700px,95px);
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin: 0 auto;
+      box-shadow: 0 1px 0 0 rgba(228,228,228,0.50);
+      .text{
+        font-family: PingFangHK-Regular;
+        margin-left: 10px;
+        font-size: 35px;
+        color: #333333;
+      }
+      .text-go{
+        position: absolute;
+        right: 20px;
+        color: #CACACF;
+        font-size: 32px;
+      }
+      .img{
+        @include wh(53px,39px);
+      }
+    }
+  }
+}
+.query_modal{
+  box-sizing: border-box;
+
+  .at-modal__container{
+    position: absolute;
+    top: 600px;
+    z-index: 213123;
+    @include wh(620px,450px);
+    overflow-y: auto;
+    background: #FFFFFF;
+    box-shadow: 0 0 10px 4px rgba(176,176,176,0.50);
+    border-radius: 22px;
+    border: none;
+    font-size: 32px;
+    color: #333333;
+    .form{
+      text-align: center;
+      .content-item-input{
+        margin-top: 50px;
+        box-shadow: 0 1px 0 0 rgba(228,228,228,0.50);
+        font-size: 25px;
+      }
+    }
+    .close{
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      .img{
+        @include wh(60px,60px)
+      }
+    }
+    .title{
+      font-weight: bold;
+      text-align: center;
+      line-height: 60px;
+    }
+    .titles{
+    }
+    .online{
+      margin-top: 20px;
+      font-size: 25px;
+      line-height: 35px;
+      color: #555;
+    }
+    .con{
+      width: 100%;
+    }
+    .confirm{
+      margin:  80px auto 0 auto;
+      @include wh(300px,76px);
+      background: #FC766B;
+      border-radius: 40px;
+      color: #fff;
+      line-height: 76px;
+
+    }
+  }
+  //AtModalAction改变flex布局
+  .at-modal__footer .at-modal__action{
+    display:block;
+  }
+  //modal header边框
+  .at-modal__header::after{
+    border: none;
+  }
+  //footer边框
+  .at-modal__footer::before{
+    border:none
+  }
+}

@@ -1,6 +1,6 @@
 import Taro, { Component} from '@tarojs/taro'
 import { View, Image,  Button, Text, ScrollView } from '@tarojs/components'
-import { AtModal, AtModalContent, AtNoticebar, AtTabsPane } from 'taro-ui'
+import { AtModal, AtModalContent } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import './index.scss'
 // import {formatStrDate} from '../../utils/utils'
@@ -131,7 +131,6 @@ class Member extends Component{
         })
       }
     })
-
   }
   //关闭温馨提示
   closeTips = ()=>{

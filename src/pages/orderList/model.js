@@ -15,7 +15,7 @@ export default {
 
   effects: {
     * fetchUserOrderList({ payload }, { call, put }) {
-      const res = yield call(orderListApi.userOrderList, { ...payload, uid: getUid() });
+      const res = yield call(orderListApi.userOrderList, { ...payload, uid:getUid() });
       if (res) {
         if (payload.fetchType === 'scroll') {
           yield put({

@@ -99,6 +99,18 @@ export const formatStrDate = (str, fmt) => {
   return fmt;
 }
 
+//日期转时间戳
+export const transdate = (endTime) => {
+  const date = new Date();
+  date.setFullYear(endTime.substring(0, 4));
+  date.setMonth(endTime.substring(5, 7) - 1);
+  date.setDate(endTime.substring(8, 10));
+  date.setHours(endTime.substring(11, 13));
+  date.setMinutes(endTime.substring(14, 16));
+  date.setSeconds(endTime.substring(17, 19));
+  return Date.parse(date) / 1000;
+
+}
 // 倒计时
 export const leftTimer = (dateStr) => {
   if (dateStr) {

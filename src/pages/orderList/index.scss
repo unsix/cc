@@ -1,4 +1,4 @@
-@import "../../styles/mixin";
+  @import "../../styles/mixin";
 
 page {
   background-color: #f7f7f7;
@@ -7,10 +7,10 @@ page {
 .order-list {
   @include wh(100%, 100%);
   &-nav {
-    padding: 0 30px;
-    height: 86px;
-    background: #fff;
-    border-bottom: 1Px solid #eee;
+    padding: 10px 30px;
+    height: 100px;
+    background: #F5F5F5;
+    //border-bottom: 1Px solid #eee;
     @include fj(flex-start);
     box-sizing: border-box;
     // width: 100%;
@@ -22,15 +22,19 @@ page {
       justify-content: center;
       align-items: center;
       .text {
-        padding: 0 26px;
         font-family: PingFangSC-Regular;
-        font-size: 32px;
-        color: #333333;
+        padding: 0 26px;
+        font-size: 30px;
+        color: #404547;
+      }
+      .text-active{
+        color: #FC766B;
+        font-family: PingFangSC-Medium;
       }
       .border-bottom {
         @include cl();
         bottom: 0;
-        width: 100px;
+        width: 56px;
         height: 4px;
         background: #FC766B;
       }

@@ -184,9 +184,8 @@ class Orderdetail extends Component {
     //   },
     // });
   }
-  connectServices = (val) => {
-    let num = String(val);
-    my.makePhoneCall({ number: val });
+  connectServices = () => {
+    my.makePhoneCall({ number: customerServiceTel });
   }
 
   handleHelpDJ = () => {
@@ -250,33 +249,17 @@ class Orderdetail extends Component {
       })
     }
   }
-  connectBService = (number) => {
-    let { serviceTel } = this.props.data
-    console.log(serviceTel)
-    let num = String(serviceTel);
-    my.makePhoneCall({ number:num });
-    // const { connectService } = this.props;
-    // connectService(number);
-
-  }
-  connectPService = () =>{
-    my.makePhoneCall({ number:customerServiceTel });
-  }
   render() {
     const { cancelOrderDisplay, receiveDoodsDisplay, modifySettlementDisplay, countDownStr, showServicePhone , position,  show , showMask} = this.state;
     const { cashes, product, userAddress, userOrders, loading } = this.props;
     const createTiemStr = userOrders.createTime && formatDate(new Date(userOrders.createTimeStr), 'yyyy年MM月dd hh:mm');
     const rentStartStr = userOrders.rentStart && formatDate(new Date(userOrders.rentStartStr), 'yyyy年MM月dd');
     const unrentTimeStr = userOrders.unrentTime && formatDate(new Date(userOrders.unrentTimeStr), 'yyyy年MM月dd');
-    const rentStartStrs =  formatDate(new Date(userOrders.unrentTimeStr), 'yyyy-MM-dd hh:mm');
-    const newTime  =  formatDate(new Date(), 'yyyy-MM-dd hh:mm');
-    let dueTime = transdate(rentStartStrs)-transdate(newTime)
-    console.log(newTime,rentStartStrs)
-    console.log(transdate(rentStartStrs)-transdate(newTime))
+    const rentStartStrs =  formatDate(new Date(userOrders.rentStartStr), 'yyyy-MM-dd hh:mm');
     console.log(leftTimer('2019-06-15 '))
     // console.log(transdate(userOrders.rentStart) - transdate('2019-06-15'))
     console.log()
-      // console.log(userOrders.rentStart().getTime())
+    // console.log(userOrders.rentStart().getTime())
     const orderStatusInfo = (str, subStr) => {
       let title = orderStatus[str];
       if (subStr === 'USER_APPLICATION_CHANGE_SETTLEMENT') {
@@ -308,15 +291,15 @@ class Orderdetail extends Component {
             )}
             {userOrders.status === 'WAITING_GIVE_BACK' && (
               <View className='bott-content'>
-                {dueTime>0?
-                (
-                  <View>
-                    还有{leftTimer(userOrders.unrentTimeStr)}租期结束
-                  </View>
-                    ):(
-                      <View>
-                        租期已结束，请及时归还，如有问题请联系客服
-                      </View>
+                {transdate(rentStartStrs)- Date.parse(new Date())>0?
+                  (
+                    <View>
+                      还有{leftTimer(userOrders.unrentTimeStr)}租期结束
+                    </View>
+                  ):(
+                    <View>
+                      租期已结束，请及时归还，如有问题请联系客服
+                    </View>
                   )
                 }
               </View>
@@ -324,23 +307,23 @@ class Orderdetail extends Component {
           </View>
           <View><AtIcon value='chevron-right' color='#fff' /></View>
         </View>
-        <View className='address-area'>
-          <View className='contact-num'>
-            <Text className='name'>{userAddress.realname}</Text>
-            <Text>{userAddress.telephone}</Text>
-          </View>
-          <View className='content'>
-            <View className='location-img' />
-            <View>{userAddress.provinceStr}{userAddress.cityStr}{userAddress.areaStr}{userAddress.street}</View>
-          </View>
-        </View>
+        {/*<View className='address-area'>*/}
+        {/*  <View className='contact-num'>*/}
+        {/*    <Text className='name'>{userAddress.realname}</Text>*/}
+        {/*    <Text>{userAddress.telephone}</Text>*/}
+        {/*  </View>*/}
+        {/*  <View className='content'>*/}
+        {/*    <View className='location-img' />*/}
+        {/*    <View>{userAddress.provinceStr}{userAddress.cityStr}{userAddress.areaStr}{userAddress.street}</View>*/}
+        {/*  </View>*/}
+        {/*</View>*/}
         <View className='address-bottom' />
         <View className='goods-area'>
-          <View className='shop-info' onClick={this.goShop.bind(this,product.shop.shopId)}>
-            <Image className='img' mode='aspectFit' src={product.shop.logo} />
-            <View className='name'>{product.shop.name}</View>
-            <AtIcon value='chevron-right' size='20' color='#ccc' />
-          </View>
+          {/*<View className='shop-info' onClick={this.goShop.bind(this,product.shop.shopId)}>*/}
+          {/*  <Image className='img' mode='aspectFit' src={product.shop.logo} />*/}
+          {/*  <View className='name'>{product.shop.name}</View>*/}
+          {/*  <AtIcon value='chevron-right' size='20' color='#ccc' />*/}
+          {/*</View>*/}
           <View className='goods-info'>
             <Image className='img'  onClick={this.goProductDetails.bind(this,product.images[0].productId)} mode='aspectFit' src={product.images[0].src} />
             <View className='goods'>
@@ -350,40 +333,42 @@ class Orderdetail extends Component {
             </View>
           </View>
         </View>
+        <View>续租天数</View>
+        <View>续租详情</View>
         {
           userOrders.status !== 'WAITING_SETTLEMENT' && userOrders.status !== 'WAITING_SETTLEMENT_PAYMENT' ? (
-            <View className='price-area'>
-              {!!cashes.couponPrice && (
-                <View className='gray-info margin-bottom-37'>
-                  <View className='left-text'>优惠券</View><View className='right-text'>-￥{cashes.couponPrice.toFixed(2)}</View>
+              <View className='price-area'>
+                {!!cashes.couponPrice && (
+                  <View className='gray-info margin-bottom-37'>
+                    <View className='left-text'>优惠券</View><View className='right-text'>-￥{cashes.couponPrice.toFixed(2)}</View>
+                  </View>
+                )}
+                <View className='black-info margin-bottom-36'>
+                  <View className='left-text'>第一期租金</View><View className='right-text'>￥{cashes.firtOrderStagsPrice ? cashes.firtOrderStagsPrice.toFixed(2) : '0.00'}</View>
                 </View>
-              )}
-              <View className='black-info margin-bottom-36'>
-                <View className='left-text'>第一期租金</View><View className='right-text'>￥{cashes.firtOrderStagsPrice ? cashes.firtOrderStagsPrice.toFixed(2) : '0.00'}</View>
-              </View>
-              <View className='gray-info margin-bottom-30'>
-                {/*<View className='left-text'>运费</View><View className='right-text'>￥{cashes.freightPrice ? cashes.freightPrice.toFixed(2) : '0.00'}</View>*/}
-                <View className='left-text'>运费</View><View className='right-text'>到付</View>
-              </View>
-              <View className='gray-info margin-bottom-25'>
-                <View className='left-text'>安心服务</View><View className='right-text'>￥{cashes.additionalServicesPrice ? cashes.additionalServicesPrice.toFixed(2) : '0.00'}</View>
-              </View>
-              <View className='black-info margin-bottom-30'>
-                <View className='left-text'>首期实付款</View><View className='right-text'>￥{cashes.actualPayment ? cashes.actualPayment.toFixed(2) : '0.00'}</View>
-              </View>
-              <View className='gray-info margin-bottom-30'>
-                <View className='left-text'>冻结押金</View>
-                <View className='right-text' onClick={this.handleHelpDJ}>
-                  <Text style={{ paddingRight: '5px' }}>￥{cashes.deposit ? cashes.deposit.toFixed(2) : '0.00'}</Text>
-                  <am-icon type='help' size='{{18}}' color='#999' />
+                <View className='gray-info margin-bottom-30'>
+                  {/*<View className='left-text'>运费</View><View className='right-text'>￥{cashes.freightPrice ? cashes.freightPrice.toFixed(2) : '0.00'}</View>*/}
+                  <View className='left-text'>运费</View><View className='right-text'>到付</View>
+                </View>
+                <View className='gray-info margin-bottom-25'>
+                  <View className='left-text'>安心服务</View><View className='right-text'>￥{cashes.additionalServicesPrice ? cashes.additionalServicesPrice.toFixed(2) : '0.00'}</View>
+                </View>
+                <View className='black-info margin-bottom-30'>
+                  <View className='left-text'>首期实付款</View><View className='right-text'>￥{cashes.actualPayment ? cashes.actualPayment.toFixed(2) : '0.00'}</View>
+                </View>
+                <View className='gray-info margin-bottom-30'>
+                  <View className='left-text'>冻结押金</View>
+                  <View className='right-text' onClick={this.handleHelpDJ}>
+                    <Text style={{ paddingRight: '5px' }}>￥{cashes.deposit ? cashes.deposit.toFixed(2) : '0.00'}</Text>
+                    <am-icon type='help' size='{{18}}' color='#999' />
+                  </View>
+                </View>
+                <View className='dividing margin-bottom-30' />
+                <View className='black-info'>
+                  <View className='left-text'>合计支付</View><View className='right-text' style={{ color: '#FC766B' }}>￥{cashes.total ? cashes.total.toFixed(2) : '0.00'}</View>
                 </View>
               </View>
-              <View className='dividing margin-bottom-30' />
-              <View className='black-info'>
-                <View className='left-text'>合计支付</View><View className='right-text' style={{ color: '#FC766B' }}>￥{cashes.total ? cashes.total.toFixed(2) : '0.00'}</View>
-              </View>
-            </View>
-          ) :
+            ) :
             (
               <View>
                 <View className='price-area'>
@@ -430,6 +415,7 @@ class Orderdetail extends Component {
               </View>
             )
         }
+
         <View className='order-info'>
           <View className='gray-info margin-bottom-30'>
             <View className='left-text'>订单编号</View>
@@ -484,30 +470,28 @@ class Orderdetail extends Component {
         {
           userOrders.status === 'WAITING_GIVE_BACK' && (
             <View className='end-banner'>
-              {/*<popover*/}
-              {/*  className='popover'*/}
-              {/*  position={position}*/}
-              {/*  show={show}*/}
-              {/*  showMask={showMask}*/}
-              {/*  onMaskClick={this.onMaskClick}*/}
-              {/*>*/}
-              {/*  <View  onClick={this.onShowPopoverTap}>*/}
-              {/*    <Image className='img' src={require('../../images/order/popover.png')} />*/}
-              {/*  </View>*/}
-              {/*  <View slot='items' >*/}
-              {/*    <popover-item onItemClick={this.connectBService}>*/}
-              {/*      <text>联系商家</text>*/}
-              {/*    </popover-item>*/}
-              {/*    <popover-item  onItemClick={this.connectPService}>*/}
-              {/*      <text>联系平台</text>*/}
-              {/*    </popover-item>*/}
-              {/*  </View>*/}
-              {/*</popover>*/}
-              <View className='button-bar' onClick={this.connectService}>联系客服</View>
-              <View className='button-bar' onClick={this.onClickSendBack} >提前归还</View>
-              <View className='button-bar-active' onClick={this.onClickBillDetail}>分期账单</View>
-              {/*<View className='button-bar' onClick={this.againBuy.bind(this,'buyout')} >买断</View>*/}
-              {/*<View className='button-bar-active' onClick={this.againBuy.bind(this,'renewal')} >续租</View>*/}
+              <popover
+                className='popover'
+                position={position}
+                show={show}
+                showMask={showMask}
+                onMaskClick={this.onMaskClick}
+              >
+                <View  onClick={this.onShowPopoverTap}>
+                  <Image className='img' src={require('../../images/order/popover.png')} />
+                </View>
+                <View slot='items' >
+                  <popover-item onItemClick={this.connectService}>
+                    <text>联系商家</text>
+                  </popover-item>
+                  <popover-item  onItemClick={this.onClickSendBack}>
+                    <text>提前归还</text>
+                  </popover-item>
+                </View>
+              </popover>
+              <View className='button-bar' onClick={this.onClickBillDetail}>分期账单</View>
+              <View className='button-bar' onClick={this.againBuy.bind(this,'buyout')} >买断</View>
+              <View className='button-bar-active' onClick={this.againBuy.bind(this,'renewal')} >续租</View>
             </View>
           )
         }
@@ -570,8 +554,7 @@ class Orderdetail extends Component {
         >
           <View slot='header'>联系客服</View>
           <View style={{ textAlign: 'left', marginBottom: '10px', paddingLeft: '15px' }}>商家客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectServices.bind(this, product.shop.serviceTel)}>{product.shop.serviceTel}</Text></View>
-          <View style={{ textAlign: 'left',marginBottom: '10px', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectServices.bind(this, customerServiceTel)}>{customerServiceTel}</Text></View>
-          <View style={{ textAlign: 'left', paddingLeft: '15px' }}>工作时间：<Text style={{ color: '#777' }} >10:30 - 19:30</Text></View>
+          <View style={{ textAlign: 'left', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectServices.bind(this, customerServiceTel)}>{customerServiceTel}</Text></View>
           <View slot='footer'>取消拨打</View>
         </modal>
       </View >

@@ -42,12 +42,18 @@ export const apNsf = (context) => {
       },
       success: (data) => {
         console.log(data)
+        // let objc = {
+        //   uid:getUid(),
+        //   riskResult:data.riskResultDesc,
+        // }
+        let newObj = JSON.parse(data.riskResultDesc)
         my.httpRequest({
           url: baseUrl+'aliPay/user/userrisk',
           data:{
-            key:data,
+            riskResult:Object.keys(newObj)[0],
             uid:getUid()
           },
+          // data: newObj,
           headers:{
             'Content-Type': 'application/json',
           },
