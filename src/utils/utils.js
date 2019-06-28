@@ -108,7 +108,7 @@ export const transdate = (endTime) => {
   date.setHours(endTime.substring(11, 13));
   date.setMinutes(endTime.substring(14, 16));
   date.setSeconds(endTime.substring(17, 19));
-  return Date.parse(date) / 1000;
+  return Date.parse(date)   ;
 
 }
 // 倒计时
@@ -116,10 +116,10 @@ export const leftTimer = (dateStr) => {
   if (dateStr) {
     const date = new Date(dateStr);
     const leftTime = date - (new Date());
-    const days = parseInt(leftTime / 1000 / 60 / 60 / 24, 10); //计算剩余的天数 
-    const hours = parseInt(leftTime / 1000 / 60 / 60 % 24, 10); //计算剩余的小时 
-    const minutes = parseInt(leftTime / 1000 / 60 % 60, 10);//计算剩余的分钟 
-    return `${days+1}天${hours}小时${minutes}分钟`;
+    const days = parseInt(leftTime / 1000 / 60 / 60 / 24, 10); //计算剩余的天数
+    const hours = parseInt(leftTime / 1000 / 60 / 60 % 24, 10); //计算剩余的小时
+    const minutes = parseInt(leftTime / 1000 / 60 % 60, 10);//计算剩余的分钟
+    return `${days}天${hours}小时${minutes}分钟`;
   }
   return '';
 }
@@ -136,4 +136,40 @@ export const leftTimerMS = (dateStr) => {
     const seconds = parseInt(leftTime / 1000 % 60, 10);//计算剩余的秒数 
     return `${minutes}分${seconds}秒`;
   }
+}
+// 日期，在原有日期基础上，增加days天数，默认增加1天
+export const  addDate =(date, days) => {
+  if (days == undefined || days == '') {
+    days = 1;
+  }
+  var date = new Date(date);
+  date.setDate(date.getDate() + days);
+  var month = date.getMonth() + 1;
+  var day = date.getDate();
+  return date.getFullYear() + '-' + getFormatDate(month) + '-' + getFormatDate(day);
+}
+
+// 日期月份/天的显示，如果是1位数，则在前面加上'0'
+function getFormatDate(arg) {
+  if (arg == undefined || arg == '') {
+    return '';
+  }
+
+  var re = arg + '';
+  if (re.length < 2) {
+    re = '0' + re;
+  }
+
+  return re;
+}
+
+export const formatSeconds = (value) => {
+   setInterval(() => {
+    value -= 1;
+
+    if (value === 0) {
+      clearInterval(this.interval);
+    }
+  }, 1000);
+  return value;
 }

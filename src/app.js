@@ -63,7 +63,8 @@ class App extends Component {
       'pages/recharge/index',
       'pages/deposit/index',
       'pages/buyout/index',
-      'pages/renewal/index'
+      'pages/renewal/index',
+      'pages/renewal/confirm'
     ],
     window: {
       titleBarColor: '#fff',

@@ -13,3 +13,8 @@ export const userOrderList = data => Request({
   method: 'POST',
   data,
 });
+export const getSysConfigByKey = data => Request({
+  url: 'aliPay/sysConfig/getSysConfigByKey',
+  method: 'GET',
+  data,
+});

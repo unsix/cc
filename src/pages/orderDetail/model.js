@@ -43,7 +43,20 @@ export default {
         }
       }
     },
-
+    *userCancelOrderSendMsg({ payload, callback }, { call, put }) {
+      const res = yield call(orderDetailApi.userCancelOrderSendMsg, payload);
+      if (res) {
+        if( res.code === 1){
+          Taro.showToast({
+            title:'取消成功',
+            icon:'none'
+          })
+        }
+        if (callback) {
+          callback();
+        }
+      }
+    },
     * userFrezzAgain({ payload }, { call, put }) {
       const res = yield call(orderDetailApi.userFrezzAgain, payload);
       if (res) {
@@ -155,7 +168,8 @@ export default {
 
   reducers: {
     saveOrder(state, { payload }) {
-      return { ...state, ...payload };
+      // return { ...state, ...payload };
+      return  payload ;
     },
     setOrderStatus(state, { payload }) {
       return {

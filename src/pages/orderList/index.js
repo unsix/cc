@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro';
 import { View, ScrollView, Text, Button } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import { AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
-
+import { formatSeconds } from '../../utils/utils'
 import ListItem from './components/listItem/index'
 import NoData from '../../components/noData/index'
 import CancelOrder from '../../components/cancelOrder';
@@ -28,7 +28,26 @@ class Orderlist extends Component {
     display: 'block', // none -> 没数据隐藏
     cancelOrderDisplay: false,
     receiveDoodsDisplay: false,
-    showServicePhone:false
+    showServicePhone:false,
+    canCel:false,
+    examineStatus:null,
+    cancelOrderList:[
+      {
+        value:'想要重新下单',
+      },
+      {
+        value:'商品价格较贵',
+      },
+      {
+        value:'等待时机较长',
+      },
+      {
+        value:'是想了解流程',
+      },
+      {
+        value:'不想要了',
+      }
+    ]
     // position: 'bottomLeft',
     // show: false,
     // showMask: true,
@@ -46,9 +65,18 @@ class Orderlist extends Component {
       if (currentMenu.id === 'overdue') {
         status = ['SETTLEMENT_RETURN_CONFIRM_PAY', 'ORDER_VERDUE'];
       }
+      if (currentMenu.id === 'deliver') {
+        const { dispatch } = this.props
+        dispatch({
+          type:'orderList/getSysConfigByKey',
+          payload:{
+            configKey:'USER_CANCEL_ORDER:HOUR'
+          }
+        })
+      }
     }
     this.setState({ type })
-    const { queryInfo } = this.props;
+    const { queryInfo ,dispatch} = this.props;
     const info = { ...queryInfo, pageNumber: 1 };
     if (type === 'all') {
       delete info.status;
@@ -105,29 +133,59 @@ class Orderlist extends Component {
     this.setDispatch(queryInfo, 'scroll');
   };
 
-  onClickItem = (orderId) => {
-    Taro.navigateTo({ url: `/pages/orderDetail/index?orderId=${orderId}` });
+  onClickItem = (order) => {
+    if(order.type === 2){
+      Taro.navigateTo({ url: `/pages/renewal/index?orderId=${order.orderId}` });
+    }
+    else {
+      Taro.navigateTo({ url: `/pages/orderDetail/index?orderId=${order.orderId}` });
+    }
   }
 
-  onClickCancelOrder = (orderId) => {
-    this.setState({
-      cancelOrderDisplay: true,
-      clickedOrderId: orderId,
-    });
+  onClickCancelOrder = (order) => {
+    if(order.examineStatus === 0){
+      this.setState({
+        cancelOrderDisplay: true,
+        clickedOrderId: order.orderId,
+        examineStatus:order.examineStatus
+      });
+    }
+    else {
+      this.setState({
+        canCel:true
+      })
+    }
   }
 
   handleModalOk = (value) => {
-    const { clickedOrderId } = this.state;
+    if(!value){
+      Taro.showToast({
+        title:'请选择取消原因',
+        icon:'none'
+      })
+      return
+    }
+    const { clickedOrderId , examineStatus} = this.state;
     const { dispatch } = this.props;
-    dispatch({
-      type: 'orderDetail/userCancelOrder',
-      payload: {
-        reason: value,
-        orderId: clickedOrderId,
-      },
-    });
+    if(examineStatus === 0){
+      dispatch({
+        type: 'orderDetail/userCancelOrderSendMsg',
+        payload: {
+          reason: value,
+          orderId: clickedOrderId,
+        }
+      });
+    }
+    else {
+      dispatch({
+        type: 'orderDetail/userCancelOrder',
+        payload: {
+          reason: value,
+          orderId: clickedOrderId,
+        },
+      });
+    }
     this.setState({ cancelOrderDisplay: false });
-
   }
 
   handleModalCancel = () => {
@@ -225,9 +283,14 @@ class Orderlist extends Component {
   onClosePhoneModal = () => {
     this.setState({ showServicePhone: false });
   }
+  oncanCelModal = () => {
+    this.setState({
+      canCel:false
+    })
+  }
   render() {
-    const { type, display, cancelOrderDisplay, receiveDoodsDisplay,showServicePhone ,serviceTel} = this.state;
-    const { list, loading } = this.props;
+    const { type, display, cancelOrderDisplay, receiveDoodsDisplay,showServicePhone ,serviceTel,cancelOrderList,canCel,} = this.state;
+    const { list, loading ,sysConfigValue } = this.props;
     const systemInfo = Taro.getSystemInfoSync();
     let fixedHeight = 43;
     if (systemInfo.model.indexOf('iPhone X') > -1) {
@@ -235,6 +298,15 @@ class Orderlist extends Component {
     }
     const scrollHeight = Taro.getSystemInfoSync().windowHeight - fixedHeight;
     // eslint-disable-next-line no-undef
+    // console.log(formatSeconds(60))
+    let obj = null
+
+    if(sysConfigValue){
+     obj =  {
+        sysConfigValue:sysConfigValue
+      }
+    }
+    console.log(sysConfigValue,obj)
     loading ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
     return (
       <View className='order-list'>
@@ -269,8 +341,9 @@ class Orderlist extends Component {
               {list.map((data,show) => (
                 <ListItem
                   key={data.orderId}
-                  data={data}
+                  data={{...data,...obj}}
                   show={show}
+                  sysConfigValue={sysConfigValue}
                   onClickItem={this.onClickItem}
                   onClickCancelOrder={this.onClickCancelOrder}
                   onClickBillDetail={this.onClickBillDetail}
@@ -286,6 +359,7 @@ class Orderlist extends Component {
           display={cancelOrderDisplay}
           onCancal={this.handleModalCancel}
           onOk={this.handleModalOk}
+          cancelOrderList={cancelOrderList}
         />
         <AtModal isOpened={receiveDoodsDisplay}>
           <AtModalHeader>确认收货？</AtModalHeader>
@@ -308,6 +382,22 @@ class Orderlist extends Component {
           <View style={{ textAlign: 'left', marginBottom: '10px', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectServices.bind(this, customerServiceTel)}>{customerServiceTel}</Text></View>
           <View style={{ textAlign: 'left', paddingLeft: '15px' }}>工作时间：<Text style={{ color: '#777' }} >10:30 - 19:30</Text></View>
           <View slot='footer'>取消拨打</View>
+        </modal>
+        <modal
+          show={canCel}
+          // showClose={false}
+          onModalClick={this.oncanCelModal}
+          onModalClose={this.oncanCelModal}
+          advice={true}
+        >
+          <View  className='cancel-modal'>
+            <View slot='header' className='header'>温馨提示·</View>
+            <View className='content'>
+              退款处理中，预计24小时内操作完成，请耐心等待；
+              如需加急处理，可联系客服：
+            <Text style={{ color: '#51A0F9' }} onClick={this.connectServices.bind(this, customerServiceTel)}>{customerServiceTel}</Text>
+            </View>
+          </View>
         </modal>
       </View>
     )

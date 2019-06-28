@@ -20,6 +20,12 @@ export const userCancelOrder = data => Request({
   data,
 });
 
+export const userCancelOrderSendMsg = data => Request({
+  url: 'aliPay/order/userCancelOrderSendMsg',
+  method: 'POST',
+  data,
+});
+
 export const userFrezzAgain = data => Request({
   url: 'aliPay/order/userFrezzAgain',
   method: 'GET',

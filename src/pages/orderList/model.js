@@ -11,6 +11,7 @@ export default {
     },
     total: 0,
     list: [],
+    sysConfigValue:null
   },
 
   effects: {
@@ -41,13 +42,28 @@ export default {
         });
       }
     },
+    * getSysConfigByKey({ payload }, { call, put }) {
+      const res = yield call(orderListApi.getSysConfigByKey, { ...payload });
+      if (res) {
+        yield put({
+          type: 'sysConfigValue',
+          payload: res.data.sysConfigValue,
+
+        });
+      }
+    },
   },
 
   reducers: {
     save(state, { payload }) {
       return { ...state, ...payload };
     },
-
+    sysConfigValue(state, { payload }) {
+      return {
+        ...state,
+        sysConfigValue:payload
+      };
+    },
     concatOrderList(state, { payload }) {
       const list = [...state.list];
       return {

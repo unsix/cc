@@ -23,6 +23,8 @@ import express from  '../pages/express/model'
 import recharge from  '../pages/recharge/model'
 import certificate from  '../pages/Certificates/model'
 import deposit from  '../pages/deposit/model'
+import renewal from '../pages/renewal/model'
+import buyout from '../pages/buyout/model'
 export default [
   home,
   orderDetail,
@@ -48,5 +50,7 @@ export default [
   express,
   recharge,
   certificate,
-  deposit
+  deposit,
+  renewal,
+  buyout
 ]

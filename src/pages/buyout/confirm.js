@@ -3,20 +3,20 @@ import { View, Text, Image, Button } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import { AtIcon, AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
 
-import { formatDate, leftTimer, leftTimerMS ,transdate } from '../../utils/utils';
+import { formatDate, leftTimer, leftTimerMS ,transdate} from '../../utils/utils';
 import { orderStatus, customerServiceTel } from '../../assets/Constant';
 
 import CancelOrder from '../../components/cancelOrder';
 
 import './index.scss';
 
-@connect(({renewal, loading }) => ({
-  ...renewal,
-  loading: loading.models.renewal,
+@connect(({ orderDetail, loading }) => ({
+  ...orderDetail,
+  loading: loading.models.orderDetail,
 }))
 class Orderdetail extends Component {
   config = {
-    navigationBarTitleText: '订单详情页11',
+    navigationBarTitleText: '订单详情页',
     'usingComponents': {
       "am-icon": "../../npm/mini-antui/es/am-icon/index",
       "popover": "../../npm/mini-antui/es/popover/index",
@@ -39,7 +39,7 @@ class Orderdetail extends Component {
     const { orderId } = this.$router.params;
     const { dispatch } = this.props;
     dispatch({
-      type: 'renewal/selectUserOrderDetail',
+      type: 'orderDetail/selectUserOrderDetail',
       payload: { orderId },
     });
     this.countDown();
@@ -56,7 +56,7 @@ class Orderdetail extends Component {
   handleModalOk = (value) => {
     const { dispatch, userOrders } = this.props;
     dispatch({
-      type: 'renewal/userCancelOrder',
+      type: 'orderDetail/userCancelOrder',
       payload: {
         reason: value,
         orderId: userOrders.orderId,
@@ -76,7 +76,7 @@ class Orderdetail extends Component {
   handleOkGoods = (orderId) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'renewal/userConfirmReceipt',
+      type: 'orderDetail/userConfirmReceipt',
       payload: { orderId },
     });
     this.setState({ receiveDoodsDisplay: false });
@@ -86,7 +86,7 @@ class Orderdetail extends Component {
   onClickFrezzAgain = (orderId) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'renewal/userFrezzAgain',
+      type: 'orderDetail/userFrezzAgain',
       payload: { orderId },
     });
   }
@@ -120,7 +120,7 @@ class Orderdetail extends Component {
   handleOkModifySettlement = (orderId) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'renewal/userApplicationForAmendmentOfSettlementForm',
+      type: 'orderDetail/userApplicationForAmendmentOfSettlementForm',
       payload: { orderId },
     });
     this.setState({ modifySettlementDisplay: false });
@@ -129,7 +129,7 @@ class Orderdetail extends Component {
   onClickConfirmSettlement = (orderId, waitTotalPay) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'renewal/confirmOrderSettlement',
+      type: 'orderDetail/confirmOrderSettlement',
       payload: { orderId, amount: waitTotalPay },
     });
   }
@@ -184,10 +184,8 @@ class Orderdetail extends Component {
     //   },
     // });
   }
-
-  connectServices = (val) => {
-    let num = String(val);
-    my.makePhoneCall({ number: val });
+  connectServices = () => {
+    my.makePhoneCall({ number: customerServiceTel });
   }
 
   handleHelpDJ = () => {
@@ -238,44 +236,18 @@ class Orderdetail extends Component {
       url:`/pages/express/index?orderId=${orderId}`
     })
   }
-  // againBuy = (type) => {
-  //   const { orderId } = this.$router.params;
-  //   if(type === 'buyout'){
-  //     Taro.navigateTo({
-  //       url:`/pages/buyout/index?orderId=${orderId}`
-  //     })
-  //   }
-  //   else {
-  //     Taro.navigateTo({
-  //       url:`/pages/renewal/index?orderId=${orderId}`
-  //     })
-  //   }
-  // }
-  //买断
-  handleClickBuyout = () => {
+  againBuy = (type) => {
     const { orderId } = this.$router.params;
-    Taro.navigateTo({
-      url:`/pages/buyout/confirm?orderId=${orderId}`
-    })
-  }
-  //续租
-  handleClickRenewal = () => {
-    const { orderId } = this.$router.params;
-    Taro.navigateTo({
-      url:`/pages/renewal/confirm?orderId=${orderId}`
-    })
-  }
-  connectBService = (number) => {
-    let { serviceTel } = this.props.data
-    console.log(serviceTel)
-    let num = String(serviceTel);
-    my.makePhoneCall({ number:num });
-    // const { connectService } = this.props;
-    // connectService(number);
-
-  }
-  connectPService = () =>{
-    my.makePhoneCall({ number:customerServiceTel });
+    if(type === 'buyout'){
+      Taro.navigateTo({
+        url:`/pages/buyout/index?orderId=${orderId}`
+      })
+    }
+    else {
+      Taro.navigateTo({
+        url:`/pages/renewal/index?orderId=${orderId}`
+      })
+    }
   }
   render() {
     const { cancelOrderDisplay, receiveDoodsDisplay, modifySettlementDisplay, countDownStr, showServicePhone , position,  show , showMask} = this.state;
@@ -283,11 +255,7 @@ class Orderdetail extends Component {
     const createTiemStr = userOrders.createTime && formatDate(new Date(userOrders.createTimeStr), 'yyyy年MM月dd hh:mm');
     const rentStartStr = userOrders.rentStart && formatDate(new Date(userOrders.rentStartStr), 'yyyy年MM月dd');
     const unrentTimeStr = userOrders.unrentTime && formatDate(new Date(userOrders.unrentTimeStr), 'yyyy年MM月dd');
-    const rentStartStrs =  formatDate(new Date(userOrders.unrentTimeStr ), 'yyyy-MM-dd hh:mm');
-    const newTime  =  formatDate(new Date() , 'yyyy-MM-dd hh:mm');
-    let dueTime = transdate(rentStartStrs)+ 24*60*60*10-transdate(newTime)
-    console.log(rentStartStrs , newTime)
-    console.log(transdate(rentStartStrs)+ 24*60*60*10-transdate(newTime))
+    const rentStartStrs =  formatDate(new Date(userOrders.rentStartStr), 'yyyy-MM-dd hh:mm');
     console.log(leftTimer('2019-06-15 '))
     // console.log(transdate(userOrders.rentStart) - transdate('2019-06-15'))
     console.log()
@@ -323,7 +291,7 @@ class Orderdetail extends Component {
             )}
             {userOrders.status === 'WAITING_GIVE_BACK' && (
               <View className='bott-content'>
-                {dueTime>0?
+                {transdate(rentStartStrs)- Date.parse(new Date())>0?
                   (
                     <View>
                       还有{leftTimer(userOrders.unrentTimeStr)}租期结束
@@ -339,23 +307,23 @@ class Orderdetail extends Component {
           </View>
           <View><AtIcon value='chevron-right' color='#fff' /></View>
         </View>
-        <View className='address-area'>
-          <View className='contact-num'>
-            <Text className='name'>{userAddress.realname}</Text>
-            <Text>{userAddress.telephone}</Text>
-          </View>
-          <View className='content'>
-            <View className='location-img' />
-            <View>{userAddress.provinceStr}{userAddress.cityStr}{userAddress.areaStr}{userAddress.street}</View>
-          </View>
-        </View>
+        {/*<View className='address-area'>*/}
+        {/*  <View className='contact-num'>*/}
+        {/*    <Text className='name'>{userAddress.realname}</Text>*/}
+        {/*    <Text>{userAddress.telephone}</Text>*/}
+        {/*  </View>*/}
+        {/*  <View className='content'>*/}
+        {/*    <View className='location-img' />*/}
+        {/*    <View>{userAddress.provinceStr}{userAddress.cityStr}{userAddress.areaStr}{userAddress.street}</View>*/}
+        {/*  </View>*/}
+        {/*</View>*/}
         <View className='address-bottom' />
         <View className='goods-area'>
-          <View className='shop-info' onClick={this.goShop.bind(this,product.shop.shopId)}>
-            <Image className='img' mode='aspectFit' src={product.shop.logo} />
-            <View className='name'>{product.shop.name}</View>
-            <AtIcon value='chevron-right' size='20' color='#ccc' />
-          </View>
+          {/*<View className='shop-info' onClick={this.goShop.bind(this,product.shop.shopId)}>*/}
+          {/*  <Image className='img' mode='aspectFit' src={product.shop.logo} />*/}
+          {/*  <View className='name'>{product.shop.name}</View>*/}
+          {/*  <AtIcon value='chevron-right' size='20' color='#ccc' />*/}
+          {/*</View>*/}
           <View className='goods-info'>
             <Image className='img'  onClick={this.goProductDetails.bind(this,product.images[0].productId)} mode='aspectFit' src={product.images[0].src} />
             <View className='goods'>
@@ -365,6 +333,8 @@ class Orderdetail extends Component {
             </View>
           </View>
         </View>
+        <View>续租天数</View>
+        <View>续租详情</View>
         {
           userOrders.status !== 'WAITING_SETTLEMENT' && userOrders.status !== 'WAITING_SETTLEMENT_PAYMENT' ? (
               <View className='price-area'>
@@ -445,6 +415,7 @@ class Orderdetail extends Component {
               </View>
             )
         }
+
         <View className='order-info'>
           <View className='gray-info margin-bottom-30'>
             <View className='left-text'>订单编号</View>
@@ -510,20 +481,17 @@ class Orderdetail extends Component {
                   <Image className='img' src={require('../../images/order/popover.png')} />
                 </View>
                 <View slot='items' >
-                  <popover-item onItemClick={this.handleClickBuyout}>
-                    <text>买断</text>
+                  <popover-item onItemClick={this.connectService}>
+                    <text>联系商家</text>
                   </popover-item>
-                  <popover-item  onItemClick={this.handleClickRenewal}>
-                    <text>续租</text>
+                  <popover-item  onItemClick={this.onClickSendBack}>
+                    <text>提前归还</text>
                   </popover-item>
-
                 </View>
               </popover>
-              <View className='button-bar' onClick={this.connectService}>联系客服</View>
-              <View className='button-bar' onClick={this.onClickSendBack} >提前归还</View>
-              <View className='button-bar-active' onClick={this.onClickBillDetail}>分期账单</View>
-              {/*<View className='button-bar' onClick={this.againBuy.bind(this,'buyout')} >买断</View>*/}
-              {/*<View className='button-bar-active' onClick={this.againBuy.bind(this,'renewal')} >续租</View>*/}
+              <View className='button-bar' onClick={this.onClickBillDetail}>分期账单</View>
+              <View className='button-bar' onClick={this.againBuy.bind(this,'buyout')} >买断</View>
+              <View className='button-bar-active' onClick={this.againBuy.bind(this,'renewal')} >续租</View>
             </View>
           )
         }
@@ -586,8 +554,7 @@ class Orderdetail extends Component {
         >
           <View slot='header'>联系客服</View>
           <View style={{ textAlign: 'left', marginBottom: '10px', paddingLeft: '15px' }}>商家客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectServices.bind(this, product.shop.serviceTel)}>{product.shop.serviceTel}</Text></View>
-          <View style={{ textAlign: 'left',marginBottom: '10px', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectServices.bind(this, customerServiceTel)}>{customerServiceTel}</Text></View>
-          <View style={{ textAlign: 'left', paddingLeft: '15px' }}>工作时间：<Text style={{ color: '#777' }} >10:30 - 19:30</Text></View>
+          <View style={{ textAlign: 'left', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectServices.bind(this, customerServiceTel)}>{customerServiceTel}</Text></View>
           <View slot='footer'>取消拨打</View>
         </modal>
       </View >

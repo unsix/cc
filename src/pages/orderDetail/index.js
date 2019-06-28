@@ -3,7 +3,7 @@ import { View, Text, Image, Button } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import { AtIcon, AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
 
-import { formatDate, leftTimer, leftTimerMS ,transdate} from '../../utils/utils';
+import { formatDate, leftTimer, leftTimerMS ,transdate ,addDate} from '../../utils/utils';
 import { orderStatus, customerServiceTel } from '../../assets/Constant';
 
 import CancelOrder from '../../components/cancelOrder';
@@ -184,6 +184,7 @@ class Orderdetail extends Component {
     //   },
     // });
   }
+
   connectServices = (val) => {
     let num = String(val);
     my.makePhoneCall({ number: val });
@@ -237,18 +238,32 @@ class Orderdetail extends Component {
       url:`/pages/express/index?orderId=${orderId}`
     })
   }
-  againBuy = (type) => {
+  // againBuy = (type) => {
+  //   const { orderId } = this.$router.params;
+  //   if(type === 'buyout'){
+  //     Taro.navigateTo({
+  //       url:`/pages/buyout/index?orderId=${orderId}`
+  //     })
+  //   }
+  //   else {
+  //     Taro.navigateTo({
+  //       url:`/pages/renewal/index?orderId=${orderId}`
+  //     })
+  //   }
+  // }
+  //买断
+  handleClickBuyout = () => {
     const { orderId } = this.$router.params;
-    if(type === 'buyout'){
-      Taro.navigateTo({
-        url:`/pages/buyout/index?orderId=${orderId}`
-      })
-    }
-    else {
-      Taro.navigateTo({
-        url:`/pages/renewal/index?orderId=${orderId}`
-      })
-    }
+    Taro.navigateTo({
+      url:`/pages/buyout/confirm?orderId=${orderId}`
+    })
+  }
+  //续租
+  handleClickRenewal = () => {
+    const { orderId } = this.$router.params;
+    Taro.navigateTo({
+      url:`/pages/renewal/confirm?orderId=${orderId}`
+    })
   }
   connectBService = (number) => {
     let { serviceTel } = this.props.data
@@ -264,18 +279,17 @@ class Orderdetail extends Component {
   }
   render() {
     const { cancelOrderDisplay, receiveDoodsDisplay, modifySettlementDisplay, countDownStr, showServicePhone , position,  show , showMask} = this.state;
-    const { cashes, product, userAddress, userOrders, loading } = this.props;
+    const { cashes, product, userAddress, userOrders,reletOrders, loading, } = this.props;
     const createTiemStr = userOrders.createTime && formatDate(new Date(userOrders.createTimeStr), 'yyyy年MM月dd hh:mm');
     const rentStartStr = userOrders.rentStart && formatDate(new Date(userOrders.rentStartStr), 'yyyy年MM月dd');
     const unrentTimeStr = userOrders.unrentTime && formatDate(new Date(userOrders.unrentTimeStr), 'yyyy年MM月dd');
-    const rentStartStrs =  formatDate(new Date(userOrders.unrentTimeStr), 'yyyy-MM-dd hh:mm');
-    const newTime  =  formatDate(new Date(), 'yyyy-MM-dd hh:mm');
-    let dueTime = transdate(rentStartStrs)-transdate(newTime)
-    console.log(newTime,rentStartStrs)
-    console.log(transdate(rentStartStrs)-transdate(newTime))
+    const rentStartStrs =  formatDate(new Date(userOrders.unrentTimeStr ), 'yyyy-MM-dd hh:mm');
+    const newTime  =  formatDate(new Date() , 'yyyy-MM-dd hh:mm');
+    let dueTime = transdate(rentStartStrs) + 24*60*60*1000 - transdate(newTime)
+    console.log(rentStartStrs , newTime)
+    console.log(transdate(rentStartStrs)+ 24*60*60*10-transdate(newTime))
     console.log(leftTimer('2019-06-15 '))
     // console.log(transdate(userOrders.rentStart) - transdate('2019-06-15'))
-    console.log()
       // console.log(userOrders.rentStart().getTime())
     const orderStatusInfo = (str, subStr) => {
       let title = orderStatus[str];
@@ -430,21 +444,41 @@ class Orderdetail extends Component {
               </View>
             )
         }
-        <View className='order-info'>
-          <View className='gray-info margin-bottom-30'>
-            <View className='left-text'>订单编号</View>
-            <View className='right-text'>
-              {userOrders.orderId}
-              <Text className='copy-button' onClick={this.handleClickCopy.bind(this, userOrders.orderId)}>复制</Text>
+        {!!reletOrders&&reletOrders?reletOrders.map(item=>(
+          <View className='order-info'>
+            <View className='gray-info margin-bottom-30'>
+              <View className='left-text'>续租订单编号</View>
+              <View className='right-text'>
+                {item.reletOrderId}
+                <Text className='copy-button' onClick={this.handleClickCopy.bind(this,item.reletOrderId)}>复制</Text>
+              </View>
+            </View>
+            <View className='gray-info margin-bottom-30'>
+              <View className='left-text'>下单时间</View><View className='right-text'>{item.reletOrderTime}</View>
+            </View>
+            <View className='gray-info'>
+              <View className='left-text'>还租时间</View><View className='right-text'>{item.reletEnd}</View>
             </View>
           </View>
-          <View className='gray-info margin-bottom-30'>
-            <View className='left-text'>下单时间</View><View className='right-text'>{createTiemStr}</View>
-          </View>
-          <View className='gray-info'>
-            <View className='left-text'>还租时间</View><View className='right-text'>{rentStartStr} - {unrentTimeStr}</View>
-          </View>
-        </View>
+        )):
+          (
+            <View className='order-info'>
+              <View className='gray-info margin-bottom-30'>
+                <View className='left-text'>订单编号</View>
+                <View className='right-text'>
+                  {userOrders.orderId}
+                  <Text className='copy-button' onClick={this.handleClickCopy.bind(this, userOrders.orderId)}>复制</Text>
+                </View>
+              </View>
+              <View className='gray-info margin-bottom-30'>
+                <View className='left-text'>下单时间</View><View className='right-text'>{createTiemStr}</View>
+              </View>
+              <View className='gray-info'>
+                <View className='left-text'>还租时间</View><View className='right-text'>{rentStartStr} - {unrentTimeStr}</View>
+              </View>
+            </View>
+          )
+        }
         <View className='bottom-space' />
         {
           userOrders.status === 'WAITING_PAYMENT' && (
@@ -495,12 +529,13 @@ class Orderdetail extends Component {
               {/*    <Image className='img' src={require('../../images/order/popover.png')} />*/}
               {/*  </View>*/}
               {/*  <View slot='items' >*/}
-              {/*    <popover-item onItemClick={this.connectBService}>*/}
-              {/*      <text>联系商家</text>*/}
+              {/*    <popover-item onItemClick={this.handleClickBuyout}>*/}
+              {/*      <text>买断</text>*/}
               {/*    </popover-item>*/}
-              {/*    <popover-item  onItemClick={this.connectPService}>*/}
-              {/*      <text>联系平台</text>*/}
+              {/*    <popover-item  onItemClick={this.handleClickRenewal}>*/}
+              {/*      <text>续租</text>*/}
               {/*    </popover-item>*/}
+
               {/*  </View>*/}
               {/*</popover>*/}
               <View className='button-bar' onClick={this.connectService}>联系客服</View>
