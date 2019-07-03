@@ -47,10 +47,14 @@ export const apNsf = (context) => {
         //   riskResult:data.riskResultDesc,
         // }
         let newObj = JSON.parse(data.riskResultDesc)
+        let rank = Object.keys(newObj)[0]
+        if(rank.substring(0, 4)!== 'rank'){
+          rank = 'rank2'
+        }
         my.httpRequest({
           url: baseUrl+'aliPay/user/userrisk',
           data:{
-            riskResult:Object.keys(newObj)[0],
+            riskResult:rank,
             uid:getUid()
           },
           // data: newObj,

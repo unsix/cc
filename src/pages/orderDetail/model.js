@@ -1,7 +1,8 @@
 import Taro from '@tarojs/taro';
 import * as orderDetailApi from './service';
 import { tradePay } from '../../utils/openApi';
-import { getBuyerId } from '../../utils/localStorage';
+import { getBuyerId, getUid } from '../../utils/localStorage'
+import * as orderListApi from '../orderList/service'
 
 export default {
   namespace: 'orderDetail',
@@ -44,7 +45,7 @@ export default {
       }
     },
     *userCancelOrderSendMsg({ payload, callback }, { call, put }) {
-      const res = yield call(orderDetailApi.userCancelOrderSendMsg, payload);
+      const res = yield call(orderDetailApi.userCancelOrderSendMsg, payload)
       if (res) {
         if( res.code === 1){
           Taro.showToast({
@@ -78,6 +79,53 @@ export default {
               payload: {
                 orderId: payload.orderId,
                 status: nextStatus,
+              },
+            });
+          }
+          // const resObj = JSON.parse(payres.result);
+          // const userAlipay = yield call(confirmOrderApi.userAlipayTradePay, { orderId: resObj.alipay_fund_auth_order_app_freeze_response.out_request_no });
+          // if (userAlipay) {
+          //   const nextStatus = 'WAITING_BUSINESS_DELIVERY';
+          //   yield put({
+          //     type: 'setOrderStatus',
+          //     payload: nextStatus,
+          //   });
+          //   yield put({
+          //     type: 'orderList/setOrderStatus',
+          //     payload: {
+          //       orderId: payload.orderId,
+          //       status: nextStatus,
+          //     },
+          //   });
+          // }
+        } catch (e) {
+          Taro.showToast({
+            title: '支付失败，请重试或联系客服',
+            icon: 'none',
+          });
+        }
+      }
+    },
+    * payReletAgain({ payload }, { call, put }) {
+      const res = yield call(orderDetailApi.payReletAgain, {...payload,uid:getUid()});
+      if (res) {
+        try {
+          const payres = yield tradePay('tradeNO', res.data);
+          if (payres.resultCode !== '9000') {
+            Taro.showToast({
+              title: payres.memo,
+              icon: 'none',
+            });
+          } else {
+            // const nextStatus = 'WAITING_GIVE_BACK';
+            // yield put({
+            //   type: 'setOrderStatus',
+            //   payload: nextStatus,
+            // });
+            yield put({
+              type: 'orderDetail/selectUserOrderDetail',
+              payload: {
+                orderId: payload.orderId,
               },
             });
           }
@@ -164,12 +212,28 @@ export default {
         }
       }
     },
+    * getSysConfigByKey({ payload }, { call, put }) {
+      const res = yield call(orderListApi.getSysConfigByKey, { ...payload });
+      if (res) {
+        yield put({
+          type: 'sysConfigValue',
+          payload: res.data.sysConfigValue,
+
+        });
+      }
+    },
   },
 
   reducers: {
     saveOrder(state, { payload }) {
       // return { ...state, ...payload };
       return  payload ;
+    },
+    sysConfigValue(state, { payload }) {
+      return {
+        ...state,
+        sysConfigValue:payload
+      };
     },
     setOrderStatus(state, { payload }) {
       return {

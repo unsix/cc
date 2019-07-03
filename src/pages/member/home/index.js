@@ -3,7 +3,7 @@ import { View, Image,  Button, Text, ScrollView } from '@tarojs/components'
 import { AtModal, AtModalContent } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import './index.scss'
-// import {formatStrDate} from '../../utils/utils'
+import { formatDate , dateDiff} from '../../../utils/utils'
 
 import CouponList from  '../conponent/memberCouponList/index'
 //img
@@ -37,20 +37,20 @@ class Member extends Component{
   }
   componentDidMount () {
     const { dispatch } = this.props;
-    dispatch({
-      type:'members/getUserMembersEquitiesAllByUid',
-      // payload: {
-      //   pageNumber:1,
-      //   pageSize:1
-      // }
-      callback:(data)=>{
-        if(data &&data.vip){
-          this.setState({
-            memValue:0
-          })
-        }
-      }
-    })
+    // dispatch({
+    //   type:'members/getUserMembersEquitiesAllByUid',
+    //   // payload: {
+    //   //   pageNumber:1,
+    //   //   pageSize:1
+    //   // }
+    //   callback:(data)=>{
+    //     if(data &&data.vip){
+    //       this.setState({
+    //         memValue:0
+    //       })
+    //     }
+    //   }
+    // })
     // this.setDispatch();
     const { queryInfo } = this.props;
     this.setDispatch(queryInfo);
@@ -58,12 +58,23 @@ class Member extends Component{
   componentDidShow = () => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'mine/fetchAuthCode',
-      // callback: () => {
-      //   dispatch({
-      //     type:'members/getMember'
-      //   })
-      // },
+      type: 'members/fetchAuthCode',
+      callback: () => {
+        dispatch({
+          type:'members/getUserMembersEquitiesAllByUid',
+          // payload: {
+          //   pageNumber:1,
+          //   pageSize:1
+          // }
+          callback:(data)=>{
+            if(data &&data.vip){
+              this.setState({
+                memValue:0
+              })
+            }
+          }
+        })
+      },
     });
   };
   shouldComponentUpdate(nextProps, nextState) {
@@ -210,9 +221,10 @@ class Member extends Component{
     console.log(isOpened,'=========')
     // console.log(memValue,'====================')
     // const { isOpened } = this.state
+    // const letTime =  data.createTime && formatDate(new Date(data.createTimeStr), 'yyyy-MM-dd hh:mm');
     let dueTime = null
     if(memberIfn.vip && memberIfn.vip.dueTime) {
-      dueTime = `${formatStrDate(memberIfn.vip.dueTime, 'yyyy-MM-dd')}`;
+      dueTime = formatDate(new Date(dateDiff(memberIfn.vip.dueTime)), 'yyyy-MM-dd');
     }
     const systemInfo = Taro.getSystemInfoSync();
     let fixedHeight = 0;

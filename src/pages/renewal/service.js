@@ -68,3 +68,9 @@ export const confirmOrderSettlement = data => Request({
   method: 'POST',
   data,
 })
+
+export const allOrderStages = data => Request({
+  url: 'aliPay/order/allOrderStages',
+  method: 'POST',
+  data,
+})

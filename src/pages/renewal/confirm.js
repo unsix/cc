@@ -1,9 +1,9 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View, Text, Image, Button, Form, input, Input } from '@tarojs/components'
 import { connect } from '@tarojs/redux';
-import { AtIcon, AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
+import { AtIcon, AtModal, AtModalHeader, AtModalContent, AtModalAction, } from 'taro-ui'
 
-import { blankSpace, formatDate, leftTimer, leftTimerMS, transdate } from '../../utils/utils'
+import { blankSpace, formatDate, leftTimer, leftTimerMS, transdate,dateDiff } from '../../utils/utils'
 import { orderStatus, customerServiceTel } from '../../assets/Constant';
 
 import CancelOrder from '../../components/cancelOrder';
@@ -34,20 +34,43 @@ class Orderdetail extends Component {
     position: 'topLeft',
     show: false,
     showMask: true,
-    daysValue:null
+    daysValue:null,
+    stageBillModal:false,
+    message:null,
+    renewalInf:null
   }
 
   componentDidMount = () => {
     const { orderId } = this.$router.params;
     const { dispatch } = this.props;
-    dispatch({
-      type: 'orderDetail/selectUserOrderDetail',
-      payload: { orderId },
-    });
+    // dispatch({
+    //   type: 'orderDetail/selectUserOrderDetail',
+    //   payload: { orderId },
+    // });
+    // const { daysValue } = this.state
+    // dispatch({
+    //   type:'renewal/reletBuyDays',
+    //   payload:{
+    //     days:daysValue,
+    //     orderId:orderId,
+    //   },
+    //   callback:(data)=>{
+    //     this.setState({
+    //       renewalInf:data
+    //     })
+    //   }
+    // })
     dispatch({
       type:'renewal/confirmRelet',
       payload:{
         orderId: orderId,
+      },
+      callback:(val)=>{
+        if(val === 1){
+          this.setState({
+            stageBillModal:true
+          })
+        }
       }
     })
     this.countDown();
@@ -273,58 +296,100 @@ class Orderdetail extends Component {
       this.showToast('请输入天数')
       return
     }
+    if(daysValue>365){
+      this.showToast('最大租用天数为365天')
+      return
+    }
     dispatch({
       type:'renewal/reletBuyDays',
       payload:{
         days:daysValue,
         orderId:orderId,
+      },
+      callback:(data)=>{
+        this.setState({
+          renewalInf:data
+        })
       }
     })
   }
   confirmPay = () => {
-    const { renewalInf ,dispatch } =  this.props
-
+    const { confirmInf ,dispatch } =  this.props
+    const { message , daysValue ,renewalInf} = this.state
+    const { orderId } = this.$router.params;
     dispatch({
       type:'renewal/submitRelet',
       payload:{
-          couponId: "",
-          couponType: "",
-          duration: 30,
-          end: "2019-06-19 00:00:00",
+          couponId:renewalInf.defaultCoupon.couponId?renewalInf.defaultCoupon.couponId:'',
+          couponType: renewalInf.defaultCoupon.type?renewalInf.defaultCoupon.type:'',
+          duration:  daysValue,
+          end: renewalInf.end,
           itemId: "1556554563291",
-          message: "111",
+          message: message?message:"",
           num: 1,
-          orderId: "1000000287098113",
-          serviceList: [],
-          start: "2019-06-16 00:00:00",
-          totalRent: 100,
+          orderId: orderId,
+          serviceList: !!confirmInf.servciceList?confirmInf.servciceList:[],
+          start: renewalInf.start,
+          totalRent: confirmInf.orderTotalRent,
+      },
+      callback:(type)=>{
+        if(type === 'suc'){
+          Taro.redirectTo({
+            url:`/pages/orderList/index`
+          })
+        }
+        else {
+          Taro.redirectTo({
+            url:`/pages/orderList/index`
+          })
+        }
       }
-      // payload:{
-      //   couponId: "",
-      //   couponType: "",
-      //   duration: 30,
-      //   end: "2019-06-19 00:00:00",
-      //   itemId: "1556554563291",
-      //   message: "111",
-      //   num: 1,
-      //   orderId: "1000000287098113",
-      //   serviceList: [],
-      //   start: "2019-06-16 00:00:00",
-      //   totalRent: 100,
-      // }
     })
   }
+  stageBack = () => {
+    Taro.navigateBack()
+  }
+  confirmStage = (val) => {
+    const { dispatch , } = this.props
+    dispatch({
+      type:'renewal/allOrderStages',
+      payload:{
+        stageMoney:val.stageMoney,
+        orderId:val.orderId
+      },
+
+      callback:(type)=>{
+        if(type === 'suc'){
+          this.setState({
+            stageBillModal:false
+          })
+        }
+      }
+    })
+  }
+
+  gotoProtocol = () => {
+    Taro.navigateTo({ url: '/pages/webview/xieyi' });
+  }
+  onMessageInput = (e) => {
+    this.setState({ message: e.detail.value });
+  }
   render() {
-    const { cancelOrderDisplay, receiveDoodsDisplay, modifySettlementDisplay, countDownStr, showServicePhone , position,  show , showMask,daysValue} = this.state;
-    const { cashes, product, userAddress, userOrders, loading,renewalInf,confirmInf} = this.props;
+    const { cancelOrderDisplay, receiveDoodsDisplay, modifySettlementDisplay, countDownStr, showServicePhone , position,  show , showMask,daysValue,stageBillModal,renewalInf} = this.state;
+    const { cashes, product, userAddress, userOrders, loading,confirmInf} = this.props;
     const createTiemStr = userOrders.createTime && formatDate(new Date(userOrders.createTimeStr), 'yyyy年MM月dd hh:mm');
     const rentStartStr = userOrders.rentStart && formatDate(new Date(userOrders.rentStartStr), 'yyyy年MM月dd');
     const unrentTimeStr = userOrders.unrentTime && formatDate(new Date(userOrders.unrentTimeStr), 'yyyy年MM月dd');
     const rentStartStrs =  formatDate(new Date(userOrders.rentStartStr), 'yyyy-MM-dd hh:mm');
-    let rentTime = null
+    let startTime = null
     if(renewalInf && renewalInf.end){
-        rentTime =  formatDate(new Date(renewalInf.end), 'yyyy/MM/dd');
+      startTime =  formatDate(new Date(dateDiff(renewalInf.start)), 'yyyy/MM/dd');
     }
+    let endTime = null
+    if(renewalInf && renewalInf.end){
+        endTime =  formatDate(new Date(dateDiff(renewalInf.end)), 'yyyy/MM/dd');
+    }
+    // console.log(renewalInf, confirmInf)
     console.log(leftTimer('2019-06-15 '))
     // console.log(transdate(userOrders.rentStart) - transdate('2019-06-15'))
     // console.log(userOrders.rentStart().getTime())
@@ -342,6 +407,11 @@ class Orderdetail extends Component {
         waitTotalPay += info.amount;
       });
     }
+    // if(confirmInf.isByStages === 1){
+    //   this.setState({
+    //     stageBillModal:true
+    //   })
+    // }
 
     // eslint-disable-next-line no-undef
     loading ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
@@ -411,38 +481,42 @@ class Orderdetail extends Component {
           {/*</Form>*/}
           <View className='ren-day'>
             <View className='day'>租用天数</View>
-              <Input  type='number'   className='text' placeholder='请输入天数'  onInput={this.handleCustomValue} adjustPosition  onBlur={this.handleCustomBlur}  />
+              <Input  type='number'  className='text' placeholder='请输入天数'  onInput={this.handleCustomValue} adjustPosition  onBlur={this.handleCustomBlur}  />
           </View>
         </View>
           {!!renewalInf && (
           <View className='renewal-details'>
             <View className='border'></View>
             <View className='title'>续租详情</View>
-            <View className='price-area'>
+            <View className='price-area' >
               <View className='gray-info margin-bottom-37'>
-                <View className='left-text'>还租时间</View><View className='right-text'>{rentTime}</View>
+                <View className='left-text'>还租时间</View><View className='right-text'>{startTime} - {endTime}</View>
               </View>
               <View className='black-info margin-bottom-36'>
                 <View className='left-text'>总租金</View><View className='right-text'>￥{renewalInf.prices.orderAmount}</View>
               </View>
               <View className='gray-info margin-bottom-30'>
                 {/*<View className='left-text'>运费</View><View className='right-text'>￥{cashes.freightPrice ? cashes.freightPrice.toFixed(2) : '0.00'}</View>*/}
-                <View className='left-text'>优惠</View><View className='right-text'>{renewalInf.prices.depositAmount}</View>
+                <View className='left-text'>优惠劵</View><View className='right-text'>{renewalInf.prices.couponPrice}</View>
+              </View>
+              <View className='gray-info margin-bottom-30'>
+                {/*<View className='left-text'>运费</View><View className='right-text'>￥{cashes.freightPrice ? cashes.freightPrice.toFixed(2) : '0.00'}</View>*/}
+                <View className='left-text member'>会员权益</View><View className='right-text member'>{renewalInf.prices.vipEquity}</View>
               </View>
               <View className='gray-info margin-bottom-25'>
                 <View className='left-text'>增值服务</View><View className='right-text'>￥{renewalInf.prices.additionalServicesPrice}</View>
               </View>
-              <View className='gray-info margin-bottom-25'>
-                <View className='left-text'>冻结</View><View className='right-text'>￥{renewalInf.prices.depositAmount}</View>
-              </View>
-              <View className='gray-info margin-bottom-25'>
-                <View className='left-text'>会员权益</View><View className='right-text'>暂无</View>
-              </View>
+              {/*<View className='gray-info margin-bottom-25'>*/}
+              {/*  <View className='left-text'>冻结</View><View className='right-text'>￥{renewalInf.prices.depositAmount}</View>*/}
+              {/*</View>*/}
+              {/*<View className='gray-info margin-bottom-25'>*/}
+              {/*  <View className='left-text'>会员权益</View><View className='right-text'>暂无</View>*/}
+              {/*</View>*/}
               <View className='black-info margin-bottom-30'>
                 <View className='left-text'>首期应付</View><View className='right-text'>￥{renewalInf.prices.firstPeriodsPrice}</View>
               </View>
               <View className='gray-info margin-bottom-25'>
-                <View className='left-text'>剩余还款计划</View><View className='right-text'>￥{renewalInf.prices.originalMonthRentPrice} <Text className='xxx'>x</Text> {renewalInf.prices.totalPeriods} </View>
+                <View className='left-text'>剩余还款计划</View><View className='right-text'>￥{renewalInf.prices.otherPeriodsPrice} <Text className='xxx'>x</Text> {renewalInf.prices.restPeriods} </View>
               </View>
               {/*<View className='gray-info margin-bottom-30'>*/}
               {/*  <View className='left-text'>剩余还款计划</View>*/}
@@ -460,23 +534,26 @@ class Orderdetail extends Component {
           )}
         <View className='message'>
           <View>买家留言：</View>
-          <Input className='input-mess' placeholder='请在这里留下您的备注' adjustPosition onInput={this.onMessageInput} />
+          <Input className='input-mess'  type='text' placeholder='请在这里留下您的备注'  onInput={this.onMessageInput} />
         </View>
-        <View className='order-info'>
-          <View className='gray-info margin-bottom-30'>
-            <View className='left-text'>订单编号</View>
-            <View className='right-text'>
-              {userOrders.orderId}
-              <Text className='copy-button' onClick={this.handleClickCopy.bind(this, userOrders.orderId)}>复制</Text>
-            </View>
-          </View>
-          <View className='gray-info margin-bottom-30'>
-            <View className='left-text'>下单时间</View><View className='right-text'>{createTiemStr}</View>
-          </View>
-          <View className='gray-info'>
-            <View className='left-text'>还租时间</View><View className='right-text'>{rentStartStr} - {unrentTimeStr}</View>
-          </View>
+        <View className='protocol' onClick={this.gotoProtocol}>
+          支付即同意<Text className='text'>《惠租用户交易服务协议》</Text>
         </View>
+        {/*<View className='order-info'>*/}
+        {/*  <View className='gray-info margin-bottom-30'>*/}
+        {/*    <View className='left-text'>订单编号</View>*/}
+        {/*    <View className='right-text'>*/}
+        {/*      {userOrders.orderId}*/}
+        {/*      <Text className='copy-button' onClick={this.handleClickCopy.bind(this, userOrders.orderId)}>复制</Text>*/}
+        {/*    </View>*/}
+        {/*  </View>*/}
+        {/*  <View className='gray-info margin-bottom-30'>*/}
+        {/*    <View className='left-text'>下单时间</View><View className='right-text'>{createTiemStr}</View>*/}
+        {/*  </View>*/}
+        {/*  <View className='gray-info'>*/}
+        {/*    <View className='left-text'>还租时间</View><View className='right-text'>{rentStartStr} - {unrentTimeStr}</View>*/}
+        {/*  </View>*/}
+        {/*</View>*/}
         <View className='bottom-space' />
         {!!renewalInf && (
           <View className='pay_member'>
@@ -486,8 +563,8 @@ class Orderdetail extends Component {
             <View className='price'>
               <Text className='bol'>¥</Text>{ renewalInf.prices.firstPeriodsRentPrice }
               {/*<Text className='nian'>（{memberIfn.settingList[memValue-1].validityDay}个月）</Text>*/}
-              {/*<View className='agreement' onClick={this.ment}>*/}
-              {/*  开通即同意《惠租会员协议》*/}
+              {/*<View className='agreement' onClick={this.gotoProtocol}>*/}
+              {/*  支付既同意《惠租用户交易服务协议》*/}
               {/*</View>*/}
             </View>
             <View className='pay'>
@@ -620,6 +697,29 @@ class Orderdetail extends Component {
           <View style={{ textAlign: 'left', marginBottom: '10px', paddingLeft: '15px' }}>商家客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectServices.bind(this, product.shop.serviceTel)}>{product.shop.serviceTel}</Text></View>
           <View style={{ textAlign: 'left', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectServices.bind(this, customerServiceTel)}>{customerServiceTel}</Text></View>
           <View slot='footer'>取消拨打</View>
+        </modal>
+        <modal
+          className='stage-modal'
+          show={stageBillModal}
+          showClose={false}
+          onModalClick={this.onClosePhoneModal}
+          onModalClose={this.onClosePhoneModal}
+        >
+          <View >
+            <View className='content'>
+              您该笔订单有未支付的分期账单总金额
+              <Text className='bol'>¥</Text>
+              <Text className='price'>{confirmInf.stageMoney}</Text>
+            </View>
+            <View className='footer'>
+             <View className='btn' onClick={this.stageBack}>
+               再想想
+             </View>
+              <View className='btn btn-c' onClick={this.confirmStage.bind(this,confirmInf)}>
+                确认支付
+              </View>
+            </View>
+          </View>
         </modal>
       </View >
     )

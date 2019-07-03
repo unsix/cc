@@ -11,7 +11,7 @@ export const orderStatus = {
   BUSINESS_CLOSE_ORDER: '商家关闭订单',
   BUSINESS_OVERTIME_CLOSE_ORDER: '商家超时发货关闭订单',
   WAITING_USER_RECEIVE_CONFIRM: '待用户收货',
-  WAITING_GIVE_BACK: '待归还（租用中）',
+  WAITING_GIVE_BACK: '待归还',
   WAITING_CONFIRM_SETTLEMENT: '待结算',
   WAITING_SETTLEMENT: '待商家出具结算单',
   WAITING_SETTLEMENT_PAYMENT: '待用户支付结算单',

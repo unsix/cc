@@ -6,7 +6,7 @@ page {
   font-family: PingFangSC-Medium;
 }
 .list-item {
-  @include wh(698px,439px);
+  @include wh(698px,450px);
   background: #ffffff;
   margin: 8px auto 20px auto ;
   box-sizing: border-box;
@@ -89,7 +89,7 @@ page {
       position: relative!important;
       left: -30px;
       .img{
-        @include wh(50px,10px);
+        @include wh(50px,12px);
       }
     }
     &-btn {

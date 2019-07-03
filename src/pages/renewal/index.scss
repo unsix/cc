@@ -10,7 +10,7 @@ page {
   background-color: #f7f7f7;
 }
 .orderDetail-page {
-  @include wh(100%, 100%);
+  @include wh(100%, auto);
   .order-status {
     padding: 40px 40px 30px 40px;
     background-color: #FA4E62;
@@ -132,6 +132,9 @@ page {
       font-size: $leftSize;
       text-align: center;
     }
+    .member{
+      color: #FF6262
+    }
     .right-text {
       font-size: $rightSize;
       font-weight: $rightWeight;
@@ -152,8 +155,8 @@ page {
 
   .price-area {
     background-color: #fff;
-    margin: 20px 0 ;
-    padding: 0 30px 30px 30px;
+    margin-bottom: 20px;
+    padding: 30px;
     .gray-info {
       @include lp(#999, 30px);
     }
@@ -286,6 +289,7 @@ page {
 .pay_member{
   box-sizing: border-box;
   @include wh(100%,110px);
+  position: relative;
   background-color: #fff;
   margin: 0 25px 0 0;
   padding-left: 25px;
@@ -315,8 +319,10 @@ page {
     color: #848A8E;
   }
   .pay_btn{
-    @include wh(345px,80px);
-    margin-left: 150px;
+    @include wh(375px,80px);
+    position: absolute;
+    right: 20px;
+    top: 20px;
     background-image: linear-gradient(90deg, #FA4E62 0%, #FC766B 100%);
     border-radius: 100px;
     border: none;
@@ -335,5 +341,46 @@ page {
   .input-mess {
     font-size: 28px;
     width: 70%;
+  }
+}
+.protocol {
+  padding: 0 30px;
+  font-size: 26px;
+  margin-bottom: 30px;
+  color: #999;
+  .text {
+    color: #0199FE;
+  }
+}
+.stage-modal{
+  @include wh(600px,250px);
+  font-family: PingFangSC-Regular;
+  .content{
+    @include wh(360px,auto);
+    margin: 25px auto 0 auto;
+    font-size: 36px;
+    .bol{
+      font-size: 32px;
+      color: #FC766B;
+      padding-left: 10px;
+    }
+    .price{
+      font-size: 38px;
+      color: #FC766B;
+    }
+  }
+  .footer{
+    @include wh(400px,auto);
+    display: flex;
+    margin: 30px auto 0 auto;
+    font-size: 36px;
+    text-align: center;
+    .btn{
+      @include wh(200px,100px);
+      color: #999999;
+    }
+    .btn-c{
+      color: #0199FE;
+    }
   }
 }

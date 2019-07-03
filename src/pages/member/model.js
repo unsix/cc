@@ -1,7 +1,8 @@
 import Taro from '@tarojs/taro';
 import * as memberApi from './service'
-import { getUid } from '../../utils/localStorage'
-import { tradePay } from '../../utils/openApi'
+import { getUid, setBuyerId, setTelephone, setUid, setUserName } from '../../utils/localStorage'
+import { apNsf, getAuthCode, tradePay } from '../../utils/openApi'
+import * as mineApi from '../mine/service'
 
 export default {
   namespace: 'members',
@@ -136,8 +137,44 @@ export default {
         });
       }
     },
+    * fetchAuthCode({ callback }, { call, put }) {
+      let res = null;
+      try {
+        res = yield getAuthCode();
+      } catch (e) {
+        Taro.showToast({
+          title: '授权失败，请重试',
+          icon: 'none',
+        });
+      }
+
+      if (res) {
+        const exeRes = yield call(mineApi.exemptLogin, { authCode: res.authCode });
+        if (exeRes) {
+          yield put({
+            type: 'saveUser',
+            payload: exeRes.data,
+          });
+          // const apRes = yield apNsf({
+          //   user_id: exeRes.data.userId,
+          //   mobile_no: exeRes.data.telephone || 'null',
+          // })
+          // console.log('=====', apRes);
+        }
+        if (callback) {
+          callback();
+        };
+      }
+    },
   },
   reducers: {
+    saveUser(state, { payload }) {
+      setUserName(payload.userName);
+      setTelephone(payload.telephone);
+      setUid(payload.uid);
+      setBuyerId(payload.userId);
+      return { ...state, ...payload };
+    },
     memberInf (state, { payload }){
       // console.log(payload,'sjhfdghursfgyu')
       return {

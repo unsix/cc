@@ -214,3 +214,69 @@ page {
     @include wh(50px,10px);
   }
 }
+
+.cancel-modal{
+  @include wh(600px,350px);
+  .header{
+    font-family: PingFangSC-Medium;
+    font-size: 30px;
+    margin: 30px 0 0 0;
+  }
+  .content{
+    @include wh(360px,60px);
+    line-height: 60px;
+    margin: 0 auto;
+  }
+}
+
+.renewal-days{
+  @include wh(100%,auto);
+  background: #fff;
+  box-sizing: border-box;
+  position: relative;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  .header{
+    @include fj(space-between);
+    border-bottom: 1px solid #E4E4E4;
+    margin-bottom: 10px;
+  }
+  .title{
+    font-family: PingFangSC-Medium;
+    height: 76px;
+    line-height: 76px;
+    padding-left: 20px;
+    font-size: 28px;
+  }
+  .to-see{
+    font-family: PingFangHK-Regular;
+    font-size: 28px;
+    height: 76px;
+    line-height: 76px;
+    color: #999999;
+    margin-right: 30px;
+  }
+  .border{
+    position: absolute;
+    @include wh(4px,30px);
+    background: #FC766B;
+    left: 10px;
+    top: 20px;
+  }
+  .ren-day{
+    @include wh(700px,56px);
+    @include fj(space-between);
+    box-sizing: border-box;
+    align-items: center;
+    margin: 0 auto;
+    color: #999999;
+    .day{
+      font-size: 28px;
+      color: #999999;
+    }
+    .text-day{
+      font-size: 28px;
+      color: #999999;
+    }
+  }
+}

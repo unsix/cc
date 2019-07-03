@@ -93,7 +93,7 @@ export default (options = { method: 'GET', data: {} }) => {
           mask: true,
         });
       }
-      return;
+      return res.data;
     } else {
       // if (res.data.token) {
       //   setToken(res.data.token);

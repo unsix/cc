@@ -14,19 +14,35 @@ export default {
   },
 
   effects: {
-    * confirmRelet({payload},{call,put}){
+    * confirmRelet({payload,callback},{call,put}){
       const res =  yield call(renewalApi.confirmRelet, { ...payload, uid: getUid() });
       if (res) {
-        // if(res.code === 1){
-        //
-        // }
+        if(res.code === 99){
+          my.confirm({
+            title: '温馨提示',
+            content: '该笔订单有未支付续租订单，是否立即支付',
+            confirmButtonText: '立即前往',
+            cancelButtonText: '暂不支付',
+            success: (result) => {
+             if(result.confirm === true){
+               Taro.redirectTo({
+                 url:`/pages/orderDetail/index?orderId=${res.data}`
+               })
+             }
+             else {
+               Taro.navigateBack()
+             }
+            },
+          });
+        }
         yield put({
           type: 'confirmInf',
           payload: res.data,
         });
+          callback(res.data.isByStages)
       }
     },
-    * reletBuyDays({payload},{call,put}){
+    * reletBuyDays({payload,callback},{call,put}){
       const res =  yield call(renewalApi.reletBuyDays, { ...payload, uid: getUid() });
       if (res) {
         // if(res.code === 1){
@@ -36,6 +52,9 @@ export default {
           type: 'renewalInf',
           payload: res.data,
         });
+        if(callback){
+          callback(res.data)
+        }
       }
     },
     * submitRelet({ payload ,callback}, { call, put }) {
@@ -49,15 +68,38 @@ export default {
           //   type: 'selectOrderByStagesList',
           //   payload: { orderId: payload.orderId }
           // });
-          let type = 'detail';
+          console.log(payres)
+          let type = 'suc';
           if (payres.resultCode !== '9000') {
             console.log(payres.resultCode )
             Taro.showToast({
-              title: payres.memo,
+              title: '支付失败',
               icon: 'none',
             });
-            type = 'list';
+            const nextStatus = 'WAITING_GIVE_BACK';
+            yield put({
+              type: 'orderList/setOrderStatus',
+              payload: {
+                orderId: payload.orderId,
+                status: nextStatus,
+              },
+            });
+            type = 'erro';
           }
+          else {
+            Taro.showToast({
+              title:'支付成功'
+            });
+            const nextStatus = 'WAITING_GIVE_BACK';
+            yield put({
+              type: 'orderList/setOrderStatus',
+              payload: {
+                orderId: payload.orderId,
+                status: nextStatus,
+              },
+            });
+          }
+
           if (callback) {
             // console.log(res.data.orders.orderId)
             callback(type);
@@ -180,7 +222,58 @@ export default {
         });
       }
     },
+    * allOrderStages({ payload , callback }, { call, put }) {
+      const res = yield call(renewalApi.allOrderStages, { ...payload, uid: getUid() })
+      if (res) {
+        try {
+          const payres = yield tradePay('tradeNO', res.data)
+          // console.log('====', payres);
+          // yield put({
+          //   type: 'selectOrderByStagesList',
+          //   payload: { orderId: payload.orderId }
+          // });
+          let type = 'suc';
+          if (payres.resultCode !== '9000') {
+            console.log(payres.resultCode )
+            Taro.showToast({
+              title: payres.memo,
+              icon: 'none',
+            });
+            type = 'erro';
+          }
+          if (callback) {
+            // console.log(res.data.orders.orderId)
+            callback(type);
+          }
 
+          // if (callback) {
+          //   // console.log(res.data.orders.orderId)
+          //   callback(res.data, type);
+          // }
+        } catch (e) {
+          // console.log('====1', e);
+          Taro.showToast({
+            title: '支付失败，请重试或联系客服',
+            icon: 'none',
+          });
+        }
+        // const nextStatus = 'WAITING_GIVE_BACK';
+        // yield put({
+        //   type: 'setOrderStatus',
+        //   payload: nextStatus,
+        // });
+        // yield put({
+        //   type: 'orderList/setOrderStatus',
+        //   payload: {
+        //     orderId: payload.orderId,
+        //     status: nextStatus,
+        //   },
+        // });
+        if(callback){
+          callback()
+        }
+      }
+    },
     // 用户申请修改结算单
     * userApplicationForAmendmentOfSettlementForm({ payload }, { call, put }) {
       const res = yield call(renewalApi.userApplicationForAmendmentOfSettlementForm, payload);

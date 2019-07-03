@@ -31,6 +31,8 @@ class Orderlist extends Component {
     showServicePhone:false,
     canCel:false,
     examineStatus:null,
+    stageBillModal:false,
+    statusCance:null,
     cancelOrderList:[
       {
         value:'想要重新下单',
@@ -65,7 +67,7 @@ class Orderlist extends Component {
       if (currentMenu.id === 'overdue') {
         status = ['SETTLEMENT_RETURN_CONFIRM_PAY', 'ORDER_VERDUE'];
       }
-      if (currentMenu.id === 'deliver') {
+      if (currentMenu.id === 'deliver' || currentMenu.id === 'all') {
         const { dispatch } = this.props
         dispatch({
           type:'orderList/getSysConfigByKey',
@@ -108,6 +110,15 @@ class Orderlist extends Component {
     if (item.id === 'overdue') {
       status = ['SETTLEMENT_RETURN_CONFIRM_PAY', 'ORDER_VERDUE'];
     }
+    if (item.id === 'deliver') {
+      const { dispatch } = this.props
+      dispatch({
+        type:'orderList/getSysConfigByKey',
+        payload:{
+          configKey:'USER_CANCEL_ORDER:HOUR'
+        }
+      })
+    }
     console.log('=====', item, status);
     const info = {
       status,
@@ -143,11 +154,13 @@ class Orderlist extends Component {
   }
 
   onClickCancelOrder = (order) => {
+    console.log(order.examineStatus,order.statusCancel)
     if(order.examineStatus === 0){
       this.setState({
         cancelOrderDisplay: true,
         clickedOrderId: order.orderId,
-        examineStatus:order.examineStatus
+        examineStatus:order.examineStatus,
+        statusCance:order.statusCancel
       });
     }
     else {
@@ -165,15 +178,20 @@ class Orderlist extends Component {
       })
       return
     }
-    const { clickedOrderId , examineStatus} = this.state;
+    const { clickedOrderId , examineStatus,statusCance} = this.state;
     const { dispatch } = this.props;
-    if(examineStatus === 0){
+    if(examineStatus === 0 && statusCance==='WAITING_BUSINESS_DELIVERY'){
       dispatch({
-        type: 'orderDetail/userCancelOrderSendMsg',
+        type: 'orderList/userCancelOrderSendMsg',
         payload: {
           reason: value,
           orderId: clickedOrderId,
-        }
+        },
+        // callback:()=>{
+        //   const { queryInfo } = this.props;
+        //   const info = { ...queryInfo, pageNumber: 1 };
+        //   this.setDispatch(info);
+        // }
       });
     }
     else {
@@ -289,7 +307,7 @@ class Orderlist extends Component {
     })
   }
   render() {
-    const { type, display, cancelOrderDisplay, receiveDoodsDisplay,showServicePhone ,serviceTel,cancelOrderList,canCel,} = this.state;
+    const { type, display, cancelOrderDisplay, receiveDoodsDisplay,showServicePhone ,serviceTel,cancelOrderList,canCel,stageBillModal} = this.state;
     const { list, loading ,sysConfigValue } = this.props;
     const systemInfo = Taro.getSystemInfoSync();
     let fixedHeight = 43;
@@ -399,6 +417,21 @@ class Orderlist extends Component {
             </View>
           </View>
         </modal>
+        {/*<modal*/}
+        {/*  show={stageBillModal}*/}
+        {/*  showClose={false}*/}
+        {/*  onModalClick={this.onClosePhoneModal}*/}
+        {/*  onModalClose={this.onClosePhoneModal}*/}
+        {/*>*/}
+        {/*  <View  className='stage-modal'>*/}
+        {/*    <View slot='header' className='header'>温馨提示·</View>*/}
+        {/*    <View className='content'>*/}
+        {/*      退款处理中，预计24小时内操作完成，请耐心等待；*/}
+        {/*      如需加急处理，可联系客服：*/}
+        {/*    </View>*/}
+        {/*    <View></View>*/}
+        {/*  </View>*/}
+        {/*</modal>*/}
       </View>
     )
   }

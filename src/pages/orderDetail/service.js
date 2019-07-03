@@ -57,3 +57,13 @@ export const confirmOrderSettlement = data => Request({
   method: 'POST',
   data,
 })
+export const getSysConfigByKey = data => Request({
+  url: 'aliPay/sysConfig/getSysConfigByKey',
+  method: 'GET',
+  data,
+});
+export const payReletAgain = data => Request({
+  url: 'aliPay/order/payReletAgain',
+  method: 'GET',
+  data,
+})

@@ -13,15 +13,15 @@ export default {
   effects: {
 
     * fetchAuthCode({ callback }, { call, put }) {
-      let res = null;
-      try {
-        res = yield getAuthCode();
-      } catch (e) {
-        Taro.showToast({
-          title: '授权失败，请重试',
-          icon: 'none',
-        });
-      }
+        let res = null;
+        try {
+          res = yield getAuthCode();
+        } catch (e) {
+          Taro.showToast({
+            title: '授权失败，请重试',
+            icon: 'none',
+          });
+        }
 
       if (res) {
         const exeRes = yield call(mineApi.exemptLogin, { authCode: res.authCode });

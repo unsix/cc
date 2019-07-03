@@ -18,3 +18,9 @@ export const getSysConfigByKey = data => Request({
   method: 'GET',
   data,
 });
+
+export const userCancelOrderSendMsg = data => Request({
+  url: 'aliPay/order/userCancelOrderSendMsg',
+  method: 'POST',
+  data,
+});

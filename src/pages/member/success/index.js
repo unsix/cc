@@ -22,7 +22,7 @@ class paySuccess extends Component {
   }
 
   toBack = () => {
-    Taro.switchTab({ url: '/pages/member/home/index' })
+   Taro.navigateBack()
   }
   toSee = () => {
     Taro.redirectTo({ url: '/pages/coupon/index' })

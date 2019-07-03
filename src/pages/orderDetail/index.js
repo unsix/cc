@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Text, Image, Button } from '@tarojs/components';
+import { View, Text, Image, Button, Input } from '@tarojs/components'
 import { connect } from '@tarojs/redux';
 import { AtIcon, AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
 
@@ -33,6 +33,26 @@ class Orderdetail extends Component {
     position: 'topLeft',
     show: false,
     showMask: true,
+    canCel:false,
+    examineStatus:null,
+    statusCancel:null,
+    cancelOrderList:[
+      {
+        value:'想要重新下单',
+      },
+      {
+        value:'商品价格较贵',
+      },
+      {
+        value:'等待时机较长',
+      },
+      {
+        value:'是想了解流程',
+      },
+      {
+        value:'不想要了',
+      }
+    ]
   }
 
   componentDidMount = () => {
@@ -42,6 +62,12 @@ class Orderdetail extends Component {
       type: 'orderDetail/selectUserOrderDetail',
       payload: { orderId },
     });
+    dispatch({
+      type:'orderDetail/getSysConfigByKey',
+      payload:{
+        configKey:'USER_CANCEL_ORDER:HOUR'
+      }
+    })
     this.countDown();
   };
 
@@ -53,17 +79,6 @@ class Orderdetail extends Component {
     this.setState({ cancelOrderDisplay: false });
   }
 
-  handleModalOk = (value) => {
-    const { dispatch, userOrders } = this.props;
-    dispatch({
-      type: 'orderDetail/userCancelOrder',
-      payload: {
-        reason: value,
-        orderId: userOrders.orderId,
-      },
-    });
-    this.setState({ cancelOrderDisplay: false });
-  }
 
   onClickReceiveGoods = () => {
     this.setState({ receiveDoodsDisplay: true });
@@ -83,12 +98,25 @@ class Orderdetail extends Component {
   }
 
 
-  onClickFrezzAgain = (orderId) => {
+  onClickFrezzAgain = (order) => {
+    console.log(order)
     const { dispatch } = this.props;
-    dispatch({
-      type: 'orderDetail/userFrezzAgain',
-      payload: { orderId },
-    });
+    if(order.type === 2){
+      dispatch({
+        type: 'orderDetail/payReletAgain',
+        payload: {
+          orderId:order.orderId
+        },
+      });
+    }
+    else {
+      dispatch({
+        type: 'orderDetail/userFrezzAgain',
+        payload:{
+          orderId:order.orderId
+        },
+      });
+    }
   }
 
   onClickBillDetail = () => {
@@ -238,6 +266,81 @@ class Orderdetail extends Component {
       url:`/pages/express/index?orderId=${orderId}`
     })
   }
+  handleClickRenewalBefore = () => {
+    const { userOrders } = this.props
+    Taro.navigateTo({
+      url:`/pages/express/index?orderId=${userOrders.originalOrderId}`
+    })
+  }
+  handleClickCancelOrder = (order) => {
+    console.log(order)
+    if(order.examineStatus === 0 ){
+      this.setState({
+        cancelOrderDisplay: true,
+        examineStatus:order.examineStatus,
+        statusCancel:order.status
+      });
+    }
+    else {
+      this.setState({
+        canCel:true
+      })
+    }
+  }
+  handleModalOk = (value) => {
+    const { dispatch, userOrders } = this.props;
+    const { orderId } = this.$router.params;
+    const {examineStatus, statusCancel} = this.state
+    console.log(this.state.examineStatus,this.state.statusCancel)
+    if(examineStatus === 0 && statusCancel ==='WAITING_BUSINESS_DELIVERY'){
+      dispatch({
+        type: 'orderList/userCancelOrderSendMsg',
+        payload: {
+          reason: value,
+          orderId:userOrders.orderId,
+        },
+        callback:()=>{
+          dispatch({
+            type: 'orderDetail/selectUserOrderDetail',
+            payload: {
+              orderId:userOrders.orderId
+            },
+          })
+        }
+        // callback:()=>{
+        //   const { queryInfo } = this.props;
+        //   const info = { ...queryInfo, pageNumber: 1 };
+        //   this.setDispatch(info);
+        // }
+      });
+    }
+    else {
+      dispatch({
+        type: 'orderDetail/userCancelOrder',
+        payload: {
+          reason: value,
+          orderId:userOrders.orderId
+        },
+      });
+    }
+    // dispatch({
+    //   type: 'orderDetail/userCancelOrderSendMsg',
+    //   payload: {
+    //     reason: value,
+    //     orderId: clickedOrderId,
+    //   },
+    //   callback:()=>{
+    //     dispatch({
+    //       type: 'orderDetail/selectUserOrderDetail',
+    //       payload: { clickedOrderId },
+    //     })
+    //   }
+    // });
+    this.setState({ cancelOrderDisplay: false });
+  }
+  handleModalCancel = () => {
+    this.setState({ cancelOrderDisplay: false });
+  }
   // againBuy = (type) => {
   //   const { orderId } = this.$router.params;
   //   if(type === 'buyout'){
@@ -265,6 +368,22 @@ class Orderdetail extends Component {
       url:`/pages/renewal/confirm?orderId=${orderId}`
     })
   }
+  handleClickRenewalDetail =() => {
+    const { orderId } = this.$router.params;
+    Taro.redirectTo({
+      url:`/pages/renewal/index?orderId=${orderId}`
+    })
+  }
+  oncanCelModal = () => {
+    this.setState({
+      canCel:false
+    })
+  }
+  handleGoRenewal = (orderId) => {
+    Taro.navigateTo({
+      url:`/pages/renewal/index?orderId=${orderId}`
+    })
+  }
   connectBService = (number) => {
     let { serviceTel } = this.props.data
     console.log(serviceTel)
@@ -278,17 +397,34 @@ class Orderdetail extends Component {
     my.makePhoneCall({ number:customerServiceTel });
   }
   render() {
-    const { cancelOrderDisplay, receiveDoodsDisplay, modifySettlementDisplay, countDownStr, showServicePhone , position,  show , showMask} = this.state;
-    const { cashes, product, userAddress, userOrders,reletOrders, loading, } = this.props;
-    const createTiemStr = userOrders.createTime && formatDate(new Date(userOrders.createTimeStr), 'yyyy年MM月dd hh:mm');
-    const rentStartStr = userOrders.rentStart && formatDate(new Date(userOrders.rentStartStr), 'yyyy年MM月dd');
-    const unrentTimeStr = userOrders.unrentTime && formatDate(new Date(userOrders.unrentTimeStr), 'yyyy年MM月dd');
+    const { cancelOrderDisplay, receiveDoodsDisplay, modifySettlementDisplay, countDownStr, showServicePhone , position,  show , showMask,cancelOrderList,canCel} = this.state;
+    const { cashes, product, userAddress, userOrders,reletOrders, loading,sysConfigValue } = this.props;
+    const createTiemStr = userOrders.createTime && formatDate(new Date(userOrders.createTimeStr), 'yyyy年MM月dd日 hh:mm');
+    const rentStartStr = userOrders.rentStart && formatDate(new Date(userOrders.rentStartStr), 'yyyy年MM月dd日');
+    const unrentTimeStr = userOrders.unrentTime && formatDate(new Date(userOrders.unrentTimeStr), 'yyyy年MM月dd日');
     const rentStartStrs =  formatDate(new Date(userOrders.unrentTimeStr ), 'yyyy-MM-dd hh:mm');
+    const letTime =  formatDate(new Date(userOrders.createTimeStr ), 'yyyy-MM-dd hh:mm');
     const newTime  =  formatDate(new Date() , 'yyyy-MM-dd hh:mm');
     let dueTime = transdate(rentStartStrs) + 24*60*60*1000 - transdate(newTime)
     console.log(rentStartStrs , newTime)
     console.log(transdate(rentStartStrs)+ 24*60*60*10-transdate(newTime))
     console.log(leftTimer('2019-06-15 '))
+    // let letTime = userOrders.createTime && formatDate(new Date(userOrders.createTimeStr), 'yyyy-MM-dd hh:mm');
+    let dueTimeS = transdate(letTime) + sysConfigValue*60*60*1000  - transdate(newTime)
+    let dueTimeP =  transdate(rentStartStrs) - 30*24*60*60*1000 - transdate(newTime)
+    console.log(newTime,'111',dueTimeP)
+    // let dueTimeP =  transdate(userOrders.unrentTimeStr) - 30*24*60*60*1000 - transdate(newTime)
+    console.log(letTime,newTime,'111',sysConfigValue)
+    // console.log(userOrders.createTimeStr,transdate(newTime),transdate(rentStartStrs),transdate(letTime))
+    // console.log(rentStartStrs , newTime)
+    // console.log(transdate(rentStartStrs)+ 24*60*60*10-transdate(newTime))
+    // console.log(this.props)
+    // console.log(formatDate(new Date(dueTime), 'yyyy-MM-dd hh:mm'))
+    // console.log(formatSeconds(dueTime/1000))
+    // console.log(transdate(createTiemStr))
+    console.log('1')
+    let dueTimeMs = dueTimeS/1000
+    console.log(dueTimeMs)
     // console.log(transdate(userOrders.rentStart) - transdate('2019-06-15'))
       // console.log(userOrders.rentStart().getTime())
     const orderStatusInfo = (str, subStr) => {
@@ -314,6 +450,9 @@ class Orderdetail extends Component {
           <View>
             <View className='status'>
               <View className='paid-img' />
+              {userOrders.type ==2 && (
+                <Text  className='text'>续租</Text>
+              ) }
               <View className='text'>{orderStatusInfo(userOrders.status, userOrders.subStatus)}</View>
             </View>
             <View className='midd-content'>商品租用到期归还后，冻结预授权金额将会释放</View>
@@ -385,16 +524,16 @@ class Orderdetail extends Component {
               <View className='black-info margin-bottom-30'>
                 <View className='left-text'>首期实付款</View><View className='right-text'>￥{cashes.actualPayment ? cashes.actualPayment.toFixed(2) : '0.00'}</View>
               </View>
-              <View className='gray-info margin-bottom-30'>
-                <View className='left-text'>冻结押金</View>
-                <View className='right-text' onClick={this.handleHelpDJ}>
-                  <Text style={{ paddingRight: '5px' }}>￥{cashes.deposit ? cashes.deposit.toFixed(2) : '0.00'}</Text>
-                  <am-icon type='help' size='{{18}}' color='#999' />
-                </View>
-              </View>
+              {/*<View className='gray-info margin-bottom-30'>*/}
+              {/*  <View className='left-text'>冻结押金</View>*/}
+              {/*  <View className='right-text' onClick={this.handleHelpDJ}>*/}
+              {/*    <Text style={{ paddingRight: '5px' }}>￥{cashes.deposit ? cashes.deposit.toFixed(2) : '0.00'}</Text>*/}
+              {/*    <am-icon type='help' size='{{18}}' color='#999' />*/}
+              {/*  </View>*/}
+              {/*</View>*/}
               <View className='dividing margin-bottom-30' />
               <View className='black-info'>
-                <View className='left-text'>合计支付</View><View className='right-text' style={{ color: '#FC766B' }}>￥{cashes.total ? cashes.total.toFixed(2) : '0.00'}</View>
+                <View className='left-text'>合计支付</View><View className='right-text' style={{ color: '#FC766B' }}>￥{cashes.firtOrderStagsPrice ? cashes.firtOrderStagsPrice.toFixed(2) : '0.00'}</View>
               </View>
             </View>
           ) :
@@ -444,24 +583,24 @@ class Orderdetail extends Component {
               </View>
             )
         }
-        {!!reletOrders&&reletOrders?reletOrders.map(item=>(
-          <View className='order-info'>
-            <View className='gray-info margin-bottom-30'>
-              <View className='left-text'>续租订单编号</View>
-              <View className='right-text'>
-                {item.reletOrderId}
-                <Text className='copy-button' onClick={this.handleClickCopy.bind(this,item.reletOrderId)}>复制</Text>
-              </View>
-            </View>
-            <View className='gray-info margin-bottom-30'>
-              <View className='left-text'>下单时间</View><View className='right-text'>{item.reletOrderTime}</View>
-            </View>
-            <View className='gray-info'>
-              <View className='left-text'>还租时间</View><View className='right-text'>{item.reletEnd}</View>
-            </View>
-          </View>
-        )):
-          (
+        {/*{!!reletOrders&&reletOrders?reletOrders.map(item=>(*/}
+        {/*  <View className='order-info'>*/}
+        {/*    <View className='gray-info margin-bottom-30'>*/}
+        {/*      <View className='left-text'>续租订单编号</View>*/}
+        {/*      <View className='right-text'>*/}
+        {/*        {item.reletOrderId}*/}
+        {/*        <Text className='copy-button' onClick={this.handleClickCopy.bind(this,item.reletOrderId)}>复制</Text>*/}
+        {/*      </View>*/}
+        {/*    </View>*/}
+        {/*    <View className='gray-info margin-bottom-30'>*/}
+        {/*      <View className='left-text'>下单时间</View><View className='right-text'>{item.reletOrderTime}</View>*/}
+        {/*    </View>*/}
+        {/*    <View className='gray-info'>*/}
+        {/*      <View className='left-text'>还租时间</View><View className='right-text'>{item.reletEnd}</View>*/}
+        {/*    </View>*/}
+        {/*  </View>*/}
+        {/*)):*/}
+        {/*  (*/}
             <View className='order-info'>
               <View className='gray-info margin-bottom-30'>
                 <View className='left-text'>订单编号</View>
@@ -477,14 +616,32 @@ class Orderdetail extends Component {
                 <View className='left-text'>还租时间</View><View className='right-text'>{rentStartStr} - {unrentTimeStr}</View>
               </View>
             </View>
-          )
+        {/*  )*/}
+        {/*}*/}
+        {!!reletOrders&&reletOrders?reletOrders.map(item=>(
+          <View className='renewal-days'>
+            <View className='border'></View>
+            <View className='header'>
+              <View className='title'>续租订单</View>
+              <View className='to-see' onClick={this.handleGoRenewal.bind(this,item.reletOrderId)}>去看看 ></View>
+            </View>
+            <View className='ren-day'>
+              <View className='day'>续租订单编号</View>
+              <View className='day'>{item.reletOrderId}</View>
+            </View>
+            <View className='ren-day'>
+              <View className='day'>续租下单时间</View>
+              <View className='day'>{formatDate(new Date(item.reletOrderTime), 'yyyy年MM月dd  hh:mm')}</View>
+            </View>
+          </View>
+          )):null
         }
         <View className='bottom-space' />
         {
           userOrders.status === 'WAITING_PAYMENT' && (
             <View className='end-banner'>
               <View className='button-bar' onClick={this.handleCancel}>取消订单</View>
-              <View className='button-bar-active' onClick={this.onClickFrezzAgain.bind(this, userOrders.orderId)}>去支付</View>
+              <View className='button-bar-active' onClick={this.onClickFrezzAgain.bind(this, userOrders)}>去支付</View>
             </View>
           )
         }
@@ -498,10 +655,28 @@ class Orderdetail extends Component {
         {
           userOrders.status === 'WAITING_BUSINESS_DELIVERY' && (
             <View className='end-banner'>
-              {userOrders.subStatus !== 'USER_ORDER_PENDING_DEAL' && (
-                <View className='button-bar' onClick={this.onClickBillDetail}>分期账单</View>
-              )}
+              <View>
+                <View >
+                  {dueTimeMs>0?(
+                    <View>
+                      {userOrders.examineStatus === 0 ?
+                        (
+                          <View className='button-bar' onClick={this.handleClickCancelOrder.bind(this, userOrders)}>取消订单</View>
+                        )
+                        :
+                        (
+                          <View className='button-bar'  onClick={this.handleClickCancelOrder.bind(this,userOrders)}>处理中···</View>
+                        )
+                      }
+                    </View>
+                  ) :null
+                  }
+                </View>
+              </View>
               <View className='button-bar' onClick={this.connectService}>联系客服</View>
+              {userOrders.subStatus !== 'USER_ORDER_PENDING_DEAL' && (
+                <View className='button-bar-active' onClick={this.onClickBillDetail}>分期账单</View>
+              )}
             </View>
           )
         }
@@ -518,26 +693,43 @@ class Orderdetail extends Component {
         {
           userOrders.status === 'WAITING_GIVE_BACK' && (
             <View className='end-banner'>
-              {/*<popover*/}
-              {/*  className='popover'*/}
-              {/*  position={position}*/}
-              {/*  show={show}*/}
-              {/*  showMask={showMask}*/}
-              {/*  onMaskClick={this.onMaskClick}*/}
-              {/*>*/}
-              {/*  <View  onClick={this.onShowPopoverTap}>*/}
-              {/*    <Image className='img' src={require('../../images/order/popover.png')} />*/}
-              {/*  </View>*/}
-              {/*  <View slot='items' >*/}
-              {/*    <popover-item onItemClick={this.handleClickBuyout}>*/}
-              {/*      <text>买断</text>*/}
-              {/*    </popover-item>*/}
-              {/*    <popover-item  onItemClick={this.handleClickRenewal}>*/}
-              {/*      <text>续租</text>*/}
-              {/*    </popover-item>*/}
-
-              {/*  </View>*/}
-              {/*</popover>*/}
+              { userOrders.type ===2 || dueTimeP<0?
+                (
+                  <popover
+                    className='popover'
+                    position={position}
+                    show={show}
+                    showMask={showMask}
+                    onMaskClick={this.onMaskClick}
+                  >
+                    <View  onClick={this.onShowPopoverTap}>
+                      <Image className='img' src={require('../../images/order/popover.png')} />
+                    </View>
+                    <View slot='items' >
+                      {/*<popover-item onItemClick={this.handleClickBuyout}>*/}
+                      {/*  <text>买断</text>*/}
+                      {/*</popover-item>*/}
+                      {dueTimeP<0&&
+                        (
+                          <popover-item  onItemClick={this.handleClickRenewal}>
+                            <text>续租</text>
+                          </popover-item>
+                        )
+                      }
+                      {
+                        userOrders.type === 2 && (
+                          <popover-item  onItemClick={this.handleClickRenewalBefore}>
+                            <text>查看原订单</text>
+                          </popover-item>
+                        )
+                      }
+                      {/*<popover-item  onItemClick={this.handleClickRenewal}>*/}
+                      {/*  <text>续租</text>*/}
+                      {/*</popover-item>*/}
+                    </View>
+                  </popover>
+                ):null
+              }
               <View className='button-bar' onClick={this.connectService}>联系客服</View>
               <View className='button-bar' onClick={this.onClickSendBack} >提前归还</View>
               <View className='button-bar-active' onClick={this.onClickBillDetail}>分期账单</View>
@@ -573,10 +765,33 @@ class Orderdetail extends Component {
             </View>
           )
         }
+        {
+          userOrders.status === 'WAITING_SETTLEMENT' && userOrders.subStatus === 'CAN_SEND_DO_SETTLEMENT_AGAIN_FOR_USER' && (
+            <View className='end-banner'>
+              <View className='button-bar' onClick={this.connectService}>联系客服</View>
+              <View className='button-bar-active' onClick={this.handleClickRenewal}>续租</View>
+              {userOrders.type === 2 && (
+                <View className='button-bar' onClick={this.handleClickRenewalBefore}>查看原订单</View>
+              )}
+            </View>
+          )
+        }
+        {userOrders.status === 'WAITING_SETTLEMENT' && userOrders.subStatus === 'GIVE_BACK_WAITING_ALREADY_PRINT' && (
+          <View className='end-banner'>
+            <View className='button-bar-active' onClick={this.handleClickRenewal}>续租</View>
+            {userOrders.type === 2 && (
+              <View className='button-bar' onClick={this.handleClickRenewalBefore}>查看原订单</View>
+            )}
+            {/*<popover-item  onItemClick={this.handleClickRenewal}>*/}
+            {/*  <text>续租</text>*/}
+            {/*</popover-item>*/}
+          </View>
+        )}
         <CancelOrder
           display={cancelOrderDisplay}
           onCancal={this.handleModalCancel}
           onOk={this.handleModalOk}
+          cancelOrderList={cancelOrderList}
         />
         <AtModal isOpened={receiveDoodsDisplay}>
           <AtModalHeader>确认收货？</AtModalHeader>
@@ -608,6 +823,22 @@ class Orderdetail extends Component {
           <View style={{ textAlign: 'left',marginBottom: '10px', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectServices.bind(this, customerServiceTel)}>{customerServiceTel}</Text></View>
           <View style={{ textAlign: 'left', paddingLeft: '15px' }}>工作时间：<Text style={{ color: '#777' }} >10:30 - 19:30</Text></View>
           <View slot='footer'>取消拨打</View>
+        </modal>
+        <modal
+          show={canCel}
+          // showClose={false}
+          onModalClick={this.oncanCelModal}
+          onModalClose={this.oncanCelModal}
+          advice={true}
+        >
+          <View  className='cancel-modal'>
+            <View slot='header' className='header'>温馨提示·</View>
+            <View className='content'>
+              退款处理中，预计24小时内操作完成，请耐心等待；
+              如需加急处理，可联系客服：
+              <Text style={{ color: '#51A0F9' }} onClick={this.connectServices.bind(this, customerServiceTel)}>{customerServiceTel}</Text>
+            </View>
+          </View>
         </modal>
       </View >
     )

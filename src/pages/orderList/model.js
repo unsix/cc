@@ -1,5 +1,7 @@
 import * as orderListApi from './service';
 import { getUid } from '../../utils/localStorage';
+import * as orderDetailApi from '../orderDetail/service'
+import Taro from '@tarojs/taro'
 
 export default {
   namespace: 'orderList',
@@ -50,6 +52,28 @@ export default {
           payload: res.data.sysConfigValue,
 
         });
+      }
+    },
+    *userCancelOrderSendMsg({ payload, callback }, { call, put }) {
+      const res = yield call(orderListApi.userCancelOrderSendMsg, payload)
+      if (res) {
+        const nextStatus = 'WAITING_BUSINESS_DELIVERY';
+        if( res.code === 1){
+          Taro.showToast({
+            title:'取消成功',
+            icon:'none'
+          })
+        }
+        yield put({
+          type: 'orderList/setOrderStatus',
+          payload: {
+            orderId: payload.orderId,
+            status: nextStatus,
+          },
+        });
+        if (callback) {
+          callback();
+        }
       }
     },
   },

@@ -16,7 +16,7 @@ import './index.scss';
 }))
 class Orderdetail extends Component {
   config = {
-    navigationBarTitleText: '订单详情页11',
+    navigationBarTitleText: '订单详情页',
     'usingComponents': {
       "am-icon": "../../npm/mini-antui/es/am-icon/index",
       "popover": "../../npm/mini-antui/es/popover/index",
@@ -33,6 +33,23 @@ class Orderdetail extends Component {
     position: 'topLeft',
     show: false,
     showMask: true,
+    cancelOrderList:[
+      {
+        value:'想要重新下单',
+      },
+      {
+        value:'商品价格较贵',
+      },
+      {
+        value:'等待时机较长',
+      },
+      {
+        value:'是想了解流程',
+      },
+      {
+        value:'不想要了',
+      }
+    ]
   }
 
   componentDidMount = () => {
@@ -86,7 +103,7 @@ class Orderdetail extends Component {
   onClickFrezzAgain = (orderId) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'renewal/userFrezzAgain',
+      type: 'orderDetail/payReletAgain',
       payload: { orderId },
     });
   }
@@ -265,6 +282,16 @@ class Orderdetail extends Component {
       url:`/pages/renewal/confirm?orderId=${orderId}`
     })
   }
+  handleClickRenewalBefore = () =>{
+    // const { orderId } = this.$router.params;
+    const { userOrders } = this.props
+    Taro.navigateTo({
+      url:`/pages/orderDetail/index?orderId=${userOrders.originalOrderId}`
+    })
+  }
+  onClickGoPay = () => {
+
+  }
   connectBService = (number) => {
     let { serviceTel } = this.props.data
     console.log(serviceTel)
@@ -278,14 +305,16 @@ class Orderdetail extends Component {
     my.makePhoneCall({ number:customerServiceTel });
   }
   render() {
-    const { cancelOrderDisplay, receiveDoodsDisplay, modifySettlementDisplay, countDownStr, showServicePhone , position,  show , showMask} = this.state;
+    const { cancelOrderDisplay, receiveDoodsDisplay, modifySettlementDisplay, countDownStr, showServicePhone , position,  show , showMask,cancelOrderList} = this.state;
     const { cashes, product, userAddress, userOrders, loading } = this.props;
-    const createTiemStr = userOrders.createTime && formatDate(new Date(userOrders.createTimeStr), 'yyyy年MM月dd hh:mm');
-    const rentStartStr = userOrders.rentStart && formatDate(new Date(userOrders.rentStartStr), 'yyyy年MM月dd');
-    const unrentTimeStr = userOrders.unrentTime && formatDate(new Date(userOrders.unrentTimeStr), 'yyyy年MM月dd');
+    const createTiemStr = userOrders.createTime && formatDate(new Date(userOrders.createTimeStr), 'yyyy年MM月dd日 hh:mm');
+    const rentStartStr = userOrders.rentStart && formatDate(new Date(userOrders.rentStartStr), 'yyyy年MM月dd日');
+    const unrentTimeStr = userOrders.unrentTime && formatDate(new Date(userOrders.unrentTimeStr), 'yyyy年MM月dd日');
     const rentStartStrs =  formatDate(new Date(userOrders.unrentTimeStr ), 'yyyy-MM-dd hh:mm');
     const newTime  =  formatDate(new Date() , 'yyyy-MM-dd hh:mm');
     let dueTime = transdate(rentStartStrs)+ 24*60*60*10-transdate(newTime)
+    let dueTimeP =  transdate(rentStartStrs) - 30*24*60*60*1000 - transdate(newTime)
+    console.log(newTime,'111',dueTimeP)
     console.log(rentStartStrs , newTime)
     console.log(transdate(rentStartStrs)+ 24*60*60*10-transdate(newTime))
     console.log(leftTimer('2019-06-15 '))
@@ -315,7 +344,10 @@ class Orderdetail extends Component {
           <View>
             <View className='status'>
               <View className='paid-img' />
-              <View className='text'>{orderStatusInfo(userOrders.status, userOrders.subStatus)}</View>
+              <View className='text'>
+                续租
+                {orderStatusInfo(userOrders.status, userOrders.subStatus)}
+              </View>
             </View>
             <View className='midd-content'>商品租用到期归还后，冻结预授权金额将会释放</View>
             {userOrders.status === 'WAITING_PAYMENT' && (
@@ -367,7 +399,7 @@ class Orderdetail extends Component {
         </View>
         {
           userOrders.status !== 'WAITING_SETTLEMENT' && userOrders.status !== 'WAITING_SETTLEMENT_PAYMENT' ? (
-              <View className='price-area'>
+              <View className='price-area' style={{  paddingTop: '15px' }}>
                 {!!cashes.couponPrice && (
                   <View className='gray-info margin-bottom-37'>
                     <View className='left-text'>优惠券</View><View className='right-text'>-￥{cashes.couponPrice.toFixed(2)}</View>
@@ -386,16 +418,16 @@ class Orderdetail extends Component {
                 <View className='black-info margin-bottom-30'>
                   <View className='left-text'>首期实付款</View><View className='right-text'>￥{cashes.actualPayment ? cashes.actualPayment.toFixed(2) : '0.00'}</View>
                 </View>
-                <View className='gray-info margin-bottom-30'>
-                  <View className='left-text'>冻结押金</View>
-                  <View className='right-text' onClick={this.handleHelpDJ}>
-                    <Text style={{ paddingRight: '5px' }}>￥{cashes.deposit ? cashes.deposit.toFixed(2) : '0.00'}</Text>
-                    <am-icon type='help' size='{{18}}' color='#999' />
-                  </View>
-                </View>
+                {/*<View className='gray-info margin-bottom-30'>*/}
+                {/*  <View className='left-text'>冻结押金</View>*/}
+                {/*  <View className='right-text' onClick={this.handleHelpDJ}>*/}
+                {/*    <Text style={{ paddingRight: '5px' }}>￥{cashes.deposit ? cashes.deposit.toFixed(2) : '0.00'}</Text>*/}
+                {/*    <am-icon type='help' size='{{18}}' color='#999' />*/}
+                {/*  </View>*/}
+                {/*</View>*/}
                 <View className='dividing margin-bottom-30' />
                 <View className='black-info'>
-                  <View className='left-text'>合计支付</View><View className='right-text' style={{ color: '#FC766B' }}>￥{cashes.total ? cashes.total.toFixed(2) : '0.00'}</View>
+                  <View className='left-text'>合计支付</View><View className='right-text' style={{ color: '#FC766B' }}>￥{cashes.firtOrderStagsPrice ? cashes.firtOrderStagsPrice.toFixed(2) : '0.00'}</View>
                 </View>
               </View>
             ) :
@@ -464,6 +496,14 @@ class Orderdetail extends Component {
         {
           userOrders.status === 'WAITING_PAYMENT' && (
             <View className='end-banner'>
+              {
+                userOrders.type === 2 && (
+                  <View className='button-bar' onClick={this.handleClickRenewalBefore}>查看订单</View>
+                  // <popover-item  onItemClick={this.handleClickRenewalBefore}>
+                  //   <text>查看原订单</text>
+                  // </popover-item>
+                )
+              }
               <View className='button-bar' onClick={this.handleCancel}>取消订单</View>
               <View className='button-bar-active' onClick={this.onClickFrezzAgain.bind(this, userOrders.orderId)}>去支付</View>
             </View>
@@ -499,29 +539,47 @@ class Orderdetail extends Component {
         {
           userOrders.status === 'WAITING_GIVE_BACK' && (
             <View className='end-banner'>
-              <popover
-                className='popover'
-                position={position}
-                show={show}
-                showMask={showMask}
-                onMaskClick={this.onMaskClick}
-              >
-                <View  onClick={this.onShowPopoverTap}>
-                  <Image className='img' src={require('../../images/order/popover.png')} />
-                </View>
-                <View slot='items' >
-                  <popover-item onItemClick={this.handleClickBuyout}>
-                    <text>买断</text>
-                  </popover-item>
-                  <popover-item  onItemClick={this.handleClickRenewal}>
-                    <text>续租</text>
-                  </popover-item>
-
-                </View>
-              </popover>
+              {/*{dueTimeP<0?*/}
+              {/*  (*/}
+                  <popover
+                    className='popover'
+                    position={position}
+                    show={show}
+                    showMask={showMask}
+                    onMaskClick={this.onMaskClick}
+                  >
+                    <View  onClick={this.onShowPopoverTap}>
+                      <Image className='img' src={require('../../images/order/popover.png')} />
+                    </View>
+                    <View slot='items' >
+                      {/*<popover-item onItemClick={this.handleClickBuyout}>*/}
+                      {/*  <text>买断</text>*/}
+                      {/*</popover-item>*/}
+                      {dueTimeP<0?
+                        (
+                          <popover-item  onItemClick={this.handleClickRenewal}>
+                            <text>续租</text>
+                          </popover-item>
+                        ):null
+                      }
+                      {/*<popover-item  onItemClick={this.handleClickRenewal}>*/}
+                      {/*  <text>续租</text>*/}
+                      {/*</popover-item>*/}
+                      {/*{userOrders.type === 2 &&*/}
+                      {/*(*/}
+                        <popover-item  onItemClick={this.handleClickRenewalBefore}>
+                          <text>查看原订单</text>
+                        </popover-item>
+                      {/*)*/}
+                      {/*}*/}
+                    </View>
+                  </popover>
+              {/*  ):null*/}
+              {/*}*/}
               <View className='button-bar' onClick={this.connectService}>联系客服</View>
               <View className='button-bar' onClick={this.onClickSendBack} >提前归还</View>
               <View className='button-bar-active' onClick={this.onClickBillDetail}>分期账单</View>
+              {/*<View className='button-bar-active' onClick={this.onClickGoPay}>去支付</View>*/}
               {/*<View className='button-bar' onClick={this.againBuy.bind(this,'buyout')} >买断</View>*/}
               {/*<View className='button-bar-active' onClick={this.againBuy.bind(this,'renewal')} >续租</View>*/}
             </View>
@@ -549,8 +607,44 @@ class Orderdetail extends Component {
         {
           userOrders.status === 'WAITING_SETTLEMENT' && userOrders.subStatus === 'USER_APPLICATION_CHANGE_SETTLEMENT' && (
             <View className='end-banner'>
-              <View className='button-bar' onClick={this.onClickBillDetail}>分期账单</View>
               <View className='button-bar' onClick={this.connectService}>联系客服</View>
+              <View className='button-bar-active' onClick={this.onClickBillDetail}>分期账单</View>
+            </View>
+          )
+        }
+        {userOrders.status === 'USER_CANCELED_CLOSED' && userOrders.type ===2 && (
+          <View className='end-banner'>
+            <View className='button-bar' onClick={this.handleClickRenewalBefore}>查看原订单</View>
+          </View>
+        )}
+        {userOrders.status === 'ORDER_FINISH' && userOrders.type ===2 && (
+          <View className='end-banner'>
+            <View className='button-bar' onClick={this.handleClickRenewalBefore}>查看原订单</View>
+          </View>
+        )}
+        {
+          userOrders.status === 'WAITING_SETTLEMENT' && userOrders.subStatus === 'CAN_SEND_DO_SETTLEMENT_AGAIN_FOR_USER' && (
+            <View className='end-banner'>
+              {
+                userOrders.type === 2 && (
+                  <View className='button-bar' onClick={this.handleClickRenewalBefore}>查看订单</View>
+                )
+              }
+              <View className='button-bar' onClick={this.connectService}>联系客服</View>
+              <View className='button-bar-active' onClick={this.handleClickRenewal}>续租</View>
+            </View>
+          )
+        }
+        {
+          userOrders.status === 'WAITING_SETTLEMENT' && userOrders.subStatus === 'GIVE_BACK_WAITING_ALREADY_PRINT' && (
+            <View className='end-banner'>
+              {
+                userOrders.type === 2 && (
+                  <View className='button-bar' onClick={this.handleClickRenewalBefore}>查看订单</View>
+                )
+              }
+              <View className='button-bar' onClick={this.connectService}>联系客服</View>
+              <View className='button-bar-active' onClick={this.handleClickRenewal}>续租</View>
             </View>
           )
         }
@@ -558,6 +652,7 @@ class Orderdetail extends Component {
           display={cancelOrderDisplay}
           onCancal={this.handleModalCancel}
           onOk={this.handleModalOk}
+          cancelOrderList={cancelOrderList}
         />
         <AtModal isOpened={receiveDoodsDisplay}>
           <AtModalHeader>确认收货？</AtModalHeader>
