@@ -7,23 +7,37 @@
     font-size: 35px;
     margin-top: 50px;
     margin-left: 50px;
+    font-family: PingFangSC-Medium;
   }
   .item{
     position: relative;
-    @include wh(450px,auto);
+    @include wh(550px,auto);
     display: flex;
     min-height: 80px;
     margin: 50px auto 0 auto;
-    //border-left: 1px red solid;
     .item-img{
       .img{
         @include wh(35px,35px)
       }
     }
     .item-text{
-      @include wh(350px,100px);
+      @include wh(550px,100px);
       font-size: 23px;
-      margin-left: 20px;
+      margin:0 0 0 20px;
+      //border-left: 1px red solid;
+      .remark{
+        height: 105px;
+        width: 550px;
+        line-height: 35px;
+          //display: -webkit-box;
+          //-webkit-box-orient:vertical;
+          //-webket-line-clamp:3;
+        overflow: hidden;/*超出部分隐藏*/
+        text-overflow:ellipsis;/* 超出部分显示省略号 */
+      }
+      .time{
+        margin-top: 10px;
+      }
     }
     .line{
       @include wh(3px,130px);
@@ -36,4 +50,7 @@
       display: none;
     }
   }
+}
+.no-express{
+  @include wh(100px,100px);
 }

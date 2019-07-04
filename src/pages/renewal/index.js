@@ -278,8 +278,12 @@ class Orderdetail extends Component {
   //续租
   handleClickRenewal = () => {
     const { orderId } = this.$router.params;
+    const { userOrders } = this.props
+    const newTime  =  formatDate(new Date() , 'yyyy-MM-dd hh:mm');
+    const rentStartStrs =  formatDate(new Date(userOrders.unrentTimeStr ), 'yyyy-MM-dd hh:mm');
+    let dueTimeP =  transdate(rentStartStrs) - 30*24*60*60*1000 - transdate(newTime)
     Taro.navigateTo({
-      url:`/pages/renewal/confirm?orderId=${orderId}`
+      url:`/pages/renewal/confirm?orderId=${orderId}&dueTimeP=${dueTimeP}`
     })
   }
   handleClickRenewalBefore = () =>{
@@ -555,13 +559,13 @@ class Orderdetail extends Component {
                       {/*<popover-item onItemClick={this.handleClickBuyout}>*/}
                       {/*  <text>买断</text>*/}
                       {/*</popover-item>*/}
-                      {dueTimeP<0?
-                        (
+                      {/*{dueTimeP<0?*/}
+                      {/*  (*/}
                           <popover-item  onItemClick={this.handleClickRenewal}>
                             <text>续租</text>
                           </popover-item>
-                        ):null
-                      }
+                      {/*  ):null*/}
+                      {/*}*/}
                       {/*<popover-item  onItemClick={this.handleClickRenewal}>*/}
                       {/*  <text>续租</text>*/}
                       {/*</popover-item>*/}

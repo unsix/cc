@@ -1,5 +1,6 @@
 import Taro, { Component} from '@tarojs/taro'
-import { View,Text , Image} from '@tarojs/components'
+import { View, Text, Image, ScrollView } from '@tarojs/components'
+import NoData from '../../components/noData'
 // import { formatStrDate } from '../../../utils/utils'
 import { connect } from '@tarojs/redux'
 import './index.scss';
@@ -18,6 +19,7 @@ class Express extends Component {
     // banner: [
     //   '../../../images/active_page/report_banner_1.png'
     // ]
+    display: 'block', // none -> 没数据隐藏
   }
   componentDidMount = () => {
     const { dispatch } = this.props
@@ -25,6 +27,7 @@ class Express extends Component {
       type:'express/userGetExpressByorderId',
       payload:{
         orderId:this.$router.params.orderId
+        // orderId:1000001241006370
       }
     })
   }
@@ -43,7 +46,8 @@ class Express extends Component {
   }
   //领红包
   render() {
-    const {loading, details,list}= this.props
+    const {loading, details}= this.props
+    const { display } = this.state
     // let  results  = this.props.details.logisticsList.result
     // console.log(this.props.details.logisticsList,'=============',results)
     // console.log(code,'0000000000000000000000000000000000')
@@ -57,13 +61,20 @@ class Express extends Component {
     // if(memberIfn.vip && memberIfn.vip.dueTime) {
     //   dueTime = `${formatStrDate(memberIfn.vip.dueTime, 'yyyy-MM-dd')}`;
     // }
+    let list = null
+    if(details.logisticsList){
+      list =  details.logisticsList.result.list.reverse()
+    }
+    // console.log(this.porps.details.logisticsList,'=========')
+    // const  list =  this.porps.details.logisticsList.result.list.reverse()
+    console.log(list)
     loading ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
     return (
      <View className='container_express'>
         <View className='title'>
           配送快递 ：
           <Text>
-            {details.logisticsList.result.company}
+            {details.platformExpress.name}
           </Text>
         </View>
        {
@@ -74,10 +85,10 @@ class Express extends Component {
                   <Image className='img' src={Spot} />
                  </View>
                  <View className='item-text'>
-                    <View>
+                    <View className='remark'>
                       {item.remark}
                     </View>
-                   <View>
+                   <View className='time'>
                      {item.datetime}
                    </View>
                  </View>
@@ -87,7 +98,11 @@ class Express extends Component {
              </View>
          ))
          :
-         null
+          (
+            <View >
+              <NoData className='no-express' type='express' display={display}  />
+            </View>
+          )
        }
      </View>
     )

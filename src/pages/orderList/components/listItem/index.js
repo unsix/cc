@@ -132,8 +132,11 @@ class ListItem extends Component {
   //续租
   handleClickRenewal = () => {
     const { data } = this.props
+    const letTimP =  data.createTime && formatDate(new Date(data.unrentTimeStr), 'yyyy-MM-dd hh:mm');
+    const newTime  =  formatDate(new Date() , 'yyyy-MM-dd hh:mm');
+    let dueTimeP =  transdate(letTimP) - 30*24*60*60*1000 - transdate(newTime)
       Taro.navigateTo({
-        url:`/pages/renewal/confirm?orderId=${data.orderId}`
+        url:`/pages/renewal/confirm?orderId=${data.orderId}&dueTimeP=${dueTimeP}`
       })
   }
   handleClickRenewalBefore = () =>{
@@ -148,11 +151,9 @@ class ListItem extends Component {
     const { showServicePhone , position, show, showMask,} = this.state
     // console.log(data.serviceTel)
     const letTime =  data.createTime && formatDate(new Date(data.createTimeStr), 'yyyy-MM-dd hh:mm');
-    const letTimP =  data.createTime && formatDate(new Date(data.unrentTimeStr), 'yyyy-MM-dd hh:mm');
     const newTime  =  formatDate(new Date() , 'yyyy-MM-dd hh:mm');
     let dueTime = transdate(letTime) + data.sysConfigValue*60*60*1000 - transdate(newTime)
-    let dueTimeP =  transdate(letTimP) - 30*24*60*60*1000 - transdate(newTime)
-    console.log(dueTimeP,letTimP)
+    // console.log(dueTimeP,letTimP)
     // console.log(rentStartStrs , newTime)
     // console.log(transdate(rentStartStrs)+ 24*60*60*10-transdate(newTime))
     // console.log(this.props)
@@ -184,14 +185,14 @@ class ListItem extends Component {
             <Image className='img' mode='aspectFit' src={data.images[0].src} />
             <View className='list-item-content-info-box'>
               <View className='title-info'>
-                <View className='title'>
-                  <Text className='name'>{data.productName}</Text>
+                <View className='title name'>
+                 {data.productName}
                 </View>
-                <View className='device-type'>
-                  <Text className='name type'>规格：{data.skuTitle}</Text>
+                <View className='device-type '>
+                 规格：{data.skuTitle}
                 </View>
-                <View className='price'>
-                  <Text className='name '>总租金：<Text>&yen; {data.totalRent}</Text> </Text>
+                <View className='price name'>
+                总租金： {data.totalRent}
                 </View>
               </View>
               {/*<AtIcon value='chevron-right' size='18' color='#d8d8d8' />*/}
@@ -248,7 +249,7 @@ class ListItem extends Component {
           )}
           {data.status === 'WAITING_GIVE_BACK' && (
             <View className='list-item-content-btn'>
-              {data.type === 2 || dueTimeP<0 ?(
+              {/*{data.type === 2 || dueTimeP<0 ?(*/}
                 <popover
                   className='popover'
                   position={position}
@@ -263,13 +264,13 @@ class ListItem extends Component {
                     {/*<popover-item onItemClick={this.handleClickBuyout}>*/}
                     {/*  <text>买断</text>*/}
                     {/*</popover-item>*/}
-                    {dueTimeP<0&&
-                      (
+                    {/*{dueTimeP<0&&*/}
+                    {/*  (*/}
                       <popover-item  onItemClick={this.handleClickRenewal}>
                         <text>续租</text>
                       </popover-item>
-                      )
-                    }
+                    {/*  )*/}
+                    {/*}*/}
                     {data.type === 2 && (
                       <popover-item  onItemClick={this.handleClickRenewalBefore}>
                         <text>查看原订单</text>
@@ -277,7 +278,7 @@ class ListItem extends Component {
                     )}
                   </View>
                 </popover>
-              ):null}
+              {/*):null}*/}
               {/*<Button className='btn ' onClick={this.handleClickSendBack}>买断</Button>*/}
               {/*<Button className='btn ' onClick={this.handleClickFrezzAgain.bind(this, data.orderId)}>买断</Button>*/}
               {/*<Button className='btn ' onClick={this.handleClickRenewal.bind(this, 'renewal')}>续租</Button>*/}
@@ -294,10 +295,11 @@ class ListItem extends Component {
           )}
           {data.status === 'WAITING_SETTLEMENT' && data.subStatus === 'CAN_SEND_DO_SETTLEMENT_AGAIN_FOR_USER' && (
             <View className='list-item-content-btn'>
-              <Button className='btn careful' onClick={this.handleClickRenewal}>续租</Button>
               {data.type === 2 && (
                 <Button className='btn' onClick={this.handleClickRenewalBefore}>查看原订单</Button>
               )}
+              <Button className='btn ' onClick={this.connectService.bind(this,data.serviceTel)}>联系客服</Button>
+              <Button className='btn careful' onClick={this.handleClickRenewal}>续租</Button>
               {/*<popover-item  onItemClick={this.handleClickRenewal}>*/}
               {/*  <text>续租</text>*/}
               {/*</popover-item>*/}
@@ -305,10 +307,11 @@ class ListItem extends Component {
           )}
           {data.status === 'WAITING_SETTLEMENT' && data.subStatus === 'GIVE_BACK_WAITING_ALREADY_PRINT' && (
             <View className='list-item-content-btn'>
-              <Button className='btn careful' onClick={this.handleClickRenewal}>续租</Button>
               {data.type === 2 && (
                 <Button className='btn' onClick={this.handleClickRenewalBefore}>查看原订单</Button>
               )}
+              <Button className='btn ' onClick={this.connectService.bind(this,data.serviceTel)}>联系客服</Button>
+              <Button className='btn careful' onClick={this.handleClickRenewal}>续租</Button>
               {/*<popover-item  onItemClick={this.handleClickRenewal}>*/}
               {/*  <text>续租</text>*/}
               {/*</popover-item>*/}

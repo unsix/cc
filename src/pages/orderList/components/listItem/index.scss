@@ -51,13 +51,6 @@ page {
         align-items: center;
         .title-info {
           margin-left: 15px;
-          .device-type {
-            margin: 20px 0 16px;
-            width: 350px;
-            overflow: hidden;/*超出部分隐藏*/
-            text-overflow:ellipsis;/* 超出部分显示省略号 */
-            white-space: nowrap;/*规定段落中的文本不进行换行 */
-          }
           .title{
             width: 380px;
             line-height: 55px;
@@ -65,6 +58,14 @@ page {
             display: -webkit-box;
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 2;
+            overflow: hidden;/*超出部分隐藏*/
+            text-overflow:ellipsis;/* 超出部分显示省略号 */
+          }
+          .device-type {
+            margin: 20px 0 16px;
+            width: 400px;
+            font-size: 24px;
+            color: #999999;
             overflow: hidden;/*超出部分隐藏*/
             text-overflow:ellipsis;/* 超出部分显示省略号 */
             white-space: nowrap;/*规定段落中的文本不进行换行 */

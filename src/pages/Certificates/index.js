@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View, Text, Image,Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux';
+import { baseUrl } from  '../../config/index'
 import './index.scss';
 
 @connect(({certificate,mine, loading }) => ({
@@ -51,14 +52,46 @@ class Certificate extends Component {
   }
 
   update = (val) => {
-    console.log(val)
+    // console.log(val)
+    // my.uploadFile({
+    //   url: 'http://47.110.39.152:8084/uplodAndDownload/upload',
+    //   fileType: 'image',
+    //   fileName: 'file',
+    //   filePath: '...',
+    //   success: (res) => {
+    //     my.alert({
+    //       content: '上传成功'
+    //     });
+    //   },
+    // });
     if(val === '1') {
       my.chooseImage({
         sourceType: ['camera','album'],
         success: (res) => {
-          this.setState({
-            idCardFront:res.apFilePaths[0]
-          })
+          // this.setState({
+          //   idCardFront:res.apFilePaths[0]
+          // })
+          console.log(res.apFilePaths[0],'============  ')
+          my.uploadFile({
+            url: baseUrl+ 'aliPay/components/uploadFile',
+            fileType: 'image',
+            fileName: 'multipartFile',
+            filePath: res.apFilePaths[0],
+            header: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            success: (res) => {
+              // my.alert({
+              //   content: '上传成功'
+              // });
+              // console.log(JSON.parse(res.data))
+              let data = JSON.parse(res.data)
+              console.log(data.data[0],'============  ')
+              this.setState({
+                idCardFront:data.data[0]
+              })
+            },
+          });
           // console.log(res)
           // my.alert({
           //   content:res.apFilePaths[0],
@@ -78,7 +111,26 @@ class Certificate extends Component {
           this.setState({
             idCardBack:res.apFilePaths[0]
           })
-          console.log(res)
+          // console.log(res.apFilePaths[0])
+          my.uploadFile({
+            url: baseUrl+ 'aliPay/components/uploadFile',
+            fileType: 'image',
+            fileName: 'multipartFile',
+            filePath: res.apFilePaths[0],
+            header: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            success: (res) => {
+              // my.alert({
+              //   content: '上传成功'
+              // });
+              console.log(JSON.parse(res.data))
+              let data = JSON.parse(res.data)
+              this.setState({
+                idCardBack:data.data[0]
+              })
+            },
+          })
         },
         fail:()=>{
           my.showToast({
@@ -91,10 +143,29 @@ class Certificate extends Component {
       my.chooseImage({
         sourceType: ['camera','album'],
         success: (res) => {
-          this.setState({
-            idCardHandHeld:res.apFilePaths[0]
-          })
+          // this.setState({
+          //   idCardHandHeld:res.apFilePaths[0]
+          // })
           console.log(res)
+          my.uploadFile({
+            url: baseUrl+ 'aliPay/components/uploadFile',
+            fileType: 'image',
+            fileName: 'multipartFile',
+            filePath: res.apFilePaths[0],
+            header: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            success: (res) => {
+              // my.alert({
+              //   content: '上传成功'
+              // });
+              // console.log(JSON.parse(res.data))
+              let data = JSON.parse(res.data)
+              this.setState({
+                idCardHandHeld:data.data[0]
+              })
+            },
+          })
         },
         fail:()=>{
           my.showToast({
@@ -120,7 +191,9 @@ class Certificate extends Component {
       this.showToast('请上传手持身份证')
       return
     }
+
     if (type === '1'){
+
       dispatch({
         type:'certificate/updateUpLoad',
         payload:{

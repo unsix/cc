@@ -42,7 +42,7 @@ class  Presentation extends Component{
       })
       return
     }
-    else if(blankSpace(number).length!=17){
+    else if(blankSpace(number).length!==17 &&blankSpace(number).length!==20 ){
       Taro.showToast({
         title:'报告编号长度有误',
         icon: 'none',

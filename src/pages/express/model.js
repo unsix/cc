@@ -4,7 +4,8 @@ import { getUid } from '../../utils/localStorage';
 export default {
   namespace: 'express',
   state: {
-    details:{}
+    details:{},
+    list:{}
   },
 
   effects: {
@@ -24,7 +25,7 @@ export default {
       return {
         ...state,
         details:payload,
-        list : payload.logisticsList.result.list.reverse()
+        // list : payload.logisticsList.result.list.reverse()
       }
     },
   },

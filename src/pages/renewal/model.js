@@ -15,10 +15,10 @@ export default {
 
   effects: {
     * confirmRelet({payload,callback},{call,put}){
-      const res =  yield call(renewalApi.confirmRelet, { ...payload, uid: getUid() });
+      const res =  yield call(renewalApi.confirmRelet, { ...payload, uid:'69d1aaec30a158580b5c6f2e3b73309fcdc6b505' });
       if (res) {
         if(res.code === 99){
-          my.confirm({
+          my.confirm( {
             title: '温馨提示',
             content: '该笔订单有未支付续租订单，是否立即支付',
             confirmButtonText: '立即前往',
@@ -43,7 +43,7 @@ export default {
       }
     },
     * reletBuyDays({payload,callback},{call,put}){
-      const res =  yield call(renewalApi.reletBuyDays, { ...payload, uid: getUid() });
+      const res =  yield call(renewalApi.reletBuyDays, { ...payload, uid: '69d1aaec30a158580b5c6f2e3b73309fcdc6b505' });
       if (res) {
         // if(res.code === 1){
         //

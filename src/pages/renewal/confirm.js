@@ -41,39 +41,36 @@ class Orderdetail extends Component {
   }
 
   componentDidMount = () => {
-    const { orderId } = this.$router.params;
+    const { orderId , dueTimeP} = this.$router.params;
     const { dispatch } = this.props;
-    // dispatch({
-    //   type: 'orderDetail/selectUserOrderDetail',
-    //   payload: { orderId },
-    // });
-    // const { daysValue } = this.state
-    // dispatch({
-    //   type:'renewal/reletBuyDays',
-    //   payload:{
-    //     days:daysValue,
-    //     orderId:orderId,
-    //   },
-    //   callback:(data)=>{
-    //     this.setState({
-    //       renewalInf:data
-    //     })
-    //   }
-    // })
-    dispatch({
-      type:'renewal/confirmRelet',
-      payload:{
-        orderId: orderId,
-      },
-      callback:(val)=>{
-        if(val === 1){
-          this.setState({
-            stageBillModal:true
-          })
+    console.log(dueTimeP,'=============================================',this.$router.params)
+    if(dueTimeP>0){
+      my.alert({
+        title: '温馨提示',
+        content: '当前时间距租期结束日超过30天，暂不支持续租，请在租期临近结束30天内发起续租',
+        buttonText: '我知道了',
+        // cancelButtonText: 'none',
+        success: (result) => {
+          Taro.navigateBack()
+        },
+      });
+    }
+    else {
+      dispatch({
+        type:'renewal/confirmRelet',
+        payload:{
+          orderId:1000001989766179,
+        },
+        callback:(val)=>{
+          if(val === 1){
+            this.setState({
+              stageBillModal:true
+            })
+          }
         }
-      }
-    })
-    this.countDown();
+      })
+      this.countDown();
+    }
   };
   showToast(title) {
     Taro.showToast({
@@ -289,7 +286,7 @@ class Orderdetail extends Component {
     this.setState({ daysValue: e.target.value });
   }
   handleCustomBlur = () => {
-   const { dispatch } = this.props
+   const { dispatch ,confirmInf } = this.props
    const { orderId } = this.$router.params;
    const { daysValue } = this.state
     if(!daysValue){
@@ -304,7 +301,8 @@ class Orderdetail extends Component {
       type:'renewal/reletBuyDays',
       payload:{
         days:daysValue,
-        orderId:orderId,
+        orderId:1000001989766179,
+        serviceList: confirmInf.serviceList?confirmInf.serviceList:[],
       },
       callback:(data)=>{
         this.setState({
@@ -324,11 +322,11 @@ class Orderdetail extends Component {
           couponType: renewalInf.defaultCoupon.type?renewalInf.defaultCoupon.type:'',
           duration:  daysValue,
           end: renewalInf.end,
-          itemId: "1556554563291",
+          itemId:confirmInf.productId,
           message: message?message:"",
           num: 1,
           orderId: orderId,
-          serviceList: !!confirmInf.servciceList?confirmInf.servciceList:[],
+          serviceList: confirmInf.serviceList?confirmInf.serviceList:[],
           start: renewalInf.start,
           totalRent: confirmInf.orderTotalRent,
       },
@@ -493,7 +491,7 @@ class Orderdetail extends Component {
                 <View className='left-text'>还租时间</View><View className='right-text'>{startTime} - {endTime}</View>
               </View>
               <View className='black-info margin-bottom-36'>
-                <View className='left-text'>总租金</View><View className='right-text'>￥{renewalInf.prices.orderAmount}</View>
+                <View className='left-text'>总租金</View><View className='right-text'>￥{renewalInf.prices.totalRent}</View>
               </View>
               <View className='gray-info margin-bottom-30'>
                 {/*<View className='left-text'>运费</View><View className='right-text'>￥{cashes.freightPrice ? cashes.freightPrice.toFixed(2) : '0.00'}</View>*/}
@@ -561,7 +559,7 @@ class Orderdetail extends Component {
               实付
             </View>
             <View className='price'>
-              <Text className='bol'>¥</Text>{ renewalInf.prices.firstPeriodsRentPrice }
+              <Text className='bol'>¥</Text>{ renewalInf.prices.firstPeriodsPrice }
               {/*<Text className='nian'>（{memberIfn.settingList[memValue-1].validityDay}个月）</Text>*/}
               {/*<View className='agreement' onClick={this.gotoProtocol}>*/}
               {/*  支付既同意《惠租用户交易服务协议》*/}

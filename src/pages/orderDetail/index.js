@@ -364,8 +364,12 @@ class Orderdetail extends Component {
   //续租
   handleClickRenewal = () => {
     const { orderId } = this.$router.params;
+    const { userOrders } = this.props
+    const newTime  =  formatDate(new Date() , 'yyyy-MM-dd hh:mm');
+    const rentStartStrs =  formatDate(new Date(userOrders.unrentTimeStr ), 'yyyy-MM-dd hh:mm');
+    let dueTimeP =  transdate(rentStartStrs) - 30*24*60*60*1000 - transdate(newTime)
     Taro.navigateTo({
-      url:`/pages/renewal/confirm?orderId=${orderId}`
+      url:`/pages/renewal/confirm?orderId=${orderId}&dueTimeP=${dueTimeP}`
     })
   }
   handleClickRenewalDetail =() => {
@@ -411,18 +415,9 @@ class Orderdetail extends Component {
     console.log(leftTimer('2019-06-15 '))
     // let letTime = userOrders.createTime && formatDate(new Date(userOrders.createTimeStr), 'yyyy-MM-dd hh:mm');
     let dueTimeS = transdate(letTime) + sysConfigValue*60*60*1000  - transdate(newTime)
-    let dueTimeP =  transdate(rentStartStrs) - 30*24*60*60*1000 - transdate(newTime)
-    console.log(newTime,'111',dueTimeP)
-    // let dueTimeP =  transdate(userOrders.unrentTimeStr) - 30*24*60*60*1000 - transdate(newTime)
-    console.log(letTime,newTime,'111',sysConfigValue)
-    // console.log(userOrders.createTimeStr,transdate(newTime),transdate(rentStartStrs),transdate(letTime))
-    // console.log(rentStartStrs , newTime)
-    // console.log(transdate(rentStartStrs)+ 24*60*60*10-transdate(newTime))
-    // console.log(this.props)
-    // console.log(formatDate(new Date(dueTime), 'yyyy-MM-dd hh:mm'))
-    // console.log(formatSeconds(dueTime/1000))
-    // console.log(transdate(createTiemStr))
-    console.log('1')
+    // console.log(newTime,'111',dueTimeP)
+    // // let dueTimeP =  transdate(userOrders.unrentTimeStr) - 30*24*60*60*1000 - transdate(newTime)
+    // console.log(letTime,newTime,'111',sysConfigValue)
     let dueTimeMs = dueTimeS/1000
     console.log(dueTimeMs)
     // console.log(transdate(userOrders.rentStart) - transdate('2019-06-15'))
@@ -693,8 +688,8 @@ class Orderdetail extends Component {
         {
           userOrders.status === 'WAITING_GIVE_BACK' && (
             <View className='end-banner'>
-              { userOrders.type ===2 || dueTimeP<0?
-                (
+              {/*{ userOrders.type ===2 || dueTimeP<0?*/}
+              {/*  (*/}
                   <popover
                     className='popover'
                     position={position}
@@ -709,13 +704,13 @@ class Orderdetail extends Component {
                       {/*<popover-item onItemClick={this.handleClickBuyout}>*/}
                       {/*  <text>买断</text>*/}
                       {/*</popover-item>*/}
-                      {dueTimeP<0&&
-                        (
+                      {/*{dueTimeP<0&&*/}
+                      {/*  (*/}
                           <popover-item  onItemClick={this.handleClickRenewal}>
                             <text>续租</text>
                           </popover-item>
-                        )
-                      }
+                      {/*  )*/}
+                      {/*}*/}
                       {
                         userOrders.type === 2 && (
                           <popover-item  onItemClick={this.handleClickRenewalBefore}>
@@ -728,8 +723,8 @@ class Orderdetail extends Component {
                       {/*</popover-item>*/}
                     </View>
                   </popover>
-                ):null
-              }
+              {/*  ):null*/}
+              {/*}*/}
               <View className='button-bar' onClick={this.connectService}>联系客服</View>
               <View className='button-bar' onClick={this.onClickSendBack} >提前归还</View>
               <View className='button-bar-active' onClick={this.onClickBillDetail}>分期账单</View>
