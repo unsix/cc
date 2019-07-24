@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Text, Image,Button } from '@tarojs/components'
+import { View,  Image,Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux';
 import { baseUrl } from  '../../config/index'
 import './index.scss';
@@ -52,18 +52,6 @@ class Certificate extends Component {
   }
 
   update = (val) => {
-    // console.log(val)
-    // my.uploadFile({
-    //   url: 'http://47.110.39.152:8084/uplodAndDownload/upload',
-    //   fileType: 'image',
-    //   fileName: 'file',
-    //   filePath: '...',
-    //   success: (res) => {
-    //     my.alert({
-    //       content: '上传成功'
-    //     });
-    //   },
-    // });
     if(val === '1') {
       my.chooseImage({
         sourceType: ['camera','album'],
@@ -108,9 +96,9 @@ class Certificate extends Component {
       my.chooseImage({
         sourceType: ['camera','album'],
         success: (res) => {
-          this.setState({
-            idCardBack:res.apFilePaths[0]
-          })
+          // this.setState({
+          //   idCardBack:res.apFilePaths[0]
+          // })
           // console.log(res.apFilePaths[0])
           my.uploadFile({
             url: baseUrl+ 'aliPay/components/uploadFile',
@@ -165,6 +153,11 @@ class Certificate extends Component {
                 idCardHandHeld:data.data[0]
               })
             },
+            fail:(res)=>{
+              my.alert({
+                content: '上传错误'
+              });
+            }
           })
         },
         fail:()=>{

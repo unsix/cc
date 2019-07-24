@@ -3,7 +3,7 @@ import { View, Text, Image, Button } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import { AtIcon, AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
 
-import { formatDate, leftTimer, leftTimerMS ,transdate } from '../../utils/utils';
+import { formatDate, getCurrentPageUrlWithArgs, leftTimer, leftTimerMS, transdate } from '../../utils/utils'
 import { orderStatus, customerServiceTel } from '../../assets/Constant';
 
 import CancelOrder from '../../components/cancelOrder';
@@ -55,11 +55,13 @@ class Orderdetail extends Component {
   componentDidMount = () => {
     const { orderId } = this.$router.params;
     const { dispatch } = this.props;
+    // console.log(this.$router,'================')
     dispatch({
       type: 'renewal/selectUserOrderDetail',
       payload: { orderId },
     });
     this.countDown();
+    console.log(getCurrentPageUrlWithArgs(),'======================1')
   };
 
   handleCancel = () => {
@@ -255,26 +257,40 @@ class Orderdetail extends Component {
       url:`/pages/express/index?orderId=${orderId}`
     })
   }
-  // againBuy = (type) => {
-  //   const { orderId } = this.$router.params;
-  //   if(type === 'buyout'){
-  //     Taro.navigateTo({
-  //       url:`/pages/buyout/index?orderId=${orderId}`
-  //     })
-  //   }
-  //   else {
-  //     Taro.navigateTo({
-  //       url:`/pages/renewal/index?orderId=${orderId}`
-  //     })
-  //   }
-  // }
+  againBuy = (type) => {
+    const { orderId } = this.$router.params;
+    if(type === 'buyout'){
+      Taro.navigateTo({
+        url:`/pages/buyout/index?orderId=${orderId}`
+      })
+    }
+    else {
+      Taro.navigateTo({
+        url:`/pages/renewal/index?orderId=${orderId}`
+      })
+    }
+  }
   //买断
   handleClickBuyout = () => {
-    const { orderId } = this.$router.params;
-    Taro.navigateTo({
-      url:`/pages/buyout/confirm?orderId=${orderId}`
-    })
+    const { userOrders ,product} = this.props
+    if(userOrders.type === 2){
+      Taro.navigateTo({
+        url:`/pages/buyout/confirm?orderId=${userOrders.originalOrderId}&itemId=${product.images[0].productId}`
+      })
+    }
+    else {
+      Taro.navigateTo({
+        url:`/pages/buyout/confirm?orderId=${userOrders.orderId}&itemId=${product.images[0].productId}`
+      })
+    }
   }
+  // handleClickBuyout = () => {
+  //   const { orderId } = this.$router.params;
+  //   const { product } = this.props
+  //   Taro.navigateTo({
+  //     url:`/pages/buyout/confirm?orderId=${orderId}&itemId=${product.images[0].productId}`
+  //   })
+  // }
   //续租
   handleClickRenewal = () => {
     const { orderId } = this.$router.params;
@@ -516,7 +532,8 @@ class Orderdetail extends Component {
         {
           userOrders.status === 'USER_OVERTIME_PAYMENT_CLOSED' && (
             <View className='end-banner'>
-              <View className='button-bar' onClick={this.connectService}>联系客服</View>
+              <View className='button-bar' onClick={this.handleClickRenewalBefore}>查看原订单</View>
+              <View className='button-bar-active' onClick={this.connectService}>联系客服</View>
             </View>
           )
         }
@@ -556,14 +573,14 @@ class Orderdetail extends Component {
                       <Image className='img' src={require('../../images/order/popover.png')} />
                     </View>
                     <View slot='items' >
-                      {/*<popover-item onItemClick={this.handleClickBuyout}>*/}
-                      {/*  <text>买断</text>*/}
-                      {/*</popover-item>*/}
-                      {/*{dueTimeP<0?*/}
-                      {/*  (*/}
-                          <popover-item  onItemClick={this.handleClickRenewal}>
-                            <text>续租</text>
-                          </popover-item>
+                        <popover-item onItemClick={this.handleClickBuyout}>
+                          <text>买断</text>
+                        </popover-item>
+                        {/*{dueTimeP<0?*/}
+                        {/*  (*/}
+                        <popover-item  onItemClick={this.handleClickRenewal}>
+                          <text>续租</text>
+                        </popover-item>
                       {/*  ):null*/}
                       {/*}*/}
                       {/*<popover-item  onItemClick={this.handleClickRenewal}>*/}
@@ -627,27 +644,30 @@ class Orderdetail extends Component {
           </View>
         )}
         {
-          userOrders.status === 'WAITING_SETTLEMENT' && userOrders.subStatus === 'CAN_SEND_DO_SETTLEMENT_AGAIN_FOR_USER' && (
+          userOrders.status === 'WAITING_SETTLEMENT'  && (
             <View className='end-banner'>
-              {
-                userOrders.type === 2 && (
-                  <View className='button-bar' onClick={this.handleClickRenewalBefore}>查看订单</View>
-                )
-              }
+              { userOrders.type === 2 && (
+                <popover
+                  className='popover'
+                  position={position}
+                  show={show}
+                  showMask={showMask}
+                  onMaskClick={this.onMaskClick}
+                >
+                  <View  onClick={this.onShowPopoverTap}>
+                    <Image className='img' src={require('../../images/order/popover.png')} />
+                  </View>
+                  <View slot='items' >
+                    <popover-item  onItemClick={this.handleClickRenewalBefore}>
+                      <text>查看原订单</text>
+                    </popover-item>
+                    {/*)*/}
+                    {/*}*/}
+                  </View>
+                </popover>
+              ) }
               <View className='button-bar' onClick={this.connectService}>联系客服</View>
-              <View className='button-bar-active' onClick={this.handleClickRenewal}>续租</View>
-            </View>
-          )
-        }
-        {
-          userOrders.status === 'WAITING_SETTLEMENT' && userOrders.subStatus === 'GIVE_BACK_WAITING_ALREADY_PRINT' && (
-            <View className='end-banner'>
-              {
-                userOrders.type === 2 && (
-                  <View className='button-bar' onClick={this.handleClickRenewalBefore}>查看订单</View>
-                )
-              }
-              <View className='button-bar' onClick={this.connectService}>联系客服</View>
+              <View className='button-bar' onClick={this.handleClickBuyout} >买断</View>
               <View className='button-bar-active' onClick={this.handleClickRenewal}>续租</View>
             </View>
           )

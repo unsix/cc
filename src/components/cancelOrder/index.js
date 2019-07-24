@@ -45,7 +45,7 @@ class CancelOrder extends Component {
               {/*</Label>*/}
               { cancelOrderList.map(item=>(
                 <Label className='label'>
-                  <Radio value={item.value} className='radio'     /><Text className='radioText'>{item.value}</Text>
+                  <Radio value={item.value} className='radio'  /><Text className='radioText'>{item.value}</Text>
                 </Label>
               ))}
             </RadioGroup>

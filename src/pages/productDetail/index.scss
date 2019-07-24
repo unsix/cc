@@ -13,12 +13,13 @@ page {
     height: $height;
   }
   .red_envelopes{
-    position:fixed;
-    top:690px;
-    right: 30px;
+    position: fixed;
+    bottom: 100px;
+    right: 0;
+    z-index: 2000;
     .envelopes{
-      width: 132px;
-      height: 154.6px;
+      width: 174px;
+      height: 136px;
 
     }
   }
@@ -359,6 +360,7 @@ page {
 
   .coupon-popup {
     background-color: #fff;
+    height: auto;
     &-title {
       font-family: PingFangHK-Regular;
       text-align: center;

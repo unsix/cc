@@ -4,6 +4,7 @@ import { tradePay } from '../../utils/openApi';
 import { getBuyerId, getUid } from '../../utils/localStorage'
 import * as orderListApi from '../orderList/service'
 
+
 export default {
   namespace: 'orderDetail',
   state: {
@@ -65,7 +66,8 @@ export default {
           const payres = yield tradePay('orderStr', res.data.data.data);
           if (payres.resultCode !== '9000') {
             Taro.showToast({
-              title: payres.memo,
+              // title: payres.memo,
+              title: '支付失败',
               icon: 'none',
             });
           } else {
@@ -113,7 +115,8 @@ export default {
           const payres = yield tradePay('tradeNO', res.data);
           if (payres.resultCode !== '9000') {
             Taro.showToast({
-              title: payres.memo,
+              // title: payres.memo,
+              title: '支付失败',
               icon: 'none',
             });
           } else {
@@ -126,6 +129,62 @@ export default {
               type: 'orderDetail/selectUserOrderDetail',
               payload: {
                 orderId: payload.orderId,
+              },
+            });
+            const nextStatus = 'WAITING_PAYMENT';
+            yield put({
+              type: 'setOrderStatus',
+              payload: nextStatus,
+            });
+            yield put({
+              type: 'orderList/setOrderStatus',
+              payload: {
+                orderId: payload.orderId,
+                status: nextStatus,
+              },
+            });
+          }
+        } catch (e) {
+          Taro.showToast({
+            title: '支付失败，请重试或联系客服',
+            icon: 'none',
+          });
+        }
+      }
+    },
+    * payBuyOutAgain({ payload }, { call, put }) {
+      const res = yield call(orderDetailApi.payBuyOutAgain, {...payload,uid:getUid()});
+      if (res) {
+        try {
+          const payres = yield tradePay('tradeNO', res.data);
+          if (payres.resultCode !== '9000') {
+            Taro.showToast({
+              // title: payres.memo,
+              title:'支付失败',
+              icon: 'none',
+            });
+          } else {
+            // const nextStatus = 'WAITING_GIVE_BACK';
+            // yield put({
+            //   type: 'setOrderStatus',
+            //   payload: nextStatus,
+            // });
+            yield put({
+              type: 'orderDetail/selectUserOrderDetail',
+              payload: {
+                orderId: payload.orderId,
+              },
+            });
+            const nextStatus = 'WAITING_PAYMENT';
+            yield put({
+              type: 'setOrderStatus',
+              payload: nextStatus,
+            });
+            yield put({
+              type: 'orderList/setOrderStatus',
+              payload: {
+                orderId: payload.orderId,
+                status: nextStatus,
               },
             });
           }
@@ -153,7 +212,6 @@ export default {
         }
       }
     },
-
     * userConfirmReceipt({ payload }, { call, put }) {
       const res = yield call(orderDetailApi.userConfirmReceipt, payload)
       if (res) {

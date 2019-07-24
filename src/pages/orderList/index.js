@@ -148,8 +148,11 @@ class Orderlist extends Component {
     if(order.type === 2){
       Taro.navigateTo({ url: `/pages/renewal/index?orderId=${order.orderId}` });
     }
-    else {
+    else if(order.type === 0){
       Taro.navigateTo({ url: `/pages/orderDetail/index?orderId=${order.orderId}` });
+    }
+    else {
+      Taro.navigateTo({ url: `/pages/buyout/index?orderId=${order.orderId}` });
     }
   }
 
@@ -219,8 +222,16 @@ class Orderlist extends Component {
     Taro.navigateTo({ url: `/pages/billDetail/index?orderId=${order.orderId}` });
   }
 
-  onClickFrezzAgain = (orderId) => {
-    Taro.navigateTo({ url: `/pages/orderDetail/index?orderId=${orderId}` });
+  onClickFrezzAgain = (order) => {
+    if(order.type === 3){
+      Taro.navigateTo({ url: `/pages/buyout/index?orderId=${order.orderId}` });
+    }
+    else if(order.type === 2){
+      Taro.navigateTo({ url: `/pages/renewal/index?orderId=${order.orderId}` });
+    }
+    else {
+      Taro.navigateTo({ url: `/pages/orderDetail/index?orderId=${order.orderId}` });
+    }
   }
 
   onClickReceiveGoods = (orderId) => {

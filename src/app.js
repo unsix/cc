@@ -1,7 +1,7 @@
 import '@tarojs/async-await'
 import Taro, { Component } from '@tarojs/taro'
 import { Provider } from '@tarojs/redux'
-
+import { getCurrentPageUrlWithArgs } from  './utils/utils'
 import Index from './pages/home'
 import dva from './utils/dva'
 import models from './models'
@@ -63,6 +63,7 @@ class App extends Component {
       'pages/recharge/index',
       'pages/deposit/index',
       'pages/buyout/index',
+      'pages/buyout/confirm',
       'pages/renewal/index',
       'pages/renewal/confirm'
     ],
@@ -84,8 +85,8 @@ class App extends Component {
         {
           name: '会员',
           pagePath: 'pages/member/home/index',
-          icon: 'images/member/member_logo.png',
-          activeIcon: 'images/member/member_logo_r.png',
+          icon: 'images/home/member.png',
+          activeIcon: 'images/home/member_se.png',
         },
         {
           name: '分类',
@@ -102,10 +103,19 @@ class App extends Component {
       ],
     },
   }
+  componentWillMount(){
 
-  componentDidMount () {}
-
-  componentDidShow () {}
+  }
+  // onLaunch(options) {
+  //   my.alert({content: '启动参数：'+JSON.stringify(options.query.type),});
+  //   console.log('query', options.query);
+  //   console.log('App Launch', options);
+  // }
+  componentDidMount () {
+    // my.alert({content:getCurrentPageUrlWithArgs()})
+  }
+  componentDidShow () {
+  }
 
   componentDidHide () {}
 

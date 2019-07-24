@@ -13,7 +13,11 @@
     .label {
       margin-bottom: 20px;
       .radio {
-        margin-right: 20px;
+        @include wh(50px,50px);
+        margin: 10px 20px 0 0;
+        line-height: 50px;
+        border: 1px #eee solid ;
+        border-radius: 50px!important;
       }
       .radioText {
         color: #666;

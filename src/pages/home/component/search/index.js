@@ -1,5 +1,7 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Input, Icon } from '@tarojs/components';
+import { View, Input, Icon ,Image} from '@tarojs/components';
+import search from  '../../../../images/home/search_top.png'
+import classfy from  '../../../../images/home/classfy_top.png'
 import './index.scss';
 
 class Search extends Component {
@@ -8,23 +10,44 @@ class Search extends Component {
       url: '/pages/search/index'
     })
   }
+  skipToClassify = () => {
+    Taro.switchTab({
+      url: '/pages/classify/index'
+    })
+  }
+  onPageScroll(e){
+    const { searchScroll} = this.props
+    searchScroll(e.scrollTop)
+  }
   render() {
     const { value } = this.props;
     return (
-      <View onClick={this.skipToSearch} className='search-com'>
-        <Icon
-          className='search-icon'
-          type='search'
-          size='16'
-          color='#cccccc'
-        />
-        <Input
-          name='search'
-          type='text'
-          className='search-input'
-          placeholder='搜索你想要的商品'
-          value={value}
-        />
+      <View  className='search-com'>
+        {/*<Icon*/}
+        {/*  className='search-icon'*/}
+        {/*  type='search'*/}
+        {/*  size='16'*/}
+        {/*  color='#cccccc'*/}
+        {/*/>*/}
+        <View onClick={this.skipToClassify}>
+          <Image
+            className='class-img'
+            src={classfy}
+          />
+        </View>
+        <View className='search_r' onClick={this.skipToSearch}>
+          <Image
+            className='search-icon'
+            src={search}
+          />
+          <Input
+            name='search'
+            type='text'
+            className='search-input'
+            placeholder='搜索发现 惠租 数码好物'
+            value={value}
+          />
+        </View>
       </View>
     )
   }

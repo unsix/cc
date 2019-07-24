@@ -43,9 +43,9 @@ class ListItem extends Component {
     onClickBillDetail(order);
   }
 
-  handleClickFrezzAgain = (orderId) => {
+  handleClickFrezzAgain = (order) => {
     const { onClickFrezzAgain } = this.props;
-    onClickFrezzAgain(orderId);
+    onClickFrezzAgain(order);
   }
 
   handleClickReceiveGoods = (orderId) => {
@@ -125,9 +125,16 @@ class ListItem extends Component {
   //买断
   handleClickBuyout = () => {
     const { data } = this.props
-    Taro.navigateTo({
-      url:`/pages/buyout/confirm?orderId=${data.orderId}`
-    })
+    if(data.type === 2){
+      Taro.navigateTo({
+        url:`/pages/buyout/confirm?orderId=${data.originalOrderId}&itemId=${data.images[0].productId}`
+      })
+    }
+    else {
+      Taro.navigateTo({
+        url:`/pages/buyout/confirm?orderId=${data.orderId}&itemId=${data.images[0].productId}`
+      })
+    }
   }
   //续租
   handleClickRenewal = () => {
@@ -159,9 +166,9 @@ class ListItem extends Component {
     // console.log(this.props)
     // console.log(formatDate(new Date(dueTime), 'yyyy-MM-dd hh:mm'))
     // console.log(formatSeconds(dueTime/1000))
-    console.log('1')
+    // console.log('1')
     let dueTimeMs = dueTime/1000
-    console.log(dueTimeMs)
+    // console.log(dueTimeMs)
     return (
       <View className='list-item'>
         <View className='list-item-header'>
@@ -173,6 +180,9 @@ class ListItem extends Component {
             <Text className='text text-status'>{orderStatus[data.status]}
               {data.type === 2 &&
               (<Text className='text text-status'>续租</Text>)
+              }
+              {data.type === 3 &&
+              (<Text className='text text-status'>买断</Text>)
               }
               {data.status === 'WAITING_GIVE_BACK' &&
                 (<Text>（租用中）</Text>)
@@ -191,9 +201,18 @@ class ListItem extends Component {
                 <View className='device-type '>
                  规格：{data.skuTitle}
                 </View>
-                <View className='price name'>
-                总租金： {data.totalRent}
-                </View>
+                {data.type === 3?
+                  (
+                    <View className='price name'>
+                     买断尾款 ：¥{data.totalRent}
+                    </View>
+                  ):
+                  (
+                    <View className='price name'>
+                      总租金：¥{data.totalRent}
+                    </View>
+                  )
+                }
               </View>
               {/*<AtIcon value='chevron-right' size='18' color='#d8d8d8' />*/}
             </View>
@@ -215,8 +234,14 @@ class ListItem extends Component {
                 //   <text>查看原订单</text>
                 // </popover-item>
               )}
+              {data.type === 3 && (
+                <Button className='btn' onClick={this.handleClickRenewalBefore}>查看原订单</Button>
+                // <popover-item  onItemClick={this.handleClickRenewalBefore}>
+                //   <text>查看原订单</text>
+                // </popover-item>
+              )}
               <Button className='btn' onClick={this.handleClickCancelOrder.bind(this, data)}>取消订单</Button>
-              <Button className='btn careful' onClick={this.handleClickFrezzAgain.bind(this, data.orderId)}>去支付</Button>
+              <Button className='btn careful' onClick={this.handleClickFrezzAgain.bind(this, data)}>去支付</Button>
             </View>
           )}
           {data.status === 'WAITING_BUSINESS_DELIVERY' && (
@@ -249,7 +274,6 @@ class ListItem extends Component {
           )}
           {data.status === 'WAITING_GIVE_BACK' && (
             <View className='list-item-content-btn'>
-              {/*{data.type === 2 || dueTimeP<0 ?(*/}
                 <popover
                   className='popover'
                   position={position}
@@ -261,16 +285,12 @@ class ListItem extends Component {
                     <Image className='img' src={require('../../../../images/order/popover.png')} />
                   </View>
                   <View slot='items' >
-                    {/*<popover-item onItemClick={this.handleClickBuyout}>*/}
-                    {/*  <text>买断</text>*/}
-                    {/*</popover-item>*/}
-                    {/*{dueTimeP<0&&*/}
-                    {/*  (*/}
                       <popover-item  onItemClick={this.handleClickRenewal}>
                         <text>续租</text>
                       </popover-item>
-                    {/*  )*/}
-                    {/*}*/}
+                      <popover-item  onItemClick={this.handleClickBuyout}>
+                        <text>买断</text>
+                      </popover-item>
                     {data.type === 2 && (
                       <popover-item  onItemClick={this.handleClickRenewalBefore}>
                         <text>查看原订单</text>
@@ -293,24 +313,28 @@ class ListItem extends Component {
               <Button className='btn careful' onClick={this.handleClickFrezzAgain.bind(this, data.orderId)}>去支付</Button>
             </View>
           )}
-          {data.status === 'WAITING_SETTLEMENT' && data.subStatus === 'CAN_SEND_DO_SETTLEMENT_AGAIN_FOR_USER' && (
+          {data.status === 'WAITING_SETTLEMENT'  && (
             <View className='list-item-content-btn'>
               {data.type === 2 && (
-                <Button className='btn' onClick={this.handleClickRenewalBefore}>查看原订单</Button>
+                <popover
+                  className='popover'
+                  position={position}
+                  show={show}
+                  showMask={showMask}
+                  onMaskClick={this.onMaskClick}
+                >
+                  <View  onClick={this.onShowPopoverTap} style={{ marginRight:45 }} >
+                    <Image className='img' src={require('../../../../images/order/popover.png')} />
+                  </View>
+                  <View slot='items' >
+                    <popover-item  onItemClick={this.handleClickRenewalBefore}>
+                      <text>查看原订单</text>
+                    </popover-item>
+                  </View>
+                </popover>
               )}
               <Button className='btn ' onClick={this.connectService.bind(this,data.serviceTel)}>联系客服</Button>
-              <Button className='btn careful' onClick={this.handleClickRenewal}>续租</Button>
-              {/*<popover-item  onItemClick={this.handleClickRenewal}>*/}
-              {/*  <text>续租</text>*/}
-              {/*</popover-item>*/}
-            </View>
-          )}
-          {data.status === 'WAITING_SETTLEMENT' && data.subStatus === 'GIVE_BACK_WAITING_ALREADY_PRINT' && (
-            <View className='list-item-content-btn'>
-              {data.type === 2 && (
-                <Button className='btn' onClick={this.handleClickRenewalBefore}>查看原订单</Button>
-              )}
-              <Button className='btn ' onClick={this.connectService.bind(this,data.serviceTel)}>联系客服</Button>
+              <Button className='btn' onClick={this.handleClickBuyout}>买断</Button>
               <Button className='btn careful' onClick={this.handleClickRenewal}>续租</Button>
               {/*<popover-item  onItemClick={this.handleClickRenewal}>*/}
               {/*  <text>续租</text>*/}
@@ -320,11 +344,25 @@ class ListItem extends Component {
           {data.status === 'USER_CANCELED_CLOSED' && data.type === 2 &&(
             <View className='list-item-content-btn'>
               <Button className='btn' onClick={this.handleClickRenewalBefore}>查看原订单</Button>
+              <Button className='btn careful ' onClick={this.connectService.bind(this,data.serviceTel)}>联系客服</Button>
             </View>
           )}
-          {data.status === 'ORDER_FINISH' && data.type === 2 &&(
+          {data.status === 'USER_CANCELED_CLOSED' && data.type === 3 &&(
             <View className='list-item-content-btn'>
               <Button className='btn' onClick={this.handleClickRenewalBefore}>查看原订单</Button>
+              <Button className='btn careful ' onClick={this.connectService.bind(this,data.serviceTel)}>联系客服</Button>
+            </View>
+          )}
+          {data.status === 'ORDER_FINISH' && data.type !==0  &&(
+            <View className='list-item-content-btn'>
+              <Button className='btn' onClick={this.handleClickRenewalBefore}>查看原订单</Button>
+              <Button className='btn careful ' onClick={this.connectService.bind(this,data.serviceTel)}>联系客服</Button>
+            </View>
+          )}
+          {data.status === 'USER_OVERTIME_PAYMENT_CLOSED' && data.type !==0  &&(
+            <View className='list-item-content-btn'>
+              <Button className='btn' onClick={this.handleClickRenewalBefore}>查看原订单</Button>
+              <Button className='btn careful ' onClick={this.connectService.bind(this,data.serviceTel)}>联系客服</Button>
             </View>
           )}
         </View>

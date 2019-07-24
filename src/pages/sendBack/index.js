@@ -51,11 +51,24 @@ class SendBack extends Component {
     const { orderId } = this.$router.params;
     const { expressNo, expressId, currentGiveBackIndex, giveBackAddressList, dispatch } = this.props;
     const addressId = giveBackAddressList[currentGiveBackIndex].id;
-    dispatch({
-      type: 'sendBack/userOrderBackSubmitConfirm',
-      payload: { addressId, expressId, expressNo, orderId },
-      callback: () => {
-        Taro.navigateBack();
+    my.confirm({
+      title: '亲',
+      content: '是否确认归还',
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      success: (result) => {
+        if(result.confirm === true){
+          dispatch({
+            type: 'sendBack/userOrderBackSubmitConfirm',
+            payload: { addressId, expressId, expressNo, orderId },
+            callback: () => {
+              Taro.navigateBack();
+            },
+          });
+        }
+        else {
+          // Taro.navigateBack()
+        }
       },
     });
   }

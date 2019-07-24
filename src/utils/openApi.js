@@ -77,7 +77,7 @@ export const apNsf = (context) => {
       },
       fail: (data) => {
         my.alert({
-          title: 'apNsf fails'
+          title: JSON.stringify(data)
         });
         rej(data);
       },

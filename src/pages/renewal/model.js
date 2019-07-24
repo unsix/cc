@@ -15,11 +15,11 @@ export default {
 
   effects: {
     * confirmRelet({payload,callback},{call,put}){
-      const res =  yield call(renewalApi.confirmRelet, { ...payload, uid:'69d1aaec30a158580b5c6f2e3b73309fcdc6b505' });
+      const res =  yield call(renewalApi.confirmRelet, { ...payload, uid: getUid() });
       if (res) {
         if(res.code === 99){
-          my.confirm( {
-            title: '温馨提示',
+          my.confirm({
+            title: '亲',
             content: '该笔订单有未支付续租订单，是否立即支付',
             confirmButtonText: '立即前往',
             cancelButtonText: '暂不支付',
@@ -35,6 +35,24 @@ export default {
             },
           });
         }
+        else if(res.code === 98){
+          my.confirm({
+            title: '亲',
+            content: '该笔订单有未支付买断订单，是否立即支付',
+            confirmButtonText: '立即前往',
+            cancelButtonText: '暂不支付',
+            success: (result) => {
+              if(result.confirm === true){
+                Taro.redirectTo({
+                  url:`/pages/buyout/index?orderId=${res.data}`
+                })
+              }
+              else {
+                Taro.navigateBack()
+              }
+            },
+          });
+        }
         yield put({
           type: 'confirmInf',
           payload: res.data,
@@ -43,15 +61,15 @@ export default {
       }
     },
     * reletBuyDays({payload,callback},{call,put}){
-      const res =  yield call(renewalApi.reletBuyDays, { ...payload, uid: '69d1aaec30a158580b5c6f2e3b73309fcdc6b505' });
+      const res =  yield call(renewalApi.reletBuyDays, { ...payload, uid: getUid() });
       if (res) {
         // if(res.code === 1){
         //
         // }
-        yield put({
-          type: 'renewalInf',
-          payload: res.data,
-        });
+        // yield put({
+        //   type: 'renewalInf',
+        //   payload: res.data,
+        // });
         if(callback){
           callback(res.data)
         }

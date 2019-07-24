@@ -36,4 +36,5 @@ const menu = [
     cname: 'classifies',
   },
 ]
+
 export default menu;

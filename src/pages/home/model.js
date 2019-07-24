@@ -19,6 +19,24 @@ export default {
         });
       }
     },
+    *getZhifubaoFlow({ payload}, { call, put }) {
+      const res = yield call(homeApi.getZhifubaoFlow, { ...payload });
+      if (res) {
+        yield put({
+          type: 'save',
+          payload: res.data,
+        });
+      }
+    },
+    *getIndexTabAndProduct({ payload}, { call, put }) {
+      const res = yield call(homeApi.getIndexTabAndProduct, { ...payload });
+      if (res) {
+        yield put({
+          type: 'save',
+          payload: res.data,
+        });
+      }
+    },
   },
 
   reducers: {

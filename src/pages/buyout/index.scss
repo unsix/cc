@@ -10,7 +10,7 @@ page {
   background-color: #f7f7f7;
 }
 .orderDetail-page {
-  @include wh(100%, 100%);
+  @include wh(100%, auto);
   .order-status {
     padding: 40px 40px 30px 40px;
     background-color: #FA4E62;
@@ -112,6 +112,12 @@ page {
           font-size: 24px;
           margin-bottom: 16px;
         }
+        .original{
+          font-family: PingFangSC-Regular;
+          font-size: 25px;
+          color: #333333;
+          line-height: 40px;
+        }
         .rent {
           color: #333;
           font-size: 28px;
@@ -132,6 +138,9 @@ page {
       font-size: $leftSize;
       text-align: center;
     }
+    .member{
+      color: #FF6262
+    }
     .right-text {
       font-size: $rightSize;
       font-weight: $rightWeight;
@@ -148,23 +157,6 @@ page {
   }
   .margin-bottom-25 {
     margin-bottom: 25px;
-  }
-
-  .price-area {
-    background-color: #fff;
-    margin-bottom: 20px;
-    padding: 30px;
-    .gray-info {
-      @include lp(#999, 30px);
-    }
-    .black-info {
-      @include lp(#333333, 30px);
-    }
-
-    .dividing {
-      height: 1px;
-      border-bottom: 1px #E4E4E4 solid;
-    }
   }
 
   .order-info {
@@ -213,4 +205,204 @@ page {
   .img{
     @include wh(50px,10px);
   }
+}
+.renewal-details{
+  font-family: PingFangSC-Regular;
+  @include wh(100%, auto);
+  background: #fff;
+  box-sizing: border-box;
+  position: relative;
+
+  .title {
+    font-family: PingFangSC-Medium;
+    height: 76px;
+    line-height: 76px;
+    padding-left: 20px;
+    font-size: 28px;
+  }
+  .border {
+    position: absolute;
+    @include wh(4px, 30px);
+    background: #FC766B;
+    left: 10px;
+    top: 20px;
+  }
+  .xxx{
+    padding: 0 10px;
+  }
+}
+.pay_member{
+  box-sizing: border-box;
+  @include wh(100%,110px);
+  position: relative;
+  background-color: #fff;
+  margin: 0 25px 0 0;
+  padding-left: 25px;
+  box-shadow: inset 0 1px 0 0 #E4E4E4;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  .subtotal{
+    font-size: 30px;
+    color: #333333;
+  }
+  .price{
+    font-size: 52px;
+    color: #FC766B;
+    margin-left: 20px;
+    .nian{
+      font-size: 25px;
+      color: #848A8E;
+    }
+  }
+  .agreement{
+    font-size: 22px;
+    color: #848A8E;
+  }
+  .pay_btn{
+    @include wh(375px,80px);
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    background-image: linear-gradient(90deg, #FA4E62 0%, #FC766B 100%);
+    border-radius: 100px;
+    border: none;
+    font-size: 32px;
+    color: #fff;
+    line-height: 80px;
+    justify-content: right;
+  }
+}
+.message {
+  background-color: #fff;
+  margin: 20px 0;
+  padding: 10px 30px;
+  @include fj(flex-start);
+  align-items: center;
+  .input-mess {
+    font-size: 28px;
+    width: 70%;
+  }
+}
+.protocol {
+  padding: 0 30px;
+  font-size: 26px;
+  margin-bottom: 30px;
+  color: #999;
+  .text {
+    color: #0199FE;
+  }
+}
+.stage-modal{
+  @include wh(600px,250px);
+  font-family: PingFangSC-Regular;
+  .content{
+    @include wh(360px,auto);
+    margin: 25px auto 0 auto;
+    font-size: 36px;
+    .bol{
+      font-size: 32px;
+      color: #FC766B;
+      padding-left: 10px;
+    }
+    .price{
+      font-size: 38px;
+      color: #FC766B;
+    }
+  }
+  .footer{
+    @include wh(400px,auto);
+    display: flex;
+    margin: 30px auto 0 auto;
+    font-size: 36px;
+    text-align: center;
+    .btn{
+      @include wh(200px,100px);
+      color: #999999;
+    }
+    .btn-c{
+      color: #0199FE;
+    }
+  }
+}
+.bol{
+  font-size: 24px;
+}
+.renewal-days{
+  @include wh(100%,auto);
+  background: #fff;
+  box-sizing: border-box;
+  position: relative;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  .header{
+    @include fj(space-between);
+    border-bottom: 1px solid #E4E4E4;
+    margin-bottom: 10px;
+  }
+  .title{
+    font-family: PingFangSC-Medium;
+    height: 76px;
+    line-height: 76px;
+    padding-left: 20px;
+    font-size: 28px;
+  }
+  .to-see{
+    font-family: PingFangHK-Regular;
+    font-size: 28px;
+    height: 76px;
+    line-height: 76px;
+    color: #999999;
+    margin-right: 30px;
+  }
+  .border{
+    position: absolute;
+    @include wh(4px,30px);
+    background: #FC766B;
+    left: 10px;
+    top: 20px;
+  }
+  .ren-day{
+    @include wh(700px,60px);
+    @include fj(space-between);
+    box-sizing: border-box;
+    align-items: center;
+    margin: 0 auto;
+    color: #999999;
+    .day{
+      font-size: 28px;
+      color: #999999;
+    }
+    .bol{
+      font-size: 22px;
+    }
+    .colour{
+      color: #FC766B;
+      font-family: PingFangSC-Medium;
+    }
+    .text-day{
+      font-size: 28px;
+      color: #999999;
+    }
+  }
+  .ren-day-spe{
+    width: 100% !important;
+    box-sizing: border-box;
+    padding: 10px 25px 0 25px !important;
+    height: 70px !important;
+  }
+}
+.black{
+  color: #333 !important;
+}
+.colour{
+  color: #FC766B;
+  font-family: PingFangSC-Medium;
+}
+.bol{
+  font-size: 22px;
+}
+.mbt1{
+  border-top: 1px solid #E4E4E4;
 }

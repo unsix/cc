@@ -332,7 +332,7 @@ class Productdetail extends Component {
     return (
       <View className='productDetail-page'>
         <View className='red_envelopes'>
-          <Image onClick={this.gotoRed} className='envelopes'  src={productRed} />
+          <Image onClick={this.gotoRed} className='envelopes'  src='http://oss.huizustore.com/545b093f92ad4a77b50c39358f5b8082.png' />
         </View>
         <View className='swiper'>
           <swiper

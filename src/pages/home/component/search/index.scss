@@ -1,21 +1,33 @@
-
+@import "../../../../styles/mixin";
 .search-com {
-  position: relative;
-  .search-icon {
-    position: absolute;
-    top: 50%;
-    left: 26px;
-    transform: translate(0,-50%);
+  //position: relative;
+  margin: 13px 0 12px 0;
+  display: flex;
+  .search_r{
+    @include wh(572px,auto);
+    position: relative;
+    .search-icon {
+      @include wh(50px,50px);
+      position: absolute;
+      top: 33px;
+      left: 20px;
+      transform: translate(0,-50%);
+    }
+  }
+  .class-img{
+    margin: 0 30px;
+    @include wh(42px,70px);
   }
   .search-input {
     display: block;
     width: 100%;
-    height: 72px;
+    height: 66px;
     line-height: 72px;
     border-radius: 72px;
     padding: 10px 30px;
     box-sizing: border-box;
     padding-left: 70px;
-    font-size: 14Px;
+    font-size: 23.49px;
+    color: #9F9F9F;
   }
 }

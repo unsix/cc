@@ -109,6 +109,14 @@ class Orderdetail extends Component {
         },
       });
     }
+    else if(order.type === 3){
+      dispatch({
+        type: 'orderDetail/payBuyOutAgain',
+        payload: {
+          orderId:order.orderId
+        },
+      });
+    }
     else {
       dispatch({
         type: 'orderDetail/userFrezzAgain',
@@ -357,8 +365,10 @@ class Orderdetail extends Component {
   //买断
   handleClickBuyout = () => {
     const { orderId } = this.$router.params;
+    const { product } = this.props
+
     Taro.navigateTo({
-      url:`/pages/buyout/confirm?orderId=${orderId}`
+      url:`/pages/buyout/confirm?orderId=${orderId}&itemId=${product.images[0].productId}`
     })
   }
   //续租
@@ -388,6 +398,11 @@ class Orderdetail extends Component {
       url:`/pages/renewal/index?orderId=${orderId}`
     })
   }
+  handleGoBuyout = (orderId) => {
+    Taro.navigateTo({
+      url:`/pages/buyout/index?orderId=${orderId}`
+    })
+  }
   connectBService = (number) => {
     let { serviceTel } = this.props.data
     console.log(serviceTel)
@@ -402,7 +417,7 @@ class Orderdetail extends Component {
   }
   render() {
     const { cancelOrderDisplay, receiveDoodsDisplay, modifySettlementDisplay, countDownStr, showServicePhone , position,  show , showMask,cancelOrderList,canCel} = this.state;
-    const { cashes, product, userAddress, userOrders,reletOrders, loading,sysConfigValue } = this.props;
+    const { cashes, product, userAddress, userOrders,reletOrders,buyOrder,loading,sysConfigValue } = this.props;
     const createTiemStr = userOrders.createTime && formatDate(new Date(userOrders.createTimeStr), 'yyyy年MM月dd日 hh:mm');
     const rentStartStr = userOrders.rentStart && formatDate(new Date(userOrders.rentStartStr), 'yyyy年MM月dd日');
     const unrentTimeStr = userOrders.unrentTime && formatDate(new Date(userOrders.unrentTimeStr), 'yyyy年MM月dd日');
@@ -445,9 +460,12 @@ class Orderdetail extends Component {
           <View>
             <View className='status'>
               <View className='paid-img' />
-              {userOrders.type ==2 && (
+              {userOrders.type ===2 && (
                 <Text  className='text'>续租</Text>
-              ) }
+              )}
+              {userOrders.type ===3 && (
+                <Text  className='text'>买断</Text>
+              )}
               <View className='text'>{orderStatusInfo(userOrders.status, userOrders.subStatus)}</View>
             </View>
             <View className='midd-content'>商品租用到期归还后，冻结预授权金额将会释放</View>
@@ -613,7 +631,46 @@ class Orderdetail extends Component {
             </View>
         {/*  )*/}
         {/*}*/}
-        {!!reletOrders&&reletOrders?reletOrders.map(item=>(
+        {!!buyOrder&&buyOrder&&
+          <View className='renewal-days'>
+            <View className='border'></View>
+            <View className='header'>
+              <View className='title'>买断订单</View>
+              <View className='to-see' onClick={this.handleGoBuyout.bind(this,buyOrder.buyOrderId)}>去看看 ></View>
+            </View>
+            {/*<View className='ren-day'>*/}
+            {/*  <View className='day'>买断总额</View>*/}
+            {/*  <View className='day colour'><Text className='bol'>¥</Text>{buyOrder.totalBuyPrice}</View>*/}
+            {/*</View>*/}
+            {/*<View className='ren-day '>*/}
+            {/*  <View className='day'>已付租金</View>*/}
+            {/*  <View className='day colour '><Text className='bol'>¥</Text>{buyOrder.payRent}</View>*/}
+            {/*</View>*/}
+            {/*<View className='ren-day '>*/}
+            {/*  <View className='day black'>买断尾款</View>*/}
+            {/*  <View className='day colour'><Text className='bol'>¥</Text>{buyOrder.totalBuyPriceFinal}</View>*/}
+            {/*</View>*/}
+            <View className='ren-day'>
+              <View className='day'>买断订单编号</View>
+              <View className='day'>{buyOrder.buyOrderId}</View>
+            </View>
+            <View className='ren-day'>
+              <View className='day'>买断下单时间</View>
+              <View className='day'>{formatDate(new Date(buyOrder.buyOrderTime), 'yyyy年MM月dd日  hh:mm')}</View>
+            </View>
+            <View className='ren-day'>
+              <View className='day'>买断支付时间</View>
+              <View className='day'>{formatDate(new Date(buyOrder.buyOrderPayTime), 'yyyy年MM月dd日  hh:mm')}</View>
+            </View>
+            {/*<View className='ren-day'>*/}
+            {/*  <View className='day'>续租还租时间</View>*/}
+            {/*  <View className='day'>*/}
+            {/*    {formatDate(new Date(buyOrder.reletStart), 'yyyy年MM月dd日')}-{formatDate(new Date(buyOrder.reletEnd), 'yyyy年MM月dd日')}*/}
+            {/*  </View>*/}
+            {/*</View>*/}
+          </View>
+        }
+        {!!reletOrders&&reletOrders &&reletOrders.map(item=>(
           <View className='renewal-days'>
             <View className='border'></View>
             <View className='header'>
@@ -626,10 +683,16 @@ class Orderdetail extends Component {
             </View>
             <View className='ren-day'>
               <View className='day'>续租下单时间</View>
-              <View className='day'>{formatDate(new Date(item.reletOrderTime), 'yyyy年MM月dd  hh:mm')}</View>
+              <View className='day'>{formatDate(new Date(item.reletOrderTime), 'yyyy年MM月dd日  hh:mm')}</View>
+            </View>
+            <View className='ren-day'>
+              <View className='day'>续租还租时间</View>
+              <View className='day'>
+                {formatDate(new Date(item.reletStart), 'yyyy年MM月dd日')}-{formatDate(new Date(item.reletEnd), 'yyyy年MM月dd日')}
+              </View>
             </View>
           </View>
-          )):null
+        ))
         }
         <View className='bottom-space' />
         {
@@ -701,16 +764,12 @@ class Orderdetail extends Component {
                       <Image className='img' src={require('../../images/order/popover.png')} />
                     </View>
                     <View slot='items' >
-                      {/*<popover-item onItemClick={this.handleClickBuyout}>*/}
-                      {/*  <text>买断</text>*/}
-                      {/*</popover-item>*/}
-                      {/*{dueTimeP<0&&*/}
-                      {/*  (*/}
-                          <popover-item  onItemClick={this.handleClickRenewal}>
-                            <text>续租</text>
-                          </popover-item>
-                      {/*  )*/}
-                      {/*}*/}
+                      <popover-item onItemClick={this.handleClickBuyout}>
+                        <text>买断</text>
+                      </popover-item>
+                        <popover-item  onItemClick={this.handleClickRenewal}>
+                          <text>续租</text>
+                        </popover-item>
                       {
                         userOrders.type === 2 && (
                           <popover-item  onItemClick={this.handleClickRenewalBefore}>
@@ -760,28 +819,54 @@ class Orderdetail extends Component {
             </View>
           )
         }
-        {
-          userOrders.status === 'WAITING_SETTLEMENT' && userOrders.subStatus === 'CAN_SEND_DO_SETTLEMENT_AGAIN_FOR_USER' && (
-            <View className='end-banner'>
-              <View className='button-bar' onClick={this.connectService}>联系客服</View>
-              <View className='button-bar-active' onClick={this.handleClickRenewal}>续租</View>
-              {userOrders.type === 2 && (
-                <View className='button-bar' onClick={this.handleClickRenewalBefore}>查看原订单</View>
-              )}
-            </View>
-          )
-        }
-        {userOrders.status === 'WAITING_SETTLEMENT' && userOrders.subStatus === 'GIVE_BACK_WAITING_ALREADY_PRINT' && (
+        {userOrders.status === 'WAITING_SETTLEMENT'  && (
           <View className='end-banner'>
+            {
+              userOrders.type === 2 && (
+                <popover
+                  className='popover'
+                  position={position}
+                  show={show}
+                  showMask={showMask}
+                  onMaskClick={this.onMaskClick}
+                >
+                  <View  onClick={this.onShowPopoverTap}>
+                    <Image className='img' src={require('../../images/order/popover.png')} />
+                  </View>
+                  <View slot='items' >
+                    <popover-item  onItemClick={this.handleClickRenewalBefore}>
+                      <text>查看原订单</text>
+                    </popover-item>
+                    {/*<popover-item  onItemClick={this.handleClickRenewal}>*/}
+                    {/*  <text>续租</text>*/}
+                    {/*</popover-item>*/}
+                  </View>
+                </popover>
+              )
+            }
+            <View className='button-bar' onClick={this.connectService}>联系客服</View>
+            <View className='button-bar' onClick={this.againBuy.bind(this,'buyout')} >买断</View>
             <View className='button-bar-active' onClick={this.handleClickRenewal}>续租</View>
-            {userOrders.type === 2 && (
-              <View className='button-bar' onClick={this.handleClickRenewalBefore}>查看原订单</View>
-            )}
+            {/*{userOrders.type === 2 && (*/}
+            {/*  <View className='button-bar' onClick={this.handleClickRenewalBefore}>查看原订单</View>*/}
+            {/*)}*/}
             {/*<popover-item  onItemClick={this.handleClickRenewal}>*/}
             {/*  <text>续租</text>*/}
             {/*</popover-item>*/}
           </View>
         )}
+        {
+          userOrders.status === 'ORDER_FINISH' && userOrders.subStatus === 'USER_ORDER_PENDING_DEAL_SUCCESS' && (
+            <View className='end-banner'>
+              <View className='button-bar-active' onClick={this.connectService}>联系客服</View>
+              {
+                userOrders.type === 3 ||  userOrders.type === 2 && (
+                  <View className='button-bar' onClick={this.handleClickRenewalBefore}>查看原订单</View>
+                )
+              }
+            </View>
+          )
+        }
         <CancelOrder
           display={cancelOrderDisplay}
           onCancal={this.handleModalCancel}

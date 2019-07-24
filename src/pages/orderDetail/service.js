@@ -67,3 +67,8 @@ export const payReletAgain = data => Request({
   method: 'GET',
   data,
 })
+export const payBuyOutAgain = data => Request({
+  url: 'aliPay/order/payBuyOutAgain',
+  method: 'GET',
+  data,
+})

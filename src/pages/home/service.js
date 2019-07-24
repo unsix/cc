@@ -7,3 +7,19 @@ export const IndexList = (data) => {
     data,
   });
 };
+
+export const getZhifubaoFlow = (data) => {
+  return Request({
+    url: 'aliPay/index/getZhifubaoFlow',
+    method: 'GET',
+    data,
+  });
+};
+
+export const getIndexTabAndProduct = (data) => {
+  return Request({
+    url: 'aliPay/index/getIndexTabAndProduct',
+    method: 'GET',
+    data,
+  });
+};
