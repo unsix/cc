@@ -1,6 +1,6 @@
 
 export const baseUrl = 'https://www.huizustore.com/consumer-zhifubao/'; // 线上环境
-// export const baseUrl = 'http://192.168.1.101:9000/consumer-zhifubao/'; // 本地环境
+// export const baseUrl = 'http://192.168.1.102:9000/consumer-zhifubao/'; // 本地环境
 // export const baseUrl = 'http://192.168.43.134:9000/consumer-zhifubao/'; // 本地环境
 
 export const reportUrl = 'https://www.laiyongmall.com/user/'

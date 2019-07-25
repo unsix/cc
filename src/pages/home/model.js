@@ -10,13 +10,16 @@ export default {
   },
 
   effects: {
-    *getIndexList(action, { call, put }) {
+    *getIndexList({callback}, { call, put }) {
       const res = yield call(homeApi.IndexList, { channel: 1 });
       if (res) {
         yield put({
           type: 'save',
           payload: res.data,
         });
+        if(callback){
+          callback(res.data.tabList[0].tab.id)
+        }
       }
     },
     *getZhifubaoFlow({ payload}, { call, put }) {
@@ -28,13 +31,16 @@ export default {
         });
       }
     },
-    *getIndexTabAndProduct({ payload}, { call, put }) {
+    *getIndexTabAndProduct({ payload,callback}, { call, put }) {
       const res = yield call(homeApi.getIndexTabAndProduct, { ...payload });
       if (res) {
         yield put({
           type: 'save',
           payload: res.data,
         });
+        if(callback){
+          callback(res.data.tabArray[0].name)
+        }
       }
     },
   },

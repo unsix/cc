@@ -29,123 +29,30 @@ class Home extends Component {
     fixTop:'',//区域离顶部的高度
     scrollTop:1,//滑动条离顶部的距离
     tabArrayList:[]
-    // iconList:[
-    //   {
-    //     createTime: '2019-02-01 16:40:25',
-    //     iconName: '手机优选',
-    //     channel: '1',
-    //     id: 1,
-    //     imgSrc: 'http://oss.huizustore.com/8e95717a4e4b45248293fba6d378be2c.png',
-    //     indexSort:1,
-    //     jumpUrl:'/pages/classify/index?id=7',
-    //     status:'1'
-    //   },
-    //   {
-    //     createTime: '2019-02-01 16:40:25',
-    //     iconName: '手机优选',
-    //     channel: '1',
-    //     id: 1,
-    //     imgSrc: 'http://oss.huizustore.com/8e95717a4e4b45248293fba6d378be2c.png',
-    //     indexSort:1,
-    //     jumpUrl:'/pages/classify/index?id=7',
-    //     status:'1'
-    //   },
-    //   {
-    //     createTime: '2019-02-01 16:40:25',
-    //     iconName: '手机优选',
-    //     channel: '1',
-    //     id: 1,
-    //     imgSrc: 'http://oss.huizustore.com/8e95717a4e4b45248293fba6d378be2c.png',
-    //     indexSort:1,
-    //     jumpUrl:'/pages/classify/index?id=7',
-    //     status:'1'
-    //   },
-    //   {
-    //     createTime: '2019-02-01 16:40:25',
-    //     iconName: '手机优选',
-    //     channel: '1',
-    //     id: 1,
-    //     imgSrc: 'http://oss.huizustore.com/8e95717a4e4b45248293fba6d378be2c.png',
-    //     indexSort:1,
-    //     jumpUrl:'/pages/classify/index?id=7',
-    //     status:'1'
-    //   },
-    //   {
-    //     createTime: '2019-02-01 16:40:25',
-    //     iconName: '手机优选',
-    //     channel: '1',
-    //     id: 1,
-    //     imgSrc: 'http://oss.huizustore.com/8e95717a4e4b45248293fba6d378be2c.png',
-    //     indexSort:1,
-    //     jumpUrl:'/pages/classify/index?id=7',
-    //     status:'1'
-    //   },
-    //   {
-    //     createTime: '2019-02-01 16:40:25',
-    //     iconName: '手机优选',
-    //     channel: '1',
-    //     id: 1,
-    //     imgSrc: 'http://oss.huizustore.com/8e95717a4e4b45248293fba6d378be2c.png',
-    //     indexSort:1,
-    //     jumpUrl:'/pages/classify/index?id=7',
-    //     status:'1'
-    //   },
-    //   {
-    //     createTime: '2019-02-01 16:40:25',
-    //     iconName: '手机优选',
-    //     channel: '1',
-    //     id: 1,
-    //     imgSrc: 'http://oss.huizustore.com/8e95717a4e4b45248293fba6d378be2c.png',
-    //     indexSort:1,
-    //     jumpUrl:'/pages/classify/index?id=7',
-    //     status:'1'
-    //   },
-    //   {
-    //     createTime: '2019-02-01 16:40:25',
-    //     iconName: '手机优选',
-    //     channel: '1',
-    //     id: 1,
-    //     imgSrc: 'http://oss.huizustore.com/8e95717a4e4b45248293fba6d378be2c.png',
-    //     indexSort:1,
-    //     jumpUrl:'/pages/classify/index?id=7',
-    //     status:'1'
-    //   },
-    //   {
-    //     createTime: '2019-02-01 16:40:25',
-    //     iconName: '手机优选',
-    //     channel: '1',
-    //     id: 1,
-    //     imgSrc: 'http://oss.huizustore.com/8e95717a4e4b45248293fba6d378be2c.png',
-    //     indexSort:1,
-    //     jumpUrl:'/pages/classify/index?id=7',
-    //     status:'1'
-    //   },
-    //   {
-    //     createTime: '2019-02-01 16:40:25',
-    //     iconName: '手机优选',
-    //     channel: '1',
-    //     id: 1,
-    //     imgSrc: 'http://oss.huizustore.com/8e95717a4e4b45248293fba6d378be2c.png',
-    //     indexSort:1,
-    //     jumpUrl:'/pages/classify/index?id=7',
-    //     status:'1'
-    //   },
-    // ]
+
   }
   componentDidMount = () => {
     const { dispatch } = this.props
-    const { shopType } = this.state
+    // const { shopType } = this.state
     this.canIUsesc();
      dispatch({
         type: 'home/getIndexList',
-      })
-      dispatch({
-        type:'home/getIndexTabAndProduct',
-        payload: {
-          tabId:1,
-          channel:1
+        callback:(val)=>{
+          dispatch({
+            type:'home/getIndexTabAndProduct',
+            payload: {
+              tabId:val,
+              channel:1
+            },
+            callback:(type)=>{
+              this.setState({
+                shopType:type
+              })
+            }
+          })
         }
       })
+
     // my.alert({content:getCurrentPageUrlWithArgs()})
     // my.alert({content:this.$router.params.type})
     const { type } = this.$router.params
@@ -272,7 +179,7 @@ class Home extends Component {
         isOpened: !this.state.isOpened,
       })
       my.pageScrollTo({
-        scrollTop: 660
+        scrollTop: 750
       })
     }
   }

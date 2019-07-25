@@ -65,7 +65,8 @@ class App extends Component {
       'pages/buyout/index',
       'pages/buyout/confirm',
       'pages/renewal/index',
-      'pages/renewal/confirm'
+      'pages/renewal/confirm',
+      'pages/shareMember/index'
     ],
     window: {
       titleBarColor: '#fff',

@@ -1,0 +1,78 @@
+@import "../../styles/mixin";
+
+page{
+  background-image: linear-gradient(180deg, rgba(249,240,224,0.73) 0%, #EDD9BD 100%);
+  }
+.container-share{
+  .header{
+    @include wh(750px,615px);
+    &-img{
+      @include wh(100%,550px);
+    }
+    &-tips{
+      font-family: STYuanti-SC-Regular;
+      height: 60px;
+      line-height: 60px;
+      font-size: 26px;
+      color: #E7BE40;
+      text-align: center;
+    }
+  }
+  .recommend{
+    @include wh(718px,464px);
+    @include bg('http://oss.huizustore.com/f08d4cc8600e4899a3eb0e9205b1072e.png');
+    box-sizing: border-box;
+    margin: 0 auto;
+    &-title{
+      font-family: PingFangSC-Medium;
+      font-size: 30px;
+      color: #428DF5;
+      text-align: center;
+      position: relative;
+      top:40px;
+    }
+    &-content{
+      @include wh(680px,250px);
+      box-sizing: border-box;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin:  135px auto 0;
+      &-img{
+        @include wh(100px,100px);
+        margin: 15px 15px;
+        border-radius: 10px;
+      }
+    }
+  }
+  .give{
+    @include wh(750px,250px);
+    box-sizing: border-box;
+    margin: 10px auto 0;
+    &-dec{
+      font-family: PingFangSC-Regular;
+      font-size: 20px;
+      color: #428DF5;
+      height: 35px;
+      line-height: 35px;
+      text-align: center;
+      margin-bottom: 8px;
+      &-text{
+        margin-left: 10px;
+      }
+    }
+    &-btn{
+      @include wh(560px,92px);
+      margin: 0 auto;
+      background-image: linear-gradient(180deg, rgba(255,229,229,0.84) 0%, #E36160 1%, #E05756 100%);
+      border-radius: 46.5px;
+      font-family: PingFangSC-Medium;
+      font-size: 42px;
+      color: #FFFFFF;
+      text-align: center;
+      line-height: 92px;
+      box-shadow:1px 1px 1px 1px rgb(197,41,40,.8);
+      border: none;
+    }
+  }
+}

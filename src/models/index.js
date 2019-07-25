@@ -25,6 +25,7 @@ import certificate from  '../pages/Certificates/model'
 import deposit from  '../pages/deposit/model'
 import renewal from '../pages/renewal/model'
 import buyout from '../pages/buyout/model'
+import shareMember from '../pages/shareMember/model'
 export default [
   home,
   orderDetail,
@@ -52,5 +53,6 @@ export default [
   certificate,
   deposit,
   renewal,
-  buyout
+  buyout,
+  shareMember
 ]

@@ -69,18 +69,11 @@ class Productdetail extends Component {
   onShowSKUClick = () => {
     this.setState({ showSKUPopup: true });
   }
-  // formSubmit = (e) => {
-  //   const { dispatch } = this.props;
-  //   let formId = e.detail.formId
-  //   dispatch({
-  //     type:'unclaimed/userFormIdPool',
-  //     payload:{
-  //       type:'1',
-  //       userFormId:formId
-  //     }
-  //   })
-  //   this.setState({ showSKUPopup: true });
-  // }
+  onShareMember = () => {
+    Taro.navigateTo({
+      url:`/pages/shareMember/index`
+    })
+  }
   onSKUPopupClose = () => {
     this.setState({ showSKUPopup: false });
   }
@@ -570,7 +563,8 @@ class Productdetail extends Component {
             </View>
           </View>
           <View className='right-area'>
-              <Button className='red-botton'  formType='submit' onClick={this.onShowSKUClick}>立即租用</Button>
+              <View className='black-botton' onClick={this.onShareMember}>0元领会员</View>
+              <View className='red-botton'   onClick={this.onShowSKUClick}>立即租赁</View>
           </View>
         </View>
 
