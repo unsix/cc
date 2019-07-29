@@ -18,6 +18,7 @@ import './index.scss';
   loading: loading.models.productDetail,
   orderLoading: loading.models.confirmOrder,
   mineLoading: loading.models.mine,
+  membersLoading: loading.models.members,
 }))
 class Productdetail extends Component {
   config = {
@@ -70,8 +71,14 @@ class Productdetail extends Component {
     this.setState({ showSKUPopup: true });
   }
   onShareMember = () => {
-    Taro.navigateTo({
-      url:`/pages/shareMember/index`
+    const { dispatch } = this.props
+    dispatch({
+      type: 'members/fetchAuthCode',
+      callback:()=>{
+        Taro.navigateTo({
+          url:`/pages/shareMember/index`
+        })
+      }
     })
   }
   onSKUPopupClose = () => {
@@ -296,7 +303,7 @@ class Productdetail extends Component {
   // 根据用户芝麻信用情况给予押金减免。
   render() {
     const { showzimServicePopup, showSKUPopup, showServicePopup, showServicePhone, showCoupons, showAdditionalPopup, mainActive, editRentDays, daysValue } = this.state;
-    const { loading, orderLoading, mineLoading, detail, currentSku, oldNewDegreeList, serviceMarkList, currentDays, advancedDays, startDay, saveServers, recommendproductsList, images_ismain } = this.props;
+    const { loading, orderLoading, mineLoading,membersLoading, detail, currentSku, oldNewDegreeList, serviceMarkList, currentDays, advancedDays, startDay, saveServers, recommendproductsList, images_ismain } = this.props;
 
     currentSku.cyclePrices && currentSku.cyclePrices.sort(function (a, b) {
       return a.days - b.days;
@@ -321,7 +328,7 @@ class Productdetail extends Component {
     }
     let input_bottom = this.state.input_bottom;
     // eslint-disable-next-line no-undef
-    (loading || orderLoading || mineLoading) ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
+    (loading || orderLoading || mineLoading || membersLoading) ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
     return (
       <View className='productDetail-page'>
         <View className='red_envelopes'>

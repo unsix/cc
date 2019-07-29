@@ -1,0 +1,16 @@
+@import '../../../../styles/mixin.scss';
+
+.container-curtain{
+  @include wh(100%,auto);
+  &-con{
+    @include wh(750px,auto);
+    margin: 0 auto;
+    text-align: center;
+    .box{
+      @include wh(100%,605px);
+    }
+    .img{
+      @include wh(428px,605px);
+    }
+  }
+}

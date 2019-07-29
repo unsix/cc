@@ -4,9 +4,9 @@ import { AtModal, AtModalContent, AtTabs, AtTabsPane ,AtModalHeader} from 'taro-
 import { connect } from '@tarojs/redux';
 import Search from './component/search/index';
 import Channel from './component/channel/index';
+import TagPage from './component/curtain/index'
 import flowImg from '../../images/home/flow.png';
 // import Rolling from '../../components/rolling/rolling';
-import { debounce } from  '../../utils/utils'
 import './index.scss';
 
 let timer
@@ -28,9 +28,10 @@ class Home extends Component {
     isOpened:false,
     fixTop:'',//区域离顶部的高度
     scrollTop:1,//滑动条离顶部的距离
-    tabArrayList:[]
-
+    tabArrayList:[],
+    isTagOpened:false
   }
+
   componentDidMount = () => {
     const { dispatch } = this.props
     // const { shopType } = this.state
@@ -52,31 +53,21 @@ class Home extends Component {
           })
         }
       })
-
-    // my.alert({content:getCurrentPageUrlWithArgs()})
-    // my.alert({content:this.$router.params.type})
-    const { type } = this.$router.params
-    console.log(type,'=====================')
-    if(type){
-      dispatch({
-        type:'home/getZhifubaoFlow',
-        payload:{
-          type:type
-        }
+    const { taskId } = this.$router.params
+    console.log(this.$router.params,'===========12312321321')
+    if(taskId){
+      this.setState({
+        isTagOpened:true
       })
     }
-    console.log(this.$router.params.type,'==========================================')
   };
-
+  componentDidHide () {
+    this.setState({
+      isTagOpened:false
+    })
+  }
   //悬浮红包
   gotoRed = () => {
-    // const { dispatch } = this.props;
-    //     dispatch({
-    //       type: 'productDetail/conuponSearch',
-    //       payload:{
-    //         couponid:'PL123AADSK'
-    //       },
-    //     });
     my.navigateToMiniProgram({
       appId: '2018122562686742',
       path: 'pages/index/index?originAppId=2019011162880259&newUserTemplate=20190428000000168854'
@@ -84,10 +75,8 @@ class Home extends Component {
   }
   // 收藏
   canIUsesc = () => {
-    // console.log('shou')
     my.canIUse('lifestyle');
   }
-
 
   skip = (loinBanner) => {
     // 测试跳转到账单
@@ -161,7 +150,6 @@ class Home extends Component {
   }
   formSubmit = (e) => {
     let formId = e.detail.formId
-    // console.log(formId,'9999999999999999999999999999999999999999999999999')
   }
   switchTab = (item,type) => {
     const { dispatch } = this.props
@@ -188,11 +176,6 @@ class Home extends Component {
       isOpened: false,
     });
   }
-  handleCallBack = (data) => {
-    my.alert({
-      content: JSON.stringify(data)
-    });
-  }
   onGoWater = (id) => {
     Taro.navigateTo({
       url:`/pages/productDetail/index?itemId=${id}`
@@ -206,21 +189,6 @@ class Home extends Component {
     this.setState({
       isOpened: !this.state.isOpened,
     });
-  }
-  throttle(fn, gapTime) {//防止多次点击跳转
-    if (gapTime == null || gapTime == undefined) {
-      gapTime = 1500
-    }
-    let _lastTime = null
-    // 返回新的函数
-    return function () {
-      let _nowTime = + new Date()
-      if (_nowTime - _lastTime > gapTime || !_lastTime) {
-        //fn()如果直接调用，this指向会发生改变，所以用apply将this和参数传给原函数
-        fn.apply(this, arguments)   //将this和参数传给原函数
-        _lastTime = _nowTime
-      }
-    }
   }
   onPageScroll (e) {
       let query = my.createSelectorQuery();
@@ -237,30 +205,40 @@ class Home extends Component {
         }, 100);
       });
   }
-  onScroll = (e) => {
-
+  shareOnClose = (val) => {
+    this.setState({
+      isTagOpened:val
+    })
+  }
+  shareFetchAuth = () => {
+    const { dispatch } = this.props
+    const { taskId,id } = this.$router.params
+    // console.log(taskId,id)
+    dispatch({
+      type:'home/fetchAuthCode',
+      callback:()=>{
+        dispatch({
+          type:'home/newcomerVerification',
+          payload:{
+            taskId:taskId,
+            inviteUid:id,
+          },
+          callback:()=>{
+            this.setState({
+              isTagOpened:false
+            })
+            Taro.redirectTo({
+              url:`/pages/shareMember/index`
+            })
+          }
+        })
+      }
+    })
   }
   render() {
-    const { bannerList, tabList, oldNewDegreeList, loinBanner, loading ,waterbanner ,products,tabArray,iconList} = this.props;
-    const { shopType ,show, items, isOpened , fixTop , scrollTop,tabArrayList} = this.state
-    // if(tabArray && !!tabArray.length){
-    //   let  obj = {}
-    //   tabArray.map(item=>(
-    //     obj ={
-    //       name:item.name,
-    //       id:item.id
-    //     },
-    //     tabArrayList.push(obj)
-    //   ))
-    // }
-    // console.log(tabArrayList,'============')
-    // const navTab = [...tabArrayList];
-    // navTab.unshift({
-    //   id: '1',
-    //   name: '手机优选',
-    // });
-    // console.log(iconList)
-    console.log(this.state.scrollTop)
+    const { bannerList,  oldNewDegreeList, loinBanner, loading ,waterbanner ,products,tabArray,iconList} = this.props;
+    const { shopType , isOpened ,  scrollTop,isTagOpened} = this.state
+    // console.log(this.state.scrollTop)
     // eslint-disable-next-line no-undef
     loading ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
     return (
@@ -325,28 +303,9 @@ class Home extends Component {
             </View>
           </View>
         </View>
-        {/*<View className='home-freshman' onClick={this.skip.bind(this, loinBanner)}>*/}
-        {/*  <Image className='home-freshman-img' mode='aspectFit' src={loinBanner && loinBanner.length && loinBanner[0].imgSrc} />*/}
-        {/*  /!* <View className='home-freshman-box'></View>*/}
-        {/*  <View className='home-freshman-content'>*/}
-        {/*    <View style={{ marginBottom: '5px' }}>*/}
-        {/*      <Text style={{ paddingRight: '5px' }}>新人大礼包</Text>*/}
-        {/*      <Text class='home-freshman-content-bold'>超值划算</Text>*/}
-        {/*    </View>*/}
-        {/*    <View className='home-freshman-content-new'>全新类大额优惠券等你领取</View>*/}
-        {/*  </View>*/}
-        {/*  <View className='home-freshman-button'>立即领取</View> *!/*/}
-        {/*</View>*/}
         <View className='home-share ' onClick={this.skip.bind(this, loinBanner)}>
           <Image className='home-share-img' mode='aspectFit' src={loinBanner[0].imgSrc} />
         </View>
-        {/*scrollWithAnimation="true" scrollTop={this.state.scrollTopValue}*/}
-        {/*className={`elements-page__scroll`} scrollIntoView={this.props.root.scrollntoView}*/}
-        {/*scrollWithAnimation="false" upperThreshold="-100" ontouchend={this.touchend.bind(this)}*/}
-        {/*ontouchmove={this.move.bind(this)} ontouchstart={this.touchstart.bind(this)}  scrollY*/}
-        {/*enableBackToTop onscroll={this.scroll.bind(this)} onscrolltolower={this.scrollDown.bind(this)}*/}
-        {/*style={`padding-top:${this.props.pageConfig.fixed?0:this.state.height}px;${this.props.pageConfig.contentBgColor? */}
-        {/*'background:'+this.props.pageConfig.contentBgColor+';':''}`}*/}
         <View
           className={`tabs-list ${scrollTop <= 0 && 'tabs-list-fixed' }`}
         >
@@ -355,17 +314,10 @@ class Home extends Component {
               onScroll={this.onScroll}
               scrollIntoView={shopType}
               className={`shop-list-nav ${scrollTop <= 0 && 'shop-list-nav-fixed'}`}
-              // className='shop-list-nav'
               scrollWithAnimation
               scrollX
               id='id'
             >
-              {/*{fixTop<scrollTop && (*/}
-              {/*  <view className="news fix-news" wx:if="{{fixTop<scrollTop}}">*/}
-              {/*    <text>今日新闻列表</text>*/}
-              {/*  </view>*/}
-              {/*)*/}
-              {/*}*/}
               {
                 tabArray.map(item => {
                   return (
@@ -376,7 +328,6 @@ class Home extends Component {
                       >
                         {item.name}
                       </Text>
-                      {/*{shopType === item.id && <View className='border-bottom'></View>}*/}
                     </View>
                   )
                 })
@@ -400,10 +351,8 @@ class Home extends Component {
             )
           }
         </View>
-
         <Form report-submit='true' onSubmit={this.formSubmit}>
           <View className='home-channel' >
-            {/*{products && products.length && products.map(info => (*/}
               <Channel
                 formType='submit'
                 products={products}
@@ -415,16 +364,6 @@ class Home extends Component {
             {/*))}*/}
           </View>
         </Form>
-        {/*<filter className='filter' show={show} max='1' onChange={this.handleCallBack}>*/}
-        {/*  /!*{items && items.map(item=>(*!/*/}
-        {/*  /!*  <filter-item value={item.value} id={item.id} selected={item.selected} />*!/*/}
-        {/*  /!*)}*!/*/}
-        {/*  {*/}
-        {/*    items && items.map(item=>(*/}
-        {/*      <filter-item value={item.value} id={item.id} selected={item.selected} />*/}
-        {/*    ))*/}
-        {/*  }*/}
-        {/*</filter>*/}
         <View className='query_modal'>
           <AtModal isOpened={isOpened} className='content'>
             <AtModalHeader>
@@ -445,7 +384,6 @@ class Home extends Component {
                       >
                         {item.name}
                       </Text>
-                      {/*{shopType === item.id && <View className='border-bottom'></View>}*/}
                     </View>
                   )
                 })
@@ -456,6 +394,12 @@ class Home extends Component {
         <View className='home-bottom'>
           <Text className='text'> - 再拖就没有了 - </Text>
         </View>
+        <TagPage
+          onClick={this.shareFetchAuth}
+          onClose={this.shareOnClose}
+          isOpened={isTagOpened}
+          data='http://oss.huizustore.com/09ed26c0f6e543e8b15578c44a121b93.png'
+        />
       </View>
     )
   }

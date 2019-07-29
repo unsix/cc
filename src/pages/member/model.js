@@ -155,11 +155,6 @@ export default {
             type: 'saveUser',
             payload: exeRes.data,
           });
-          // const apRes = yield apNsf({
-          //   user_id: exeRes.data.userId,
-          //   mobile_no: exeRes.data.telephone || 'null',
-          // })
-          // console.log('=====', apRes);
         }
         if (callback) {
           callback();

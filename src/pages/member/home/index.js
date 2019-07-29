@@ -37,21 +37,6 @@ class Member extends Component{
   }
   componentDidMount () {
     const { dispatch } = this.props;
-    // dispatch({
-    //   type:'members/getUserMembersEquitiesAllByUid',
-    //   // payload: {
-    //   //   pageNumber:1,
-    //   //   pageSize:1
-    //   // }
-    //   callback:(data)=>{
-    //     if(data &&data.vip){
-    //       this.setState({
-    //         memValue:0
-    //       })
-    //     }
-    //   }
-    // })
-    // this.setDispatch();
     const { queryInfo } = this.props;
     this.setDispatch(queryInfo);
   }
@@ -62,10 +47,6 @@ class Member extends Component{
       callback: () => {
         dispatch({
           type:'members/getUserMembersEquitiesAllByUid',
-          // payload: {
-          //   pageNumber:1,
-          //   pageSize:1
-          // }
           callback:(data)=>{
             if(data &&data.vip){
               this.setState({
@@ -77,21 +58,6 @@ class Member extends Component{
       },
     });
   };
-  shouldComponentUpdate(nextProps, nextState) {
-    // if (this.props!== nextProps) {
-    //   return true;
-    // }
-    // else if(this.props.memberIfn.vip.wingNumber !== nextProps.memberIfn.vip.wingNumber){
-    //   return true;
-    // }
-    // return true;
-  }
-  //弹窗
-  // details = () => {
-  //   this.setState({
-  //     isOpened:true
-  //   })
-  // }
   //ment
   ment = () =>{
     Taro.navigateTo({

@@ -1,12 +1,12 @@
 import '@tarojs/async-await'
 import Taro, { Component } from '@tarojs/taro'
 import { Provider } from '@tarojs/redux'
-import { getCurrentPageUrlWithArgs } from  './utils/utils'
 import Index from './pages/home'
 import dva from './utils/dva'
 import models from './models'
-
+import { baseUrl } from './config'
 import './app.scss'
+import { getUid } from './utils/localStorage'
 
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：
@@ -104,16 +104,26 @@ class App extends Component {
       ],
     },
   }
-  componentWillMount(){
-
+  componentWillMount = (options) => {
+    const obj = this.$router.params
+    const { type } = obj.query
+    if(type){
+      my.httpRequest({
+        url: baseUrl+'aliPay/index/getZhifubaoFlow',
+        data:{
+          type
+        },
+        // data: newObj,
+        headers:{
+          'Content-Type': 'application/json',
+        },
+        method: 'GET',
+      })
+    }
   }
-  // onLaunch(options) {
-  //   my.alert({content: '启动参数：'+JSON.stringify(options.query.type),});
-  //   console.log('query', options.query);
-  //   console.log('App Launch', options);
-  // }
-  componentDidMount () {
-    // my.alert({content:getCurrentPageUrlWithArgs()})
+  componentDidMount (options) {
+
+
   }
   componentDidShow () {
   }

@@ -187,13 +187,22 @@ page {
     }
   }
   .tabs-list-fixed{
-    background: #fff;
+    @include wh(750px,120px);
+    background: #F5F5F5;
     position: sticky;
     top: 0;
-    width: 750px;
     z-index: 1000;
     //-webkit-transform: translateZ(0);
     box-sizing: border-box;
+    .shop-list-nav-fixed{
+      width: 650px;
+      background: #fff;
+      margin: 0 ;
+    }
+    .switch{
+     right: 0;
+    }
+
   }
   .home-tabList{
   }

@@ -23,3 +23,10 @@ export const getIndexTabAndProduct = (data) => {
     data,
   });
 };
+export const newcomerVerification = (data) => {
+  return Request({
+    url: 'alipay/user/newcomerTask/newcomerVerification',
+    method: 'POST',
+    data,
+  });
+};
