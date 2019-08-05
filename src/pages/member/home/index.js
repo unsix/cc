@@ -380,7 +380,7 @@ class Member extends Component{
                   <View className='word'>
                     <View>包邮卷</View>
                     <View className='bold'>
-                      {memberIfn.settingList[memValue-1].packageNumber?memberIfn.settingList[memValue-1].packageNumber:30}次
+                      {memberIfn.settingList[memValue-1].packageNumber>=0?memberIfn.settingList[memValue-1].packageNumber:100}次
                     </View>
                     <View className='shallow'>回寄包邮</View>
                   </View>

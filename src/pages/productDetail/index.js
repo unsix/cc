@@ -7,25 +7,24 @@ import { formatDate,blankSpace } from '../../utils/utils';
 import { customerServiceTel } from '../../assets/Constant';
 
 import ParseComponent from './wxParseComponent'
-import homeImg from '../../images/home/homeindexbanner.png';
-import productRed from  '../../images/product/red_envelopes.png'
-// import dibanner from '../../images/home/dibanner.png';
+import NoData from '../../components/noData/index'
 
 import './index.scss';
-
+let  isclick = true;
 @connect(({ productDetail, loading }) => ({
   ...productDetail,
   loading: loading.models.productDetail,
   orderLoading: loading.models.confirmOrder,
   mineLoading: loading.models.mine,
-  membersLoading: loading.models.members,
 }))
 class Productdetail extends Component {
   config = {
     navigationBarTitleText: '惠租',
     usingComponents: {
       "popup": "../../npm/mini-antui/es/popup/index",
-      "modal": "../../npm/mini-antui/es/modal/index"
+      "modal": "../../npm/mini-antui/es/modal/index",
+      "collapse": '../../npm/mini-antui/es/collapse/index',
+      "collapse-item": '../../npm/mini-antui/es/collapse/collapse-item/index'
     }
   };
 
@@ -38,21 +37,24 @@ class Productdetail extends Component {
     showServicePhone: false,
     editRentDays: false,
     daysValue: null,
-    input_bottom: 0
+    input_bottom: 0,
+    display: 'block', // none -> 没数据隐藏
   }
 
   componentDidMount = () => {
     const { itemId } = this.$router.params;
     const { dispatch } = this.props;
-    dispatch({
-      type: 'productDetail/fetchProductDetail',
-      payload: { itemId },
-    });
-    // productid就是itemid
-    dispatch({
-      type: 'productDetail/recommendproducts',
-      payload: { productid: this.$router.params.itemId }
-    });
+    if(itemId){
+      dispatch({
+        type: 'productDetail/fetchProductDetail',
+        payload: { itemId },
+      });
+      // productid就是itemid
+      dispatch({
+        type: 'productDetail/recommendproducts',
+        payload: { productid: itemId }
+      });
+    }
   };
   gotoRed = () => {
     // const { dispatch } = this.props;
@@ -71,15 +73,23 @@ class Productdetail extends Component {
     this.setState({ showSKUPopup: true });
   }
   onShareMember = () => {
-    const { dispatch } = this.props
-    dispatch({
-      type: 'members/fetchAuthCode',
-      callback:()=>{
-        Taro.navigateTo({
-          url:`/pages/shareMember/index`
-        })
-      }
-    })
+    if(isclick){
+      isclick = false;
+      const { dispatch } = this.props
+      dispatch({
+        type: 'members/fetchAuthCode',
+        callback:()=>{
+          Taro.navigateTo({
+            url:`/pages/shareMember/index`
+          })
+        }
+      })
+      setTimeout(function(){
+        isclick = true;
+      }, 500);
+
+    }
+
   }
   onSKUPopupClose = () => {
     this.setState({ showSKUPopup: false });
@@ -108,7 +118,20 @@ class Productdetail extends Component {
   }
 
   onShowCoupons = () => {
-    this.setState({ showCoupons: true });
+    const { dispatch } = this.props
+    const { itemId } = this.$router.params
+    dispatch({
+      type: 'mine/fetchAuthCode',
+      callback:()=> {
+        this.setState({ showCoupons: true });
+        dispatch({
+          type:'productDetail/getProductCoupon',
+          payload:{
+            productId:itemId
+          }
+        })
+      }
+    })
   }
 
   onCouponClose = () => {
@@ -120,6 +143,7 @@ class Productdetail extends Component {
   }
 
   handleSkuClick = (valueId, preId) => {
+    console.log(valueId,preId)
     if (valueId === preId) {
       return
     }
@@ -131,6 +155,7 @@ class Productdetail extends Component {
   }
 
   handleDayChange = (days) => {
+    console.log(days)
     const { dispatch } = this.props;
     // console.log(days)
     dispatch({
@@ -250,9 +275,18 @@ class Productdetail extends Component {
 
   handleGetCoupon = (couponId) => {
     const { dispatch } = this.props;
+    const { itemId } = this.$router.params
     dispatch({
       type: 'productDetail/getCoupon',
       payload: { couponId },
+      callback:()=>{
+        dispatch({
+          type:'productDetail/getProductCoupon',
+          payload:{
+            productId:itemId
+          }
+        })
+      }
     });
   }
 
@@ -291,6 +325,13 @@ class Productdetail extends Component {
         url: '/pages/member/home/index'
       })
   }
+  //优惠劵更多
+  GoMoreCoupon = () => {
+    Taro.showToast({
+      title:'更多优惠劵上架，敬请期待！',
+      icon:'none'
+    })
+  }
 
   onShareAppMessage() {
     const { detail } = this.props;
@@ -302,8 +343,8 @@ class Productdetail extends Component {
   }
   // 根据用户芝麻信用情况给予押金减免。
   render() {
-    const { showzimServicePopup, showSKUPopup, showServicePopup, showServicePhone, showCoupons, showAdditionalPopup, mainActive, editRentDays, daysValue } = this.state;
-    const { loading, orderLoading, mineLoading,membersLoading, detail, currentSku, oldNewDegreeList, serviceMarkList, currentDays, advancedDays, startDay, saveServers, recommendproductsList, images_ismain } = this.props;
+    const { showzimServicePopup, showSKUPopup, showServicePopup, showServicePhone, showCoupons, showAdditionalPopup, mainActive, editRentDays, daysValue ,display } = this.state;
+    const { loading, orderLoading, mineLoading, detail, currentSku, oldNewDegreeList, serviceMarkList, currentDays, advancedDays, startDay, saveServers, recommendproductsList, images_ismain ,processRule,productCoupon} = this.props;
 
     currentSku.cyclePrices && currentSku.cyclePrices.sort(function (a, b) {
       return a.days - b.days;
@@ -328,7 +369,7 @@ class Productdetail extends Component {
     }
     let input_bottom = this.state.input_bottom;
     // eslint-disable-next-line no-undef
-    (loading || orderLoading || mineLoading || membersLoading) ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
+    (loading || orderLoading || mineLoading  ) ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
     return (
       <View className='productDetail-page'>
         <View className='red_envelopes'>
@@ -350,108 +391,179 @@ class Productdetail extends Component {
           </swiper>
         </View>
         <View className='sesame_credit'>
-            <Image className='sesame_credit_img' mode='aspectFit' src={homeImg} />
+          <Image className='img'  src='http://oss.huizustore.com/8278306dec7b40cfb443d477b61ce2dd.png' />
         </View>
-        <View className='swiper-space' />
         <View className='info-area'>
-          <View className='title'>
-            <Text className='right'>{oldNewDegreeList[currentSku.oldNewDegree - 1]}</Text>|<Text className='content'>{detail.name}</Text>
-          </View>
           <View className='price-info'>
             <View className='price'>
-              <Text className='unit'>￥</Text>
-              <Text className='price-text'>{currentSku.currentCyclePrice.price}</Text>
-              <Text className='unit'> 元/天</Text>
+              <Text className='unit'>¥</Text>
+              <Text className='price-text'>{Number(currentSku.currentCyclePrice.price).toFixed(2).toString().split('.')[0]}</Text>
+              <Text className='spots'>.</Text>
+              <Text className='small-price'>
+                {
+                  Number(currentSku.currentCyclePrice.price).toFixed(2).toString().split('.')[1]
+                }
+              </Text>
+              <Text className='unit'>/天</Text>
+              <Text className='member-price'>
+                <Text >¥</Text>
+                {(Math.round(currentSku.currentCyclePrice.price*detail.membersDisCount * 100) / 100)}/天
+                <Image className='img' src='http://oss.huizustore.com/89326548e3dd4672985b27d8434da7d3.png' />
+              </Text>
             </View>
             <View>
               <View className='dec_situation'>
-                <View className='volume'> 官方售价¥{detail.skus[0].marketPrice} 起</View>
+                <View className='volume'>{detail.minRentCycle}天起租</View>
+                <View className='volume'>会员折扣</View>
               </View>
-              <View className='volume'>月销：{detail.salesVolume}笔</View>
             </View>
           </View>
-        </View>
-        <View className='member_discount'>
-          <View className='discount'>
-            <View className='dis_text'>
-              ¥{(Math.round(currentSku.currentCyclePrice.price*detail.membersDisCount * 100) / 100)}元/天
-              <Text className='dis_shop'>会员价</Text>
-            </View>
-            <View className='go_text' onClick={this.member}>
-              <View className='text'>
-                <View>进入</View>
-              </View>
-              <View className='ff'>></View>
-            </View>
+          <View className='volume-price'>
+            <View className='price'>
+              <Text className='mark'>官方售价</Text> ¥{detail.skus[0].marketPrice}起</View>
           </View>
-        </View>
-        <View className='integral'>
-          <View className='grade'>
-            600分
-            <Text className='grade_price'>免¥1500</Text>
-          </View>
-          <View className='grade'>
-            650分
-            <Text className='grade_price'>免¥5000</Text>
-          </View>
-          <View className='grade'>
-            700分
-            <Text className='grade_price'>有机会全免</Text>
-          </View>
-        </View>
-        {/* <View className='zima-Xy' style='background:#fff;'>
-            <Image style='width:200rpx;height:27rpx;margin-left:30rpx;' mode='aspectFit' src={dibanner} />
-        </View> */}
-        {(
-          // !!detail.serviceMarks && !!detail.serviceMarks.length && 
-          <View className='service-info' onClick={this.onShowServiceClick}  >
-            <View className='services'>
-              <View className='item' ><View className='item-img' />芝麻信用免押金</View>
-              {
-                !!detail.serviceMarks && !!detail.serviceMarks.length && detail.serviceMarks.map(service => (
-                  <View className='item' key={service.id}><View className='item-img' />{serviceMarkList[service.type]}</View>
-                )
-                )}
-            </View>
-            <View className='spot' />
-          </View>
-        )}
-        {((!!detail.allCoupons && !!detail.allCoupons.length) ||
-          (!!detail.platformCoupon && !!detail.platformCoupon.length)) && (
-            <View className='choose-info' onClick={this.onShowCoupons}>
-              <View className='content'><Text className='front'>优惠</Text>领券至少可减 ¥<Text className='price'>{couponValue}</Text></View>
-              <View className='spot' />
-            </View>
-          )}
-        <View className='choose-info' onClick={this.onShowSKUClick}>
-          <View className='content'>
-            <Text className='front'>选择</Text>
-            <Text>
-              已选择：{currentSku.values && currentSku.values.map(v => `${v.name} `)}
-              {currentDays && `${currentDays}天`}
+          <View className='title'>
+            <Text className='product-box'>
+              <Text className={`oldNewDegree ${currentSku.oldNewDegree - 1 === 0 && 'oldNewDegree-active'} `}> {oldNewDegreeList[currentSku.oldNewDegree - 1]}</Text>
+              <Text className='name'>{detail.name}</Text>
+              {/*className={`text ${shopType === item.id && 'text-active'}`}*/}
             </Text>
           </View>
-          <View className='spot' />
         </View>
         <View className='swiper-info'>
-
-          {/* <swiper
-              indicator-dots
-              indicator-active-color='#DBDBDB'
-            >
-                <swiper-item >
-                  <View className='item' onClick={this.onEnvelope.bind()}>
-                    <Image className='img' mode='aspectFit' src='http://jbkj-res.oss-cn-hangzhou.aliyuncs.com/79249b80547a4d9e9a8519ec47d420cf.png' />
-                  </View>
-                </swiper-item>
-            </swiper> */}
-          <View className='item' onClick={this.onEnvelope.bind()}>
-            <Image className='img' mode='aspectFit' src='http://oss.huizustore.com/79249b80547a4d9e9a8519ec47d420cf.png' />
+          <View className='item' onClick={this.member}>
+            <Image className='img' mode='aspectFit' src='http://oss.huizustore.com/763cc18011114328986e206b649c5ef0.png' />
           </View>
-          {/*<View className='item' onClick={this.member}>*/}
-          {/*  /!*<Image className='img' mode='aspectFit' src='http://oss.huizustore.com/79249b80547a4d9e9a8519ec47d420cf.png' />*!/*/}
-          {/*  <Image className='img' mode='aspectFit' src='http://oss.huizustore.com/22e920340b2d498db33318219424cc1d.png' />*/}
-          {/*</View>*/}
+        </View>
+          <View className='receive-info'>
+            <View className='receive-info-coupon' onClick={this.onShowCoupons}>
+              <View className='receive-info-coupon-title'>
+                领劵
+              </View>
+              <View className='receive-info-coupon-dec'>
+                {detail.maxplatformCoupon && (
+                  <View className='receive-info-coupon-dec-con'>
+                    <View className='name'>满{detail.maxplatformCoupon.minPurchase}减{detail.maxplatformCoupon.value}</View>
+                    <View className='type'>平台劵</View>
+                  </View>
+                )}
+                {detail.maxShopCoupons && (
+                  <View className='receive-info-coupon-dec-con'>
+                    <View className='name'>满{detail.maxShopCoupons.minPurchase}减{detail.maxShopCoupons.value}</View>
+                    <View className='type'>店铺劵</View>
+                  </View>
+                )}
+                {!detail.maxplatformCoupon && !detail.maxShopCoupons && (
+                  <View className='receive-info-coupon-dec-con'>
+                    <View className='name'>暂无优惠劵</View>
+                    <View className='type'>可用</View>
+                  </View>
+                )}
+              </View>
+              <View className='spot' />
+            </View>
+            <View className='receive-info-deliver'>
+              <View className='receive-info-deliver-title'>
+                发货
+              </View>
+              <View className='receive-info-deliver-dec'>
+                运费：到付
+              </View>
+              <View className='receive-info-deliver-volume'>销量 {detail.salesVolume}</View>
+            </View>
+          </View>
+          <View className='rental-procedure'>
+            <View className='rental-procedure-title'>
+              租赁流程
+            </View>
+            <View className='rental-procedure-image'>
+              <Image className='img' src='http://oss.huizustore.com/b182cdb14827419982f12beaa81a727f.png' />
+            </View>
+            <View>
+              <collapse
+                className="demo-collapse"
+                collapseKey="collapse2"
+                activeKey="{{['item-21', 'item-23']}}"
+                onChange="onChange"
+                accordion="{{true}}"
+              >
+                <collapse-item
+                  className='collapse'
+                  itemKey="item-21"
+                  collapseKey="collapse2"
+                >
+                  <view className="item-content content1">
+                    <View>
+                      <Image className='img_1' src='http://oss.huizustore.com/03415e9068cb48bfa87acc1060e9d26f.png' />
+                    </View>
+                    <View className='border'></View>
+                  </view>
+                </collapse-item>
+                <collapse-item
+                  itemKey="item-22"
+                  collapseKey="collapse2"
+                >
+                  <View className="item-content content2">
+                    <Image className='img_2' src='http://oss.huizustore.com/31f290eeb3da4fbab5b1c84b0a78d71a.png' />
+                    <View className='border'></View>
+                  </View>
+                </collapse-item>
+                <collapse-item
+                  itemKey="item-23"
+                  collapseKey="collapse2"
+                >
+                  <View className="item-content content3">
+                    {detail.buyCyclePrices && !!detail.buyCyclePrices.length?
+                      (
+                        <View className='con'>
+                          <View className='left'>
+                            买断规则
+                          </View>
+                          <View className='right'>
+                            {detail.buyCyclePrices.map(item=>(
+                              <View className='text'>
+                                {item.days}天内 买断价格={detail.skus[0].marketPrice + item.price}-已付租金
+                              </View>
+                            ))}
+                          </View>
+                        </View>
+                      ):
+                      (
+                        <Image className='img_3' src='http://oss.huizustore.com/30785e4857e04fffb244dd0afda36012.png' />
+                      )
+                    }
+                    <View className='border'></View>
+                  </View>
+                </collapse-item>
+              </collapse>
+            </View>
+          </View>
+        <View className='shop'>
+          <View className='avatar'>
+            <Image className='img' src={detail.shop.logo} />
+          </View>
+          <View className='dec'>
+            <View className='name'>
+              {detail.shop.name}
+            </View>
+            <View className='address'>
+              <View className='content-img'>
+                <Image className='img' src='http://oss.huizustore.com/042758164b734b1a8eb68c52ffb0e689.png' />
+              </View>
+              <View className='content-dec'>
+                {detail.shop.province}
+                <Text className='text'>{detail.shop.city}</Text>
+              </View>
+            </View>
+          </View>
+          <View className='edit'>
+            <View className='call' onClick={this.onShowPhoneModal}>
+              联系商家
+            </View>
+            <View className='go-shop' onClick={this.gotoWhere.bind(this, 'shop')} >
+              进店看看
+            </View>
+          </View>
         </View>
         <View className='store-info' onClick={this.goInmeddiate.bind()}>
           <View className='channel-top'>
@@ -459,75 +571,133 @@ class Productdetail extends Component {
               <Text className='left-text'>为你推荐</Text>
             </View>
             <View className='channel-top-more'>
-              <Text className='right-text'>查看全部</Text>
-              <AtIcon value='chevron-right' size='20' color='#ec2111c4'></AtIcon>
+              <View>
+                <Text className='right-text'>查看更多
+                  <AtIcon value='chevron-right' size='15' color='#515151'></AtIcon>
+                </Text>
+              </View>
             </View>
           </View>
         </View>
         <View className='other-commodities'>
           {
-            !!recommendproductsList && recommendproductsList.map(item => (
-              <View onClick={this.gotodetail.bind(this, item.productId || item.itemId)}>
-                <View className="commodities-img">
-                  <Image style="width:100%;height:100%;" mode='aspectFit' src={item.detail || item.image} />
-                </View>
-                <View className="commodities-name">
-                  {item.name}
-                </View>
-                <View className="commodities-price">
-                  <Text style="font-size: 12px;">¥</Text>
-                  <Text style="font-size: 17px;line-height: 30px;">
-                    {
-                      Number(item.sale).toFixed(2).toString().split('.')[0]
-                    }
-                  </Text>
-                  <Text style="font-size: 10px;margin-top:10px;">
-                    .
-                    </Text>
-                  <Text style="font-size: 10px;">
-                    {
-                      Number(item.sale).toFixed(2).toString().split('.')[1]
-                    }
-                  </Text>
-                  <Text style="font-size: 10px;"> /天</Text>
-                </View>
+            !!recommendproductsList && (
+              <View className='swipers'>
+                <swiper
+                  // circular
+                  indicator-dots
+                  indicator-active-color='#FC766B'
+                  autoplay='{{true}}'
+                  interval='{{6000}}'
+                >
+                  <swiper-item key='1' >
+                    <View className='content'>
+                      {recommendproductsList.slice(0,3).map(item => (
+                        <View
+                          className='content-view'
+                          onClick={this.gotodetail.bind(this, item.productId )}
+                        >
+                          <View className='commodities-img'>
+                            <Image className='img' mode='aspectFit' src={item.detail} />
+                          </View>
+                          <View className='commodities-name'>
+                            {item.name}
+                          </View>
+                          <View className='commodities-price'>
+                            <Text >¥</Text>
+                            <Text >
+                              {
+                                Number(item.sale).toFixed(2).toString().split('.')[0]
+                              }
+                            </Text>
+                            <Text style='font-size: 10px;margin-top:10px;'>.</Text>
+                            <Text style='font-size: 10px;'>
+                              {
+                                Number(item.sale).toFixed(2).toString().split('.')[1]
+                              }
+                            </Text>
+                            <Text style="font-size: 10px;"> /天</Text>
+                          </View>
+                        </View>
+                      ))}
+                    </View>
+                  </swiper-item>
+                  <swiper-item key='2' >
+                    <View className='content'>
+                      {recommendproductsList.slice(3,6).map(item => (
+                        <View
+                          className='content-view'
+                          onClick={this.gotodetail.bind(this, item.productId )}
+                        >
+                          <View className='commodities-img'>
+                            <Image className='img' mode='aspectFit' src={item.detail} />
+                          </View>
+                          <View className='commodities-name'>
+                            {item.name}
+                          </View>
+                          <View className='commodities-price'>
+                            <Text >¥</Text>
+                            <Text >
+                              {
+                                Number(item.sale).toFixed(2).toString().split('.')[0]
+                              }
+                            </Text>
+                            <Text style='font-size: 10px;margin-top:10px;'>.</Text>
+                            <Text style='font-size: 10px;'>
+                              {
+                                Number(item.sale).toFixed(2).toString().split('.')[1]
+                              }
+                            </Text>
+                            <Text style="font-size: 10px;"> /天</Text>
+                          </View>
+                        </View>
+                      ))}
+                    </View>
+                  </swiper-item>
+                  {recommendproductsList.length === 9 && (
+                    <swiper-item key='3' >
+                      <View className='content'>
+                        {recommendproductsList.slice(6,9).map(item => (
+                          <View
+                            className='content-view'
+                            onClick={this.gotodetail.bind(this, item.productId )}
+                          >
+                            <View className='commodities-img'>
+                              <Image className='img' mode='aspectFit' src={item.detail} />
+                            </View>
+                            <View className='commodities-name'>
+                              {item.name}
+                            </View>
+                            <View className='commodities-price'>
+                              <Text >¥</Text>
+                              <Text >
+                                {
+                                  Number(item.sale).toFixed(2).toString().split('.')[0]
+                                }
+                              </Text>
+                              <Text style='font-size: 10px;margin-top:10px;'>.</Text>
+                              <Text style='font-size: 10px;'>
+                                {
+                                  Number(item.sale).toFixed(2).toString().split('.')[1]
+                                }
+                              </Text>
+                              <Text style="font-size: 10px;"> /天</Text>
+                            </View>
+                          </View>
+                        ))}
+                      </View>
+                    </swiper-item>
+                  )}
+                </swiper>
               </View>
-            ))
+
+            )
           }
-          {/* {
-          !!recommendproductsList && recommendproductsList.map(item =>(
-                <View onClick={this.gotodetail.bind(this,item.itemId)}>
-                  <View className="commodities-img">
-                    <Image style="width:100%;height:100%;" mode='aspectFit' src={item.image} />
-                  </View>
-                  <View className="commodities-name">
-                    {item.name}
-                  </View>
-                  <View className="commodities-price">
-                    <Text style="font-size: 12px;">¥</Text>
-                    <Text style="font-size: 17px;line-height: 30px;">
-                    {
-                      Number(item.sale).toFixed(2).toString().split('.')[0]  
-                    }
-                    </Text>
-                    <Text style="font-size: 10px;margin-top:10px;">
-                    .
-                    </Text>
-                    <Text style="font-size: 10px;">
-                    {
-                      Number(item.sale).toFixed(2).toString().split('.')[1]  
-                    }
-                    </Text>
-                    <Text style="font-size: 10px;"> /天</Text>
-                  </View>
-                </View>
-          ))
-        } */}
         </View>
         <View className='main-area'>
           <View className='tab'>
             <View className={`item ${mainActive === 'detail' && 'active-item'}`} onClick={this.onMainTabActive.bind(this, 'detail')}>
-              <View>商品介绍</View>
+              <View>图文详情</View>
               {mainActive === 'detail' && (
                 <View className='active-line' />
               )}
@@ -539,19 +709,30 @@ class Productdetail extends Component {
                 <View className='active-line' />
               )}
             </View>
+            <View className={`item ${mainActive === 'rule' && 'active-item'}`} onClick={this.onMainTabActive.bind(this, 'rule')}>
+              <View>租赁规则</View>
+              {mainActive === 'rule' && (
+                <View className='active-line' />
+              )}
+            </View>
           </View>
           <View className='info'>
-            {mainActive === 'detail' ? (
+            {mainActive === 'detail' && (
               <ParseComponent mark={detail.detail} />
-            ) :
-              (
-                <View>
-                  <View className='detail-name'>{detail.rentRule.name}：</View>
-                  <ParseComponent mark={detail.rentRule.content} />
-                  <View className='detail-name'>{detail.compensateRule.name}：</View>
-                  <ParseComponent mark={detail.compensateRule.content} />
-                </View>
-              )}
+            )}
+            {mainActive === 'rent' && (
+              <View>
+                <View className='detail-name'>{detail.rentRule.name}：</View>
+                <ParseComponent mark={detail.rentRule.content} />
+                <View className='detail-name'>{detail.compensateRule.name}：</View>
+                <ParseComponent mark={detail.compensateRule.content} />
+              </View>
+            )}
+            {mainActive === 'rule' && (
+              <View className='rule-img'>
+                <Image className='img' src={processRule} />
+              </View>
+            )}
           </View>
         </View>
         <View className='footer-area'>
@@ -570,11 +751,10 @@ class Productdetail extends Component {
             </View>
           </View>
           <View className='right-area'>
-              <View className='black-botton' onClick={this.onShareMember}>0元领会员</View>
+              {/*<View className='black-botton' onClick={this.onShareMember}>0元领会员</View>*/}
               <View className='red-botton'   onClick={this.onShowSKUClick}>立即租赁</View>
           </View>
         </View>
-
         <popup show={showServicePopup} position='bottom' zIndex={999} disableScroll onClose={this.onServicePopupClose}>
           <View className='service-popup'>
             <View className='service-popup-title'>服务说明</View>
@@ -593,103 +773,178 @@ class Productdetail extends Component {
             <View className='service-popup-close' onClick={this.onServicePopupClose}>关闭</View>
           </View>
         </popup>
+        {/*<View className='popup-coupon'>*/}
+        <View className='coupon-popup'>
+        <AtFloatLayout
+          isOpened={showCoupons}
 
-        <popup show={showCoupons} position='bottom' zIndex={999} disableScroll onClose={this.onCouponClose}>
-          <View className='coupon-popup'>
-            <View className='coupon-popup-title'>优惠券</View>
-            <ScrollView
-              scrollY
-              scrollTop='0'
-              style='height: 5.5rem'
-              className='coupon-popup-content'
-            >
-              {!!detail.allCoupons && !!detail.allCoupons.length && detail.allCoupons.map(coupon => (
-                <View className='coupon-popup-content-item' key={coupon.id}>
-                  <View className='coupon-popup-content-item-left'>
-                    <View><Text className='coupon-popup-content-item-price'>{coupon.value}</Text> 元</View>
-                    <View>（店铺券）</View>
-                  </View>
-                  <View className='coupon-popup-content-item-right'>
-                    <View>
-                      <View className='coupon-popup-content-item-right-name'>{coupon.name}</View>
-                      {!!coupon.end && (
-                        <View>{coupon.start.substr(0, 10)}~{coupon.end.substr(0, 10)}</View>
-                      )}
-                    </View>
-                    <View>
-                      <View className='coupon-popup-content-item-right-draw' onClick={this.handleGetCoupon.bind(this, coupon.couponId)}>立即领取</View>
-                    </View>
-                  </View>
+            // show='true'
+            // className='popup-coupon'
+            // position='bottom'
+            // zIndex={2002}
+          onClose={this.onCouponClose}
+            // onClose={this.onCouponClose}
+          // className='product-float'
+          className='product-float'
+          >
+              <View className='coupon-popup-close' onClick={this.onCouponClose}>
+                <Image className='coupon-popup-close-img' src='http://oss.huizustore.com/04cba394b2e843dd9c067ea40156d24e.png' />
+              </View>
+              <View className='coupon-popup-title'>优惠券领取</View>
+              <View className='coupon-popup-dec'>
+                <View>
+                  可领取优惠劵
                 </View>
-              ))}
-              {!!detail.platformCoupon && !!detail.platformCoupon.length && detail.platformCoupon.map(coupon => (
-                <View className='coupon-popup-content-item' key={coupon.id}>
-                  <View className='coupon-popup-content-item-left'>
-                    <View><Text className='coupon-popup-content-item-price'>{coupon.value}</Text> 元</View>
-                    <View>（平台券）</View>
-                  </View>
-                  <View className='coupon-popup-content-item-right'>
-                    <View>
-                      <View className='coupon-popup-content-item-right-name'>{coupon.name}</View>
-                      {!!coupon.end && (
-                        <View>{coupon.start.substr(0, 10)}~{coupon.end.substr(0, 10)}</View>
-                      )}
+                {/*<View onClick={this.GoMoreCoupon}>*/}
+                {/*  更多*/}
+                {/*  <Text className='bol'>*/}
+                {/*    >*/}
+                {/*  </Text>*/}
+                {/*</View>*/}
+              </View>
+              <ScrollView
+                scrollY
+                scrollTop='0'
+                scrollWithAnimation
+                className='coupon-popup-content'
+              >
+                {!!productCoupon && !!productCoupon.shopCoupon && !!productCoupon.shopCoupon.length>0 && productCoupon.shopCoupon.map(coupon => (
+                  <View className='coupon-popup-content-item' key={coupon.id}>
+                    <View className='coupon-popup-content-item-left'>
+                      <View><Text className='coupon-popup-content-item-price'><Text className='bol'>¥</Text>{coupon.value}</Text></View>
+                      <View>{coupon.name}</View>
                     </View>
-                    <View>
-                      <View
-                        className='coupon-popup-content-item-right-draw'
-                        onClick={this.handleGetCoupon.bind(this, coupon.couponId)}
-                      >
-                        立即领取
-                     </View>
+                    <View className='coupon-popup-content-item-right'>
+                      <View className='coupon-popup-content-item-right-content'>
+                        <View className='coupon-popup-content-item-right-content-name'>店铺劵</View>
+                        <View className='coupon-popup-content-item-right-content-dec'>满{coupon.minPurchase}-{coupon.value}</View>
+                        {coupon.type===0 &&(
+                          <View>
+                            {!!coupon.end && (
+                              <View className='coupon-popup-content-item-right-content-time'>{coupon.start.substr(0, 10)}~{coupon.end.substr(0, 10)}</View>
+                            )}
+                          </View>
+                        )}
+                      </View>
+                      <View>
+                        {
+                          coupon.status === 0?
+                            (
+                              <View
+                                className='coupon-popup-content-item-right-draw'
+                                onClick={this.handleGetCoupon.bind(this, coupon.couponId)}
+                              >
+                                立即领取
+                              </View>
+                            ):
+                            (
+                              <View
+                                className='coupon-popup-content-item-right-draw coupon-popup-content-item-right-draw-al'
+                              >
+                                已领取
+                              </View>
+                            )
+                        }
+                      </View>
                     </View>
                   </View>
-                </View>
-              ))}
-            </ScrollView>
-            <View className='coupon-popup-bottom'>
-              <View className='coupon-popup-bottom-submit' onClick={this.onCouponClose}>确定</View>
-            </View>
-          </View>
-        </popup>
-        <View >
-          <AtFloatLayout isOpened={showSKUPopup} onClose={this.onSKUPopupClose} scrollY={false} className='product-float'>
-            <View className='popup-bottom'>
-              <View className='top'>
-                <View className='top-item'>
-                  <View className='price'>{totelRentPrice || ''}</View>
-                  <View className='text'>总租金</View>
-                </View>
-                <View className='dividing' />
-                {!!totelRentPrice && !!currentDays && currentDays > 30 && (
-                  <View className='top-item'>
-                    <View className='price month-price'>{(totelRentPrice / Math.ceil(currentDays / 31)).toFixed(2)}</View>
-                    <View className='text'>月租金(元/月)</View>
+                ))}
+                {!!productCoupon && !!productCoupon.platformCoupon && !!productCoupon.platformCoupon.length>0 && productCoupon.platformCoupon.map(coupon => (
+                  <View className='coupon-popup-content-item' key={coupon.id}>
+                    <View className='coupon-popup-content-item-left'>
+                      <View><Text className='coupon-popup-content-item-price'><Text className='bol'>¥</Text>{coupon.value}</Text></View>
+                      <View>{coupon.name}</View>
+                    </View>
+                    <View className='coupon-popup-content-item-right'>
+                      <View className='coupon-popup-content-item-right-content'>
+                        <View className='coupon-popup-content-item-right-content-name'>平台劵</View>
+                        <View className='coupon-popup-content-item-right-content-dec'>满{coupon.minPurchase}-{coupon.value}</View>
+                        {coupon.type===0 &&(
+                          <View>
+                            {!!coupon.end && (
+                              <View className='coupon-popup-content-item-right-content-time'>{coupon.start.substr(0, 10)}~{coupon.end.substr(0, 10)}</View>
+                            )}
+                          </View>
+                        )}
+                      </View>
+                      <View>
+                        {
+                          coupon.status === 0?
+                            (
+                              <View
+                                className='coupon-popup-content-item-right-draw'
+                                onClick={this.handleGetCoupon.bind(this, coupon.couponId)}
+                              >
+                                立即领取
+                              </View>
+                            ):
+                            (
+                              <View
+                                className='coupon-popup-content-item-right-draw coupon-popup-content-item-right-draw-al'
+                              >
+                                已领取
+                              </View>
+                            )
+                        }
+                      </View>
+                    </View>
                   </View>
+                ))}
+                { productCoupon && !productCoupon.shopCoupon.length  && !productCoupon.platformCoupon.length  && (
+                  <NoData className='NoData' type='receive-coupon' display={display} />
                 )}
+              </ScrollView>
+              {/*<View className='coupon-popup-bottom'>*/}
+              {/*  <View className='coupon-popup-bottom-submit' onClick={this.onCouponClose}>确定</View>*/}
+              {/*</View>*/}
+          </AtFloatLayout>
+        </View>
+        {/*</View>*/}
+        <View className='popup-sku'>
+          <AtFloatLayout
+            isOpened={showSKUPopup}
+            // isOpened='true'
+            onClose={this.onSKUPopupClose}
+            scrollY={false}
+            className='product-float'
+          >
+            <View className='popup-sku-close' onClick={this.onSKUPopupClose}>
+              <Image className='popup-sku-close-img' src='http://oss.huizustore.com/04cba394b2e843dd9c067ea40156d24e.png' />
+            </View>
+            <View className='popup-sku-header'>
+              <View className='popup-sku-header-img'>
+                <Image className='img' src={currentSku.values[0].image || detail.images[0].src} />
               </View>
-              <View className='product-main'>
-                <View className='info'>
-                  <View>
-                    <Image className='img' mode='aspectFit' src={currentSku.values[0].image || detail.images[0].src} />
-                  </View>
-                  <View className='item'>
-                    <View className='price'>
-                      <Text className='font'>￥</Text><Text>{currentSku.currentCyclePrice.price && currentSku.currentCyclePrice.price.toFixed(2)} </Text><Text className='font'>元/天</Text>
-                    </View>
-                    <View className='old'>{oldNewDegreeList[currentSku.oldNewDegree - 1]}</View>
-                    <View className='sku-info'>已选:“{currentSku.values && currentSku.values.map(value => `${value.name};`)}{currentDays}天”</View>
-                  </View>
+              <View className='popup-sku-header-dec'>
+                <View className='price-day'>
+                  <Text className='unit'>¥</Text>
+                  <Text className='price-text'>{Number(currentSku.currentCyclePrice.price && currentSku.currentCyclePrice.price).toFixed(2).toString().split('.')[0]}</Text>
+                  <Text className='spots'>.</Text>
+                  <Text className='small-price'>
+                    {
+                      Number(currentSku.currentCyclePrice.price && currentSku.currentCyclePrice.price).toFixed(2).toString().split('.')[1]
+                    }
+                  </Text>
+                  <Text className='day-text'>/天</Text>
                 </View>
-                <View className='close' onClick={this.onSKUPopupClose}><AtIcon value='close' size='18' color='#888' /></View>
+                <View className='month-price'>
+                  月租金
+                  <Text className='text'>
+                    ¥{(totelRentPrice / Math.ceil(currentDays / 31)).toFixed(2)}
+                  </Text>
+                </View>
+                <View className='sku-info'>
+                  已选 {currentSku.values && currentSku.values.map(value => `${ value.name }`)} <Text className='days-mr'>{currentDays}</Text>
+                </View>
               </View>
+            </View>
+            <View className='popup-bottom'>
               <View className='area-scroll'>
                 <ScrollView
                   scrollY
                   scrollTop='0'
                   scrollWithAnimation
                   className='content-area'
-                  style='height: 5.5rem'
                 >
                   <View className='sku-area'>
                     {!!detail.specs && !!detail.specs.length && detail.specs.map((spec, i) => (
@@ -710,7 +965,9 @@ class Productdetail extends Component {
                     ))}
                     {currentSku.cyclePrices && currentSku.cyclePrices.length && (
                       <View className='item'>
-                        <View className='item-text'>租用天数(最少{detail.minRentCycle}天，最多{detail.maxRentCycle}天)</View>
+                        <View className='item-text'>租期
+                          {/*(最少{detail.minRentCycle}天，最多{detail.maxRentCycle}天)*/}
+                        </View>
                         <View className='item-tags'>
                           {currentValidCyclePrices.map(cycle => (
                             <View
@@ -736,12 +993,12 @@ class Productdetail extends Component {
                     )}
                   </View>
                   <View className='data-item'>
-                    <View className='item-text ml-30'>起租日期</View>
+                    <View className='item-text ml-30'>起租日</View>
                     <ScrollView scroll-x>
                       <View className='data-tags'>
                         {advancedDays && advancedDays.map((day, index) => (
                           <View
-                            className={`tag ${startDay === day && 'tag-active'}`}
+                            className={`tag tag-data ${startDay === day && 'tag-active'}`}
                             onClick={this.handleAdvancedClick.bind(this, day)}
                           >
                             {(index === 0 || new Date(day).getDate() === 1) ?
@@ -755,19 +1012,35 @@ class Productdetail extends Component {
                     <View className='sku-area'>
                       <View className='item'>
                         <View className='item-text save-server'>
-                          <View>安心服务(多选)</View>
-                          <View className='server-text' onClick={this.onShowAdditionalClick}>服务介绍</View>
+                          <View className='title'>
+                            <View>
+                              安心服务 <Text className='text'>(非必选)</Text>
+                            </View>
+                            <View>
+                              <Image className='img'  onClick={this.onShowAdditionalClick} src='http://oss.huizustore.com/1b3fc39bc491459db22afaf4dca751cc.png' />
+                            </View>
+                          </View>
+                          {/*<View className='server-text' onClick={this.onShowAdditionalClick}>服务介绍</View>*/}
                         </View>
-                        <View className='item-tags'>
+                        <View className='item-tags-server'>
                           {detail.additionalServices.map((ser) => (
                             <View
                               key={ser.id}
-                              className={`tag ${saveServers.findIndex((id) => id === ser.id) > -1 && 'tag-active'}`}
+                              className={`tag-server ${saveServers.findIndex((id) => id === ser.id) > -1 && 'tag-server-active'}`}
                               onClick={this.handleSaveServiceClick.bind(this, ser)}
                             >
-                              {ser.name} {` ￥${ser.price}元`}
+                              {ser.name}
                               {/* {ser.isMust && (<Text>(必选)</Text>)} */}
+                              <View className='choice'>
+                                <View>
+                                  {`￥${ser.price}元`}
+                                </View>
+                                <View>
+                                  <Image className='img'  src={saveServers.findIndex((id) => id === ser.id) > -1?'http://oss.huizustore.com/8814ee100b2942fbac7a0d2cdddb8cc7.png':'http://oss.huizustore.com/1cff3f432bf84351bbd4b89abd959fe8.png'} />
+                                </View>
+                              </View>
                             </View>
+
                           ))}
                         </View>
                       </View>
@@ -793,11 +1066,11 @@ class Productdetail extends Component {
           <View slot='header'>联系客服</View>
           <View style={{ textAlign: 'left', marginBottom: '10px', paddingLeft: '15px' }}>商家客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectService.bind(this, detail.shop.serviceTel)}>{detail.shop.serviceTel}</Text></View>
           <View style={{ textAlign: 'left',marginBottom: '10px', paddingLeft: '15px' }}>平台客服：<Text style={{ color: '#51A0F9' }} onClick={this.connectService.bind(this, customerServiceTel)}>{customerServiceTel}</Text></View>
-          <View style={{ textAlign: 'left', paddingLeft: '15px' }}>工作时间：<Text style={{ color: '#777' }} >工作时间 10:30 - 19:30</Text></View>
+          <View style={{ textAlign: 'left', paddingLeft: '15px' }}>工作时间：<Text style={{ color: '#777' }} > 10:30 - 19:30</Text></View>
           <View slot='footer'>取消拨打</View>
         </modal>
 
-        <popup show={showAdditionalPopup} position='bottom' zIndex={999} disableScroll onClose={this.onAdditionalPopupClose}>
+        <popup show={showAdditionalPopup} position='bottom' zIndex={2003} disableScroll onClose={this.onAdditionalPopupClose}>
           <View className='service-popup'>
             <View className='service-popup-title'>服务介绍</View>
             <View className='service-popup-content'>

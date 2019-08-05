@@ -5,7 +5,8 @@ page {
 }
 
 .productDetail-page {
-  @include wh(100%, 100%);
+  //position: fixed;
+  //@include wh(100%, 100%);
   @mixin img($url, $width: 24px, $height: 33px) {
     background: url($url) no-repeat;
     background-size: $width $height;
@@ -23,23 +24,26 @@ page {
 
     }
   }
-  .sesame_credit {
-    .sesame_credit_img{
-      width:750px;
-      height:88px;
-    }
-  }
   .swiper {
-    border-top: 1px #f7f7f7 solid;
+    border-top: 1px #ddd solid;
     background-color: #fff;
+    padding: 0 0 20px 0 ;
+    display: flex;
+    align-items: center;
     .item {
-      height: 642px;
-      padding-top: 68px;
+      height: 469px;
+      padding-top: 28px;
       text-align: center;
     }
     .img {
-      width: 491px;
-      height: 491px;
+      @include wh(430px,430px)
+    }
+  }
+  .sesame_credit{
+    box-sizing: border-box;
+    @include wh(750px,88px);
+    .img{
+      @include wh(100%,100%);
     }
   }
   .swiper-space {
@@ -48,7 +52,7 @@ page {
   }
   .info-area {
     background-color: #fff;
-    padding: 20px 30px 15px 0;
+    padding: 25px 30px 5px 0;
     .title {
       font-size: 32px;
       color: #ccc;
@@ -66,23 +70,101 @@ page {
     .price-info {
       @include fj(space-between);
       //align-items: flex-end;
-      padding: 15px 0  0  10px;
+      padding: 0 0  0  30px;
       .price {
-        color: #FC766B;
-        font-size: 48px;
+        font-family: PingFangSC-Medium;
+        color: #E64340;
         .price-text {
-          font-weight: 600;
-          font-family: STSong, "Microsoft YaHei",微软雅黑,"MicrosoftJhengHei";
+          font-size: 60px;
           margin-right: 7px;
         }
+        .spots{
+          font-size: 50px;
+          position: relative;
+          left: -5px;
+        }
+        .small-price{
+          font-size: 36px;
+        }
+
         .unit {
+          font-size: 37px;
+        }
+        .member-price{
+          display: inline-flex;
+          font-family: PingFangSC-Medium;
           font-size: 28px;
+          color: #2E2D2D;
+          margin: 0 0 0 20px;
+          letter-spacing: 1px;
+          .img{
+            @include wh(50px,22px);
+            margin: 2px 0 0 5px;
+          }
         }
       }
-      .volume {
-        color: #999;
+      .dec_situation{
+        display: flex;
+        .volume {
+          margin: 16px 0 0 12px;
+          background: #E1F5FE;
+          border-radius: 7px;
+          font-size: 20px;
+          color: #4FC3F7;
+          line-height: 32px;
+          padding:0 8px;
+        }
+      }
+    }
+    .volume-price{
+      margin: 10px 0 0 30px;
+      .price{
         font-size: 24px;
-        line-height: 32px;
+        color: #999999;
+        height: 30px;
+        line-height: 30px;
+        .mark{
+          font-size: 20px;
+          margin:  0 10px 0 0;
+          position: relative;
+          top: -2px;
+          background: rgba(233,233,233,0.41);
+          border-radius: 5px;
+          padding: 0 3px;
+        }
+      }
+    }
+    .title{
+      box-sizing: border-box;
+      width: 750px;
+      margin-top: 10px;
+      .product-box{
+        font-family: PingFangSC-Medium;
+        font-size: 28px;
+        color: #333333;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        line-height: 40px;
+        width: 620px;
+        letter-spacing: 1px;
+        .oldNewDegree{
+          background:#F4EDFF;
+          border-radius: 6px;;
+          font-size: 24px;
+          color: #B39DDB;
+          padding: 0 10px;
+          text-align: center;
+          margin: 0 10px 0 0;
+        }
+        .oldNewDegree-active{
+          background: #E0F7FA;
+          border-radius: 6px;
+          padding: 0 8px;
+          font-size: 24px;
+          color: #85BBC2;
+        }
       }
     }
   }
@@ -115,47 +197,10 @@ page {
       }
     }
   }
-  .integral{
-    background-color:#fff ;
-    display: flex;
-    .grade{
-      flex: 1;
-      color: #999;
-      font-size: 24px;
-      line-height: 40px;
-      border: 1px #ddd solid;
-      text-align: center;
-      border-right: none;
-      border-bottom: none;
-      .grade_price{
-        padding-left: 15px;
-      }
-    }
-  }
-  .service-info {
-    padding: 30px 30px 8px;
-    margin-bottom: 20px;
-    border-top: 1px #ddd solid;
-    background-color: #fff;
-    @include fj(space-between);
-    align-items: center;
-    .services {
-      @include fj(flex-start);
-      flex-wrap: wrap;
-      font-size: 24px;
-      color: #999;
-      .item {
-        margin-right: 45px;
-        margin-bottom: 22px;
-        .item-img {
-          display: inline-block;
-          margin-right: 10px;
-          @include img('../../images/product/yes.png', 20px, 20px);
-        }
-      }
-    }
-  }
+
+  //准备注释
   .choose-info {
+    margin-top: 20px;
     padding: 30px;
     margin-bottom: 20px;
     background-color: #fff;
@@ -177,95 +222,396 @@ page {
       }
     }
   }
+  .receive-info{
+    margin: 0 0 20px 0 ;
+    background: #fff;
+    box-sizing: border-box;
+    padding: 0 30px;
+    &-coupon{
+      height: 110px;
+      display: flex;
+      align-items: center;
+      &-title{
+        font-family: PingFangSC-Medium;
+        font-size: 26px;
+        color: #333333;
+      }
+      &-dec{
+        width: 480px;
+        min-height: 45px;
+        margin:  0 60px;
+        padding:  30px 0;
+        border-bottom: 1px solid rgba(218,218,218,0.66);
+        display: flex;
+        &-con{
+          display: flex;
+          @include wh(220px,45px);
+          @include bg('http://oss.huizustore.com/4d93e91bd3224280b8c3077054dff5ad.png');
+          align-items: center;
+          font-family: PingFangSC-Regular;
+          font-size: 20px;
+          color: #E64340;
+          margin:  0 0 0 10px;
+          .name{
+            margin: 0 0  0 10px;
+            width: 115px;
+            overflow: hidden;/*超出部分隐藏*/
+            text-overflow:ellipsis;/* 超出部分显示省略号 */
+            white-space: nowrap;/*规定段落中的文本不进行换行 */
+          }
+          .type{
+            width: 100px;
+            text-align: center;
+          }
+        }
+      }
+    }
+    &-deliver{
+      font-family: PingFangSC-Regular;
+      box-sizing: border-box;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      &-title{
+        font-family: PingFangSC-Medium;
+        font-size: 26px;
+        color: #333333;
+      }
+      &-dec{
+        margin: 0 60px;
+        width: 400px;
+        font-size: 26px;
+        color: #333333;
+        letter-spacing: 0.5px;
+      }
+      &-volume{
+        font-size: 26px;
+        color: #A0A0A0;
+        letter-spacing: 0.5px;
+      }
+    }
+  }
   .swiper-info{
+    box-sizing: border-box;
     //box-shadow: border-box;
-    margin-bottom: 20px;
-    background-color: #fff;
+    text-align: center;
+    margin: 20px 0 15px 0;
     .img {
-      height: 102px;
-      width: 100%;
+      @include wh(676px,64px);
     }
     // background: url('../../images/home/yffresh.png');
     // background-size: 100% 100%;
   }
   .store-info{
-    margin-bottom: 5px;
+    box-sizing: border-box;
     background-color: #fff;
     padding:30px 30px 10px 30px;
+    position: relative;
     .channel-top {
         display:flex;
         -webkit-box-pack:justify;
-        justify-content:space-between;
+        justify-content: center;
+        .channel-top-title{
+          text-align: center;
+          .left-text{
+
+          }
+        }
+        .channel-top-more{
+          position: absolute;
+          right: 30px;
+        }
         .right-text{
-          color:#FC766B;
-          font-size: 28px;
+          font-size: 22px;
+          color: #515151;
           .at-icon{
-            color:#FC766B!important;
+            position: relative;
+            top:-2px;
+            color:#515151!important;
           }
         }
     }
   }
+  .rental-procedure{
+    box-sizing: border-box;
+    padding: 30px 30px 30px 30px ;
+    background: #fff;
+    &-title{
+      font-family: PingFangSC-Medium;
+      font-size: 28px;
+      color: #333333;
+    }
+    &-image{
+      margin: 20px 0 0 0;
+      .img{
+        @include wh(686px,120px);
+      }
+    }
+    //.collapse{
+    //  border: none;
+    //}
+    .am-collapse{
+      background: #F2F2F2;
+      @include wh(686px,auto);
+      .am-collapse-item:nth-child(1){
+        .am-collapse-item-title{
+          margin: 20px 0 0 0;
+          @include wh(auto,66px);
+          @include bg('http://oss.huizustore.com/89325ee37ff641b9b0d6fd245f41221b.png');
+        }
+        //.title--active{
+        //  @include bg('http://oss.huizustore.com/9a0e9a26c1c54c79806f1462b880e5df.png');
+        //}
+      }
+      .am-collapse-item:nth-child(2){
+        .am-collapse-item-title{
+          margin: 20px 0 0 0;
+          @include wh(auto,66px);
+          @include bg('http://oss.huizustore.com/692b6a854b784e96a95e134649076419.png');
+        }
+      }
+      .am-collapse-item:nth-child(3){
+        .am-collapse-item-title{
+          margin: 20px 0 0 0;
+          @include wh(auto,66px);
+          @include bg('http://oss.huizustore.com/b117d909f8c94b75bb81ff69f30bf002.png');
+        }
+      }
+    }
+    .item-content {
+      @include wh(686px,auto);
+      box-sizing: border-box;
+      background: #F2F2F2;
+      padding: 14px 16px 30px 16px;
+      font-size: 17px;
+      color: #333;
+      line-height: 24px;
+      position: relative;
+      text-align: center;
+      .img_1{
+        margin-top: 20px;
+        @include wh(635px,139px);
+      }
+      .img_2{
+        margin-top: 20px;
+        @include wh(605px,132px);
+      }
+      .img_3{
+        margin-top: 20px;
+        @include wh(605px,72px);
+      }
+      .con{
+        @include wh(605px,auto);
+        margin: 20px  auto 0;
+        box-sizing: border-box;
+        border: 1px solid #B3E5FC;
+        border-bottom: none;
+        background: #E1F5FE;
+        line-height: 70px;
+        display: flex;
+        .left{
+          width: 210px;
+          border-right: 1px solid #B3E5FC;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-bottom: 1px solid #B3E5FC;
+        }
+        .right{
+          width: 395px;
+          text-align: center;
+          .text{
+            border-bottom:1px solid #B3E5FC ;
+          }
+        }
+      }
+      .border{
+         @include wh(555px,2px);
+         background: #D8D8D8;
+         position: absolute;
+         top: 0;
+         left: 85px;
+      }
+    }
+
+    .content1 {
+      //height: 200px;
+      //background: #F2F2F2;
+    }
+
+    .content2 {
+      //height: 50px;
+    }
+    .content3 {
+    }
+
+    .demo-title {
+      padding: 14px 16px;
+      color: #999;
+    }
+
+    .demo-collapse {
+     border-top: none;
+    }
+  }
+  .shop{
+    background: #fff;
+    box-sizing: border-box;
+    display: flex;
+    padding: 30px ;
+    margin: 20px 0 ;
+    .avatar{
+      //@include wh(120px,120px);
+      .img{
+        @include wh(120px,120px);
+        box-shadow: 0 0 2px 1px rgba(0,0,0,0.12);
+        border-radius: 12px;
+      }
+    }
+    .dec{
+      font-family: PingFangSC-Medium;
+      .name{
+        margin:  0 0 0 50px;
+        font-size: 32px;
+        color: #333333;
+        width: 180px;
+        letter-spacing: 1.2px;
+        overflow: hidden;/*超出部分隐藏*/
+        text-overflow:ellipsis;/* 超出部分显示省略号 */
+        white-space: nowrap;/*规定段落中的文本不进行换行 */
+
+      }
+      .address{
+        margin: 50px 0 0 50px;
+        display: flex;
+        font-size: 24px;
+        color: #9F9F9F;
+        .content-img{
+          @include wh(21px,27px);
+          margin-right: 8px;
+          .img{
+            @include wh(100%,100%);
+          }
+        }
+        .content-dec{
+          .text{
+            margin: 0 0 0 8px;
+          }
+        }
+      }
+    }
+    .edit{
+      height: 100%;
+      display: flex;
+      //align-items: center;
+      font-family: PingFangSC-Regular;
+      margin:  0 0 0  25px;
+      .call{
+        @include wh(142px,50px);
+        margin:  30px 15px 0 0;
+        border: 1px solid #E64340;
+        border-radius: 25px;
+        font-size: 24px;
+        color: #333333;
+        line-height: 50px;
+        text-align: center;
+      }
+      .go-shop{
+        @include wh(142px,50px);
+        background: #FF8282;
+        margin: 30px 0 0 0;
+        border-radius: 25px;
+        font-size: 24px;
+        color: #FFFFFF;
+        line-height: 50px;
+        text-align: center;
+      }
+    }
+  }
   .other-commodities{
+    box-sizing: border-box;
     background-color: #fff;
     padding: 50px 0 0 10px;
     display:flex;
     -webkit-box-pack:justify;
     justify-content:space-around;
     flex-wrap: wrap;
-    border-bottom: 20px solid #f7f7f7;
-    .commodities-img{
-      width:200px;
-      height: 200px;
-      // background: #EE7B7A;
-    }
-    .commodities-name{
-      // font-family: PingFangSC-Regular;
-      // font-size: 25px;
-      // color: #333333;
-      // padding:30px 0;
-      // text-align: center;
-      width: 200px;
-      // height: 15px;
-      font-family: PingFangSC-Regular;
-      font-size: 0.26rem;
-      color: rgb(51, 51, 51);
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-      overflow: hidden;
-      height: 0.55rem;
-      margin-top: 20px;
-    }
-    .commodities-price{
-      font-family: Helvetica;
-      font-size: 27px;
-      color: #FC766B;
-      padding:0 0 30px 0;
-      text-align: center;
+    //border-bottom: 20px solid #f7f7f7;
+    .swipers{
+      width: 700px;
+      margin: 0 auto;
+      .content{
+        display: flex;
+        justify-content: center;
+        .content-view{
+          width: 233px;
+          margin: 0 auto;
+          //margin: 0 30px 0 0 ;
+          .commodities-img{
+            width: 233px;
+            height: 200px;
+            margin: 0 auto;
+            text-align: center;
+            // background: #EE7B7A;
+            .img{
+              @include wh(180px,180px)
+            }
+          }
+          .commodities-name{
+            width: 190px;
+            // height: 15px;
+            height: 60px;
+            margin: 20px auto 0;
+            font-family: PingFangSC-Regular;
+            font-size: 20px;
+            color: #343434;
+            letter-spacing: 0.67px;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+            line-height: 30px;
+          }
+          .commodities-price{
+            width: 180px;
+            margin: 0 auto;
+            font-family: PingFangSC-Semibold;
+            font-size: 20px;
+            color: #343434;
+            letter-spacing: 0.67px;
+            padding:0 0 50px 0;
+            text-align: left;
+            line-height: 40px;
+          }
+        }
+      }
     }
   }
   .spot {
-    @include img('../../images/product/spot.png', 32px, 8px);
+    @include img('http://oss.huizustore.com/50977a12375049bcbb8d32bbdec68350.png', 40px, 40px);
   }
   .main-area {
     background-color: #fff;
-    margin-bottom: 110px;
+    margin-top: 20px;
+    margin-bottom: 120px;
     .tab {
       @include fj(space-between);
-      font-size: 32px;
-      color: #333;
-      border-bottom: 1px #ddd solid;
+      font-family: PingFangSC-Regular;
+      font-size: 24px;
+      color: #343434;
+      letter-spacing: 0.8px;
+      border-bottom: 1px solid rgba(226,226,226,0.60);
       .item {
         height: 88px;
         line-height: 84px;
         text-align: center;
         flex-grow: 1;
         .active-line {
-          height: 4px;
-          width: 90px;
+          height: 8px;
+          width: 98px;
           border-radius: 20px;
           margin: auto;
-          background-color: #FB291F;
+          background-image: linear-gradient(223deg, #FA4E62 0%, #FC766B 50%, #FFA7A0 100%);
         }
       }
       .active-item {
@@ -273,15 +619,23 @@ page {
       }
       .dividing {
         margin: 25px 0;
-        border-left: 1px #ddd solid;
+        //border-left: 1px #ddd solid;
       }
     }
     .info {
+      box-sizing: border-box;
       margin: 42px 40px;
       padding-bottom: 30px;
       .detail-name {
         font-size: 28px;
       }
+        //width: 750px;
+        .rule-img{
+          .img{
+           width: 670px;
+           height: 1913px;
+          }
+        }
     }
   }
   .footer-area {
@@ -291,28 +645,30 @@ page {
     bottom: 0;
     background-color: #fff;
     border-top: 1px #ddd solid;
-    padding: 30px 0 15px 30px;
+    //padding: 0 0 15px 0;
     @include fj(space-between);
     .left-area {
       @include fj(space-around);
       font-size: 20px;
       color: #666;
       padding: 10px 0 0 15px;
+      margin-left: 35px;
       .item {
+        //margin: 0 0 0 0;
         .home-img {
           //margin-right: 50px;
           @include wh(41px,auto);
-          margin: 0 30px  9px 0;
+          margin: 10px 35px  9px 0;
           @include img('../../images/product/home.png',41px, 41px)
         }
         .shop-img {
           @include wh(41px,auto);
-          margin: 0 30px 9px 0;
+          margin: 10px 35px 9px 0;
           @include img('../../images/product/shop.png', 41px, 41px)
         }
         .message-img {
           @include wh(41px,auto);
-          margin: 0 30px  9px 0 ;
+          margin: 10px 35px  9px 0 ;
           @include img('../../images/product/message.png', 41px, 41px)
         }
       }
@@ -329,6 +685,7 @@ page {
       }
       .red-botton {
         @include wh(225px,100px);
+        font-family: PingFangSC-Regular;
         color: #fff;
         font-size: 32px;
         line-height: 100px;
@@ -369,61 +726,139 @@ page {
       padding: 35px 0;
     }
   }
-
+  //.popup-coupon{
+  //  box-sizing: border-box;
+  //  position: relative;
+  //
+  //}
   .coupon-popup {
+    border-radius: 14px 14px 0 0;
     background-color: #fff;
-    height: auto;
-    &-title {
-      font-family: PingFangHK-Regular;
+    &-close{
+      position: absolute;
+      @include wh(100px,100px);
+      top: 15px;
+      right: 15px;
+      line-height: 100px;
       text-align: center;
-      padding: 32px 0 38px 0;
-      font-size: 32px;
-      color: #333;
+      &-img{
+        //position: absolute;
+        @include wh(38px,38px);
+      }
+    }
+    &-title {
+      font-family: PingFangSC-Medium;
+      font-size: 28px;
+      color: #333333;
+      letter-spacing: 0.54px;
+      padding: 37px 36px 37px 36px;
+      border: 1px solid #D8D8D8;
+      //margin-bottom: 30px;
+    }
+    &-dec{
+      @include fj(space-between);
+      font-family: PingFangSC-Regular;
+      font-size: 26px;
+      color: #333333;
+      letter-spacing: 0.98px;
+      height: 80px;
+      line-height: 80px;
+      padding: 0 35px;
+      .bol{
+        font-size: 25px;
+        margin:  0 0 0 5px;
+        position: relative;
+        top: -2px;
+      }
     }
     &-content {
       padding: 0 40px;
+      height: 900px;
+      //color: red!important;
       &-item {
-        background-color: #EE7B7A;
-        border-bottom: 1px dashed #fff;
+        @include bg('http://oss.huizustore.com/d27d652ffcd942e9a89af0e2e79879dd.png');
+        height: 180px;
+        //border-bottom: 1px dashed #fff;
         border-radius: 5px 5px 0 0;
-        margin-bottom: 25px;
+        margin-bottom: 15px;
         display: flex;
-        align-items: center;
-        padding: 27px 0;
+        //align-items: center;
+        //padding: 27px 0;
         &-left {
+          font-family: PingFangSC-Medium;
           border-right: 1px dotted #fff;
-          height: 115px;
-          padding: 0 32px;
-          font-family: PingFangSC-Regular;
-          font-size: 24px;
-          color: #F7F7F7;
+          //height: 120px;
+          //width: 160px
+          //;
+          width: 200px;
+          padding: 20px 0 0 0;
           text-align: center;
           align-items: center;
-          padding-top: 20px; 
+          font-size: 24px;
+          color: #E64340;
+          letter-spacing: 0.9px;
+          margin:  25px 0 0 0;
         }
         &-price {
-          font-family: DINPro-Bold;
-          font-size: 58px;
-          color: #fff;
+          font-family: PingFangSC-Medium;
+          font-size: 62px;
+          letter-spacing: 1.99px;
+          color: #E64340;
+          .bol{
+            font-size: 30px;
+            letter-spacing: 1.38px;
+          }
         }
         &-right {
+          margin: 46px 0 0 25px;
           flex-grow: 1;
           font-family: PingFangSC-Regular;
           font-size: 24px;
           color: #F7F7F7;
-          padding: 20px 32px 0 32px;
+          //padding: 20px 32px 0 32px;
           display: flex;
-          justify-content: space-between;
-          &-name {
-            margin-bottom: 18px;
+          //justify-content: space-between;
+          &-content{
+            width: 285px;
+            &-name {
+              margin-bottom: 13px;
+              font-family: PingFangSC-Medium;
+              font-size: 32px;
+              color: #E64340;
+              letter-spacing: 1.2px;
+            }
+            &-dec{
+              font-family: PingFangSC-Regular;
+              font-size: 26px;
+              color: #E64340;
+              letter-spacing: 0.98px;
+            }
+            &-time{
+              margin: 15px 0 0 0 ;
+              font-family: PingFangSC-Regular;
+              font-size: 22px;
+              color: #E64340;
+              letter-spacing: 0.83px;
+            }
           }
           &-draw {
-            padding: 10px 20px;
-            background-color: #FFF5F5;
-            border-radius: 4px;
-            color: #FC766B;
             font-family: PingFangSC-Regular;
+            @include wh(123px,46px);
+            line-height: 46px;
+            text-align: center;
+            margin: 20px 0 0 0 ;
+            //padding: 12px 20px;
+            background: #E64340;
+            border-radius: 23px;
             font-size: 22px;
+            color: #FFFFFF;
+            letter-spacing: 0.83px;
+          }
+          &-draw-al{
+            border: 2px solid #E64340;
+            border-radius: 23px;
+            background: none;
+            color: #E64340;
           }
         }
       }
@@ -439,87 +874,119 @@ page {
       }
     }
   }
-
+  .popup-sku{
+    //border-radius: 14px 14px 0 0;
+    box-sizing: border-box;
+    touch-action: none;
+    position: relative;
+    &-close{
+      position: absolute;
+      @include wh(100px,100px);
+      top: 15px;
+      right: 15px;
+      line-height: 100px;
+      text-align: center;
+      &-img{
+        @include wh(38px,38px);
+      }
+    }
+    &-header{
+      touch-action: none;
+      box-sizing: border-box;
+      @include wh(750px,235px);
+      padding: 22px;
+      //margin: 20px 0 0 0;
+      display: inline-flex;
+      &-img{
+        @include wh(250px,188px);
+        text-align: center;
+        .img{
+          @include wh(188px,188px);
+        }
+      }
+      &-dec{
+        @include wh(500px,auto);
+        box-sizing: border-box;
+        margin: 45px 0 0 10px;
+        .price-day{
+         font-family: PingFangSC-Medium;
+         font-size: 42px;
+         color: #E64340;
+         text-align: left;
+         line-height: 35px;
+        .unit{
+          font-size: 24px;
+        }
+       .small-price{
+         font-size: 24px;
+        }
+       .day-text{
+         font-size: 36px;
+        }
+       }
+        .month-price{
+          font-family: PingFangSC-Regular;
+          font-size: 22px;
+          color: #848A8E;
+          line-height: 35px;
+          .text{
+            margin-left: 6px;
+          }
+        }
+        .sku-info{
+          font-family: PingFangSC-Medium;
+          font-size: 22px;
+          color: #333333;
+          width: 430px;
+          overflow: hidden;/*超出部分隐藏*/
+          text-overflow:ellipsis;/* 超出部分显示省略号 */
+          white-space: nowrap;/*规定段落中的文本不进行换行 */
+          //-webkit-line-clamp: 2;
+          line-height: 40px;
+          height: 40px;
+          letter-spacing: 1px;
+          .days-mr{
+            padding: 0 0 0 5px;
+          }
+        }
+      }
+    }
+  }
   .popup-bottom {
     background-color: #fff;
-    .top {
-      @include fj(space-between);
-      background-color: #F7F7F7;
-      .dividing {
-        margin: 25px 0;
-        border-left: 1px #ddd solid;
-      }
-      .top-item {
-        text-align: center;
-        flex-grow: 1;
-        margin: 23px auto;
-        .price {
-          font-size: 34px;
-          font-weight: 700;
-          color: #333;
-        }
-        .month-price {
-          color: #FC766B;
-        }
-        .text {
-          font-size: 22px;
-          color: #999;
-        }
-      }
-    }
-    .product-main {
-      @include fj(space-between);
-      border-bottom: 1px #ddd solid;
-      .info {
-        margin: 40px 30px;
-        @include fj();
-        align-items: flex-end;
-        .img {
-          width: 200px;
-          height: 200px;
-        }
-        .item {
-          margin-left: 20px;
-          .price {
-            font-size: 38px;
-            color: #FC766B;
-            margin-bottom: 24px;
-            .font {
-              font-size: 28px;
-            }
-          }
-          .old {
-            font-size: 32px;
-            color: #999;
-            margin-bottom: 20px;
-          }
-          .sku-info {
-            font-size: 32px;
-            color: #666;
-          }
-        }
-      }
-      .close {
-        margin: 30px;
-      }
-    }
     .area-scroll {
       overflow: hidden;
       white-space: no-wrap;
       .content-area {
+        height: 705px;
         .sku-area {
-          margin: 40px 30px;
+          margin: 0 0 0 30px;
         }
         .item {
-          margin-bottom: 30px;
+          margin:  30px 0;
         }
         .item-text {
+          font-family: PingFangSC-Medium;
           font-size: 28px;
           color: #333;
-          margin-bottom: 20px;
+          margin-bottom: 30px;
         }
         .save-server {
           @include fj();
+          .title{
+            display: flex;
+            height: 50px;
+            .text{
+              font-family: PingFangSC-Regular;
+              font-size: 24px;
+              color: #151515;
+            }
+            .img{
+              @include wh(27px,28px);
+              margin-left: 10px;
+              position: relative;
+            }
+          }
         }
         .server-text {
           font-size: 28px;
@@ -528,6 +995,29 @@ page {
         .item-tags {
           @include fj(flex-start);
           flex-wrap: wrap;
+          margin-top: 30px;
+        }
+        //666
+        .item-tags-server{
+          @include fj(space-between);
+          font-size: 28px;
+          color: #333333;
+          letter-spacing: 0.19px;
+          color: #333333;
+          .tag-server{
+            width: 670px;
+            @include fj(space-between);
+            .choice{
+              display: flex;
+              .img{
+                margin:  0 0 0 20px;
+                @include wh(30.5px,30.5px);
+              }
+            }
+          }
+          .tag-server-active{
+
+          }
         }
         .data-tags {
           @include fj(flex-start);
@@ -536,27 +1026,33 @@ page {
         .ml-30 {
           margin-left: 30px
         }
+        .tag-data{
+          white-space:nowrap;
+        }
         .tag {
-          @include rb(24px, #999);
-          padding: 10px 36px;
-          color: #999;
+          font-family: PingFangSC-Regular;
+          @include rb(28px, #999);
+          //width: 600px;
+          padding: 5px 36px;
+          color: #333333;
           font-size: 24px;
           margin-right: 24px;
           margin-bottom: 20px;
-          white-space:nowrap;  
+          //white-space:nowrap;
           overflow: unset;
+          background: #F2F2F2;
+          //height: 55px;
+          line-height: 40px;
           .text {
             height: 18px;
             width: 53px;
             font-size: 24px;
-            color: #999;
-            background-color: #FFF6F5;
+            background: none;
           }
         }
         .tag-active {
-          @include rb(24px, #FB291F);
-          background-color: #FFF6F5;
-          color: #FC766B;
+          @include rb(28px, #FB291F);
+          background: #F9EEEC;
         }
         .tag-disabled {
           @include rb(24px, #f5f5f5);
@@ -565,21 +1061,25 @@ page {
       }
     }
     .bottom {
-      border-top: 1px #FFE4E4E4 solid;
-      padding: 28px;
+      box-shadow: inset 0 1px 0 0 #E4E4E4;
+      padding: 20px;
       .submit {
         @include rrb();
         font-size: 36px;
         color: #fff;
         padding: 22px 0;
         line-height: 50px;
+        background-image: linear-gradient(90deg, #FA4E62 0%, #FC766B 100%);
       }
     }
   }
   .product-float {
+    z-index: 2002;
+    border-radius: 14px 14px 0 0;
     .at-float-layout__container {
       max-height: unset;
       height: 1080px;
+      border-radius: 14px 14px 0 0;
       .layout-header {
         display: none;
       }
@@ -593,4 +1093,8 @@ page {
       }
     }
   }
+}
+
+.NoData{
+  @include wh(300px, 200px);
 }

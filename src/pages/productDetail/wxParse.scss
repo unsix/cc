@@ -18,9 +18,17 @@
     color: #666;
     line-height: 1.8;
 }
+//view{
+//    word-break:break-all; overflow:auto;
+//}
+//view{
+//  overflow:auto;
+//}
+/**
 view{
     word-break:break-all; overflow:auto;
 }
+*/
 .wxParse-inline{
     display: inline;
     margin: 0;
@@ -121,7 +129,7 @@ view{
     margin: 10rpx 0;
 }
 .wxParse-li-text{
-    
+
     align-items: center;
     line-height: 20px;
 }

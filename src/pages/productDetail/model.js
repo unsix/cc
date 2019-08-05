@@ -18,7 +18,8 @@ export default {
     // 为你推荐列表
     recommendproductsList: [],
     images_ismain: [],
-    minRentCycleday: null
+    minRentCycleday: null,
+    processRule:''
   },
 
   effects: {
@@ -43,7 +44,7 @@ export default {
         });
       }
     },
-    * getCoupon({ payload }, { call, put }) {
+    * getCoupon({ payload ,callback}, { call, put }) {
       const res = yield call(productDetailApi.getCoupon, { ...payload, uid: getUid() });
       // if(res.code == 1){
       //   Taro.navigateTo({ url: 'pages/active_pages/claimed/index' });
@@ -56,6 +57,7 @@ export default {
           title: res.msg,
           icon: 'none',
         });
+        callback()
       }
     },
     * conuponSearch({ payload }, { call, put }) {
@@ -64,7 +66,16 @@ export default {
         Taro.navigateTo({ url: '/pages/active_pages/unclaimed/index' });
       }
     },
-
+    * getProductCoupon({ payload }, { call, put }) {
+      const res = yield call(productDetailApi.getProductCoupon, { ...payload, uid: getUid() });
+      if (res) {
+        // Taro.navigateTo({ url: '/pages/active_pages/unclaimed/index' });
+        yield put({
+          type: 'productCoupon',
+          payload: res.data,
+        });
+      }
+    },
   },
 
   reducers: {
@@ -130,6 +141,7 @@ export default {
         advancedDays,
         startDay: startTime,
         saveServers,
+        processRule:payload.processRule
       };
     },
 
@@ -188,7 +200,12 @@ export default {
         startDay: payload,
       };
     },
-
+    productCoupon(state, { payload }) {
+      return {
+        ...state,
+        productCoupon: payload,
+      };
+    },
     setSaveServers(state, { payload }) {
       const { saveServers } = state;
       const index = saveServers.indexOf(payload);

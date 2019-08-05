@@ -106,12 +106,12 @@ class App extends Component {
   }
   componentWillMount = (options) => {
     const obj = this.$router.params
-    const { type } = obj.query
-    if(type){
+    const { query } = obj
+    if(query && query.type){
       my.httpRequest({
         url: baseUrl+'aliPay/index/getZhifubaoFlow',
         data:{
-          type
+          type:query.type
         },
         // data: newObj,
         headers:{

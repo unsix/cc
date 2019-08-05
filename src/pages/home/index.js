@@ -7,6 +7,8 @@ import Channel from './component/channel/index';
 import TagPage from './component/curtain/index'
 import flowImg from '../../images/home/flow.png';
 // import Rolling from '../../components/rolling/rolling';
+// import { debounce } from '../../utils/utils'
+// import {  set as setGlobalData, get as getGlobalData }  from  '../../utils/globalVariable'
 import './index.scss';
 
 let timer
@@ -23,7 +25,7 @@ class Home extends Component {
     }
   };
   state = {
-    shopType:'手机优选',
+    shopType:null,
     show: true,
     isOpened:false,
     fixTop:'',//区域离顶部的高度
@@ -53,18 +55,18 @@ class Home extends Component {
           })
         }
       })
-    const { taskId } = this.$router.params
-    console.log(this.$router.params,'===========12312321321')
-    if(taskId){
-      this.setState({
-        isTagOpened:true
-      })
-    }
+    // const { taskId } = this.$router.params
+    // console.log(this.$router.params,'===========12312321321')
+    // if(taskId){
+    //   this.setState({
+    //     isTagOpened:true
+    //   })
+    // }
   };
   componentDidHide () {
-    this.setState({
-      isTagOpened:false
-    })
+    // this.setState({
+    //   isTagOpened:false
+    // })
   }
   //悬浮红包
   gotoRed = () => {
@@ -153,7 +155,6 @@ class Home extends Component {
   }
   switchTab = (item,type) => {
     const { dispatch } = this.props
-    console.log(item.name)
     this.setState({ shopType: item.name });
     dispatch({
       type:'home/getIndexTabAndProduct',
@@ -190,6 +191,7 @@ class Home extends Component {
       isOpened: !this.state.isOpened,
     });
   }
+
   onPageScroll (e) {
       let query = my.createSelectorQuery();
       const { scrollTop } = this.state
@@ -238,8 +240,6 @@ class Home extends Component {
   render() {
     const { bannerList,  oldNewDegreeList, loinBanner, loading ,waterbanner ,products,tabArray,iconList} = this.props;
     const { shopType , isOpened ,  scrollTop,isTagOpened} = this.state
-    // console.log(this.state.scrollTop)
-    // eslint-disable-next-line no-undef
     loading ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
     return (
       <View className='home-page'>
@@ -311,7 +311,6 @@ class Home extends Component {
         >
           <View>
             <ScrollView
-              onScroll={this.onScroll}
               scrollIntoView={shopType}
               className={`shop-list-nav ${scrollTop <= 0 && 'shop-list-nav-fixed'}`}
               scrollWithAnimation
@@ -394,12 +393,12 @@ class Home extends Component {
         <View className='home-bottom'>
           <Text className='text'> - 再拖就没有了 - </Text>
         </View>
-        <TagPage
-          onClick={this.shareFetchAuth}
-          onClose={this.shareOnClose}
-          isOpened={isTagOpened}
-          data='http://oss.huizustore.com/09ed26c0f6e543e8b15578c44a121b93.png'
-        />
+        {/*<TagPage*/}
+        {/*  onClick={this.shareFetchAuth}*/}
+        {/*  onClose={this.shareOnClose}*/}
+        {/*  isOpened={isTagOpened}*/}
+        {/*  data='http://oss.huizustore.com/09ed26c0f6e543e8b15578c44a121b93.png'*/}
+        {/*/>*/}
       </View>
     )
   }

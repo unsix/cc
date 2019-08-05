@@ -30,10 +30,10 @@ export default {
         try {
           const payres = yield tradePay('tradeNO', res.data)
           // console.log('====', payres);
-          yield put({
-            type: 'selectOrderByStagesList',
-            payload: { orderId: payload.orderId }
-          });
+          // yield put({
+          //   type: 'selectOrderByStagesList',
+          //   payload: { orderId: payload.orderId }
+          // });
         } catch (e) {
           // console.log('====1', e);
           Taro.showToast({

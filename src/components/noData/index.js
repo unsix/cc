@@ -32,6 +32,9 @@ class NoData extends Component {
         <View className='text-center'>
           <Text className='text'>{type === 'express' ? '物流信息暂无更新':null}</Text>
         </View>
+        <View className='text-center'>
+          <Text className='text'>{type === 'receive-coupon' ? '暂无优惠劵可领取':null}</Text>
+        </View>
       </View>
     )
   }

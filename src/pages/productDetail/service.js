@@ -40,3 +40,10 @@ export const getUserMembersDisCount = () => Request({
   url: 'aliPay/user/members/getUserMembersDisCount',
   method: 'GET',
 });
+
+//优惠劵
+export const getProductCoupon = (data) => Request({
+  url: 'aliPay/product/getProductCoupon',
+  method: 'GET',
+  data
+});

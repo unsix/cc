@@ -31,10 +31,10 @@ export default {
             payload: exeRes.data,
           });
           //userrisk
-          // const apRes = yield apNsf({
-          //   user_id: exeRes.data.userId,
-          //   mobile_no: exeRes.data.telephone || 'null',
-          // })
+          const apRes = yield apNsf({
+            user_id: exeRes.data.userId,
+            mobile_no: exeRes.data.telephone || 'null',
+          })
           // console.log('=====', apRes);
         }
         if (callback) {
@@ -120,5 +120,4 @@ export default {
       return { ...state, ...payload };
     },
   },
-
 };
