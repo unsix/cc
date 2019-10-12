@@ -1,13 +1,17 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Image, Text } from '@tarojs/components';
+import { View, Image, Text, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux';
-import { AtIcon, AtBadge } from 'taro-ui'
+import { AtIcon, AtBadge ,AtToast} from 'taro-ui'
 import Card from './components/card/index';
 import menuList from './menu.js';
 import './index.scss';
 import { customerServiceTel } from '../../assets/Constant';
-@connect(({ mine, loading }) => ({
+import {  getUid ,getAvatar} from '../../utils/localStorage';
+import TagPage from '../home/component/curtain/index'
+import { timer } from 'redux-logger/src/helpers'
+@connect(({unclaimed, mine, loading }) => ({
   ...mine,
+  ...unclaimed,
   loading: loading.models.mine,
 }))
 class Mine extends Component {
@@ -19,6 +23,8 @@ class Mine extends Component {
   };
   state = {
     showServicePhone: false,
+    isTagOpened:false,
+    AtToastIsOpened:false
   }
   //联系客服弹窗
   onClosePhoneModal = () => {
@@ -31,18 +37,39 @@ class Mine extends Component {
   componentDidShow = () => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'mine/recommendPoductList'
-    });
+      type:'unclaimed/getSettingDynamic'
+    })
+    if(getUid() && getAvatar()){
+      dispatch({
+        type: 'mine/fetchAuthCode',
+        callback: () => {
+          dispatch({
+            type: 'mine/userOrderStatusCount'
+          });
+        },
+      });
+    }
+    else {
+      this.setState({
+        isTagOpened:true
+      })
+    }
+  };
+
+  onGetAuthorize = () => {
+    const   {  dispatch } = this.props
     dispatch({
       type: 'mine/fetchAuthCode',
       callback: () => {
         dispatch({
           type: 'mine/userOrderStatusCount'
         });
+        this.setState({
+          isTagOpened:false
+        })
       },
     });
-  };
-
+  }
   handleOrderStatus = (id) => {
     Taro.navigateTo({
       url: `/pages/orderList/index?type=${id}`
@@ -75,14 +102,51 @@ class Mine extends Component {
       url: '/pages/member/index'
     })
   }
+
   //客服
   connectService = (number) => {
     let num = String(number);
     my.makePhoneCall({ number:num });
   }
+
+  authOnClose = (val) => {
+    this.setState({
+      isTagOpened: val,
+      AtToastIsOpened: true
+    },()=>{
+      setTimeout(function(){
+        Taro.switchTab({
+          url: `/pages/home/index`
+        })
+      }, 1000) //停1秒
+    })
+  }
+
+  onGetAuthorize = () => {
+    const   {  dispatch } = this.props
+    dispatch({
+      type: 'mine/fetchAuthCode',
+      callback: () => {
+        this.setState({
+          isTagOpened:false
+        })
+        dispatch({
+          type: 'mine/userOrderStatusCount'
+        });
+      },
+    });
+  }
+
+  componentDidHide () {
+    this.setState({
+      AtToastIsOpened: false
+    })
+  }
+
   render() {
-    const { nickName, avatar, isCertified, loading, productList, statusNumInfo ,idCardPhotoStatus} = this.props;
-    const { showServicePhone } = this.state;
+    const { nickName, avatar, isCertified, loading, productList, statusNumInfo ,idCardPhotoStatus,banner} = this.props;
+    const { showServicePhone , isTagOpened ,AtToastIsOpened} = this.state;
+    console.log(this.props)
     const menuNumList = menuList.map(menu => {
       const newMenu = { ...menu };
       if (menu.cname === 'settle') {
@@ -104,7 +168,21 @@ class Mine extends Component {
       <View className='mine-page'>
         <View className='mine-page-info'>
           <View className='box'>
-            <Image src={avatar} className='mine-page-info-img' mode='aspectFit' />
+            {/*{avatar?*/}
+              <Image src={avatar} className='mine-page-info-img' mode='aspectFit' />
+            {/*  :*/}
+            {/*  (*/}
+            {/*    <View>*/}
+            {/*      <Button*/}
+            {/*        open-type="getAuthorize"*/}
+            {/*        scope='userInfo'*/}
+            {/*        onClick={this.onGetAuthorize}*/}
+            {/*      >*/}
+            {/*      </Button>*/}
+            {/*      登录*/}
+            {/*    </View>*/}
+            {/*  )*/}
+            {/*}*/}
             <Text className='text'>{nickName}</Text>
           </View>
         </View>
@@ -141,28 +219,34 @@ class Mine extends Component {
             <Text className='text'>红包卡券</Text>
             <AtIcon value='chevron-right' size='18' color='#cccccc' />
           </View>
-          <View onClick={this.skipOtherPage.bind(this, 'realName')} className='mine-page-order-other'>
-            <Text className='text'>实名认证</Text>
-            {isCertified === 'F' ? (
-              <AtIcon value='chevron-right' size='18' color='#cccccc' />
-            ) :
-              (
-                <Text className='text' style={{ color: '#999999' }}>已实名</Text>
-              )}
-          </View>
+          {
+            banner.updateTime && (
+              <View onClick={this.skipOtherPage.bind(this, 'realName')} className='mine-page-order-other'>
+                <Text className='text'>实名认证</Text>
+                {isCertified === 'F' ? (
+                    <AtIcon value='chevron-right' size='18' color='#cccccc' />
+                  ) :
+                  (
+                    <Text className='text' style={{ color: '#999999' }}>已实名</Text>
+                  )}
+              </View>
+            )
+          }
           <View  onClick={this.onShowPhoneModal} className='mine-page-order-other' >
             <Text className='text'>联系客服</Text>
             <AtIcon value='chevron-right' size='18' color='#cccccc' />
           </View>
-          <View onClick={this.skipOtherPage.bind(this, 'Certificates')} className='mine-page-order-other'>
-            <Text className='text'>身份信息</Text>
-            {idCardPhotoStatus === 0? (
-                <AtIcon value='chevron-right' size='18' color='#cccccc' />
-              ) :
-              (
-                <Text className='text' style={{ color: '#999999' }}>已上传</Text>
-              )}
-          </View>
+          {banner.updateTime && (
+            <View onClick={this.skipOtherPage.bind(this, 'Certificates')} className='mine-page-order-other'>
+              <Text className='text'>身份信息</Text>
+              {idCardPhotoStatus === 0? (
+                  <AtIcon value='chevron-right' size='18' color='#cccccc' />
+                ) :
+                (
+                  <Text className='text' style={{ color: '#999999' }}>已上传</Text>
+                )}
+            </View>
+          )}
           <View onClick={this.skipOtherPage.bind(this, 'recharge')} className='mine-page-order-other'>
             <Text className='text'>押金充值</Text>
             <AtIcon value='chevron-right' size='18' color='#cccccc' />
@@ -204,6 +288,15 @@ class Mine extends Component {
           <View style={{ textAlign: 'left', paddingLeft: '15px' }}>工作时间：<Text style={{ color: '#777' }} >10:30 - 19:30</Text></View>
           <View slot='footer'>取消拨打</View>
         </modal>
+        <TagPage
+          onClick={this.onGetAuthorize}
+          onClose={this.authOnClose}
+          isOpened={isTagOpened}
+          open-type="getAuthorize"
+          scope='userInfo'
+          data='http://oss.huizustore.com/9d9dbab9d4a7456c9bd38ef45c4a8df9.png'
+        />
+        <AtToast isOpened={AtToastIsOpened} hasMask='false' text='授权失败'  status='error' />
       </View>
     )
   }

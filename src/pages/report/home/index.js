@@ -34,7 +34,6 @@ class  Index extends Component{
       names:"",
       idCards:"",
       phones:"",
-      code:'',
       name:'',
       phone:'',
       idCord:''

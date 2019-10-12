@@ -1,10 +1,14 @@
 import * as realNameApi from './service';
+import { getAuthCode ,getPhoneNumber} from '../../utils/openApi'
+import Taro from '@tarojs/taro'
+import { setBuyerId, setTelephone, setUid, setUserName } from '../../utils/localStorage'
 
 export default {
   namespace: 'realName',
   state: {
     codeTime: null,
     codeKey: null,
+    telephone:null,
   },
 
   effects: {
@@ -17,6 +21,26 @@ export default {
         });
       }
       callback(res);
+    },
+    * getPhoneNumber({ callback }, { call, put }) {
+      let res = null;
+      try {
+        res = yield  getPhoneNumber();
+      } catch (e) {
+        Taro.showToast({
+          title: '授权失败，请重试',
+          icon: 'none',
+        });
+      }
+       if(res){
+         const exeRes = yield call(realNameApi.decrypt, { content:res,type:3 });
+         if(exeRes){
+           yield put({
+             type: 'phone',
+             payload: exeRes.mobile,
+           });
+         }
+       }
     },
     * userCertificationAuth({ payload, callback }, { call, put }) {
       const res = yield call(realNameApi.userCertificationAuth, payload);
@@ -53,7 +77,11 @@ export default {
     save(state, { payload }) {
       return { ...state, ...payload };
     },
-
+    phone(state, { payload }) {
+      return { ...state,
+        telephone:payload
+      };
+    },
     saveSmsCode(state, { payload }) {
       return {
         ...state,

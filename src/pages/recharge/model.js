@@ -37,10 +37,10 @@ export default {
           let type = 'suc';
           if (payres.resultCode !== '9000') {
             console.log(payres.resultCode )
-            Taro.showToast({
-              title: payres.memo,
-              icon: 'none',
-            });
+            // Taro.showToast({
+            //   title: payres.memo,
+            //   icon: 'none',
+            // });
             type = 'err';
           }
           if (callback) {

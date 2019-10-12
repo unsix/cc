@@ -32,7 +32,7 @@ export default {
     },
 
     * getNewPackage({ payload }, { call }) {
-      const res = yield call(freshmanApi.getNewPackage, { ...payload, uid: getUid() });
+      const res = yield call(freshmanApi.getNewPackage, { ...payload, uid: getUid(),channel:3 });
       if (res) {
         Taro.switchTab({ url: '/pages/home/index' })
         Taro.showToast({

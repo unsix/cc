@@ -179,7 +179,7 @@ export function getCurrentPageUrlWithArgs() {
   const currentPage = pages[pages.length - 1]
   const url = currentPage.route
   const options = currentPage.params
-  console.log(currentPage,'====================')
+  // console.log(currentPage,'====================')
   let urlWithArgs = `/${url}?`
   for (let key in options) {
     const value = options[key]

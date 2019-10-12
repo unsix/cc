@@ -13,7 +13,7 @@ class TagPage extends Component {
     const { onClose } = this.props
     onClose(false)
   }
-  handleShareFetchAuth =()=>{
+  onGetAuthorize =()=>{
     const { onClick } = this.props
     onClick()
   }
@@ -28,11 +28,19 @@ class TagPage extends Component {
           isOpened={isOpened}
           onClose={this.onClose.bind(this)}
         >
-          <View className='box'  onClick={this.handleShareFetchAuth}>
+          <View className='box'  onClick={this.onGetAuthorize}>
             <Image
               className='img'
               src={data}
             />
+            <Button
+              className='authorize'
+              open-type="getAuthorize"
+              scope='userInfo'
+              onClick={this.onGetAuthorize}
+            >
+              立即授权
+            </Button>
           </View>
         </AtCurtain>
 

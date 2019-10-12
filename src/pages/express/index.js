@@ -67,7 +67,7 @@ class Express extends Component {
     }
     // console.log(this.porps.details.logisticsList,'=========')
     // const  list =  this.porps.details.logisticsList.result.list.reverse()
-    console.log(list)
+    // console.log(list)
     loading ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
     return (
      <View className='container_express'>

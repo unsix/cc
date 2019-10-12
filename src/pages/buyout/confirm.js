@@ -185,8 +185,8 @@ class Orderdetail extends Component {
     })
   }
   onShowPopoverTap = () => {
-    const { onShowPopoverTap } = this.props;
-    onShowPopoverTap();
+    // const { onShowPopoverTap } = this.props;
+    // onShowPopoverTap();
     this.setState({
       show: true,
     })
@@ -203,7 +203,7 @@ class Orderdetail extends Component {
   handleHelpDJ = () => {
     // eslint-disable-next-line no-undef
     my.alert({
-      content: '您的冻结押金将冻结在您的支付宝或惠租账户中，当订单完结后，押金将立即原路退还予您的支付账户',
+      content: '您的冻结押金将冻结在您的支付宝或刺猬优租账户中，当订单完结后，押金将立即原路退还予您的支付账户',
       buttonText: '知道了',
     });
   }
@@ -386,7 +386,7 @@ class Orderdetail extends Component {
           <Input className='input-mess'  type='text' placeholder='请在这里留下您的备注'  onInput={this.onMessageInput} />
         </View>
         <View className='protocol' onClick={this.gotoProtocol}>
-          支付即同意<Text className='text'>《惠租用户交易服务协议》</Text>
+          支付即同意<Text className='text'>《刺猬优租用户交易服务协议》</Text>
         </View>
         <View className='bottom-space' />
         {/*{!!renewalInf && (*/}

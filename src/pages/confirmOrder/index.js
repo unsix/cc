@@ -1,3 +1,4 @@
+
 import Taro, { Component } from '@tarojs/taro';
 import { View, Text, Image, Input } from '@tarojs/components';
 import { AtIcon } from 'taro-ui'
@@ -108,7 +109,7 @@ class Confirmorder extends Component {
         },
         callback: (orderId, type) => {
           if (type === 'detail') {
-            Taro.redirectTo({ url: `/pages/orderDetail/index?orderId=${orderId}` });
+            Taro.redirectTo({ url: `/pages/checkSuccess/index?orderId=${orderId}` });
           } else {
             Taro.redirectTo({ url: '/pages/orderList/index?type=all' });
 
@@ -126,7 +127,8 @@ class Confirmorder extends Component {
   render() {
     // console.log(this.state.isshow,'===>')
     const { confirmOrder, loading } = this.props;
-    const { defaultUserAddress, sku, product, priceList, additionalServices,isVip } = confirmOrder;
+    const { defaultUserAddress, sku, product, priceList,
+      additionalServices,isVip,restBuyOutPrice,status } = confirmOrder;
     // eslint-disable-next-line no-undef
     (loading) ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
     return (
@@ -148,19 +150,19 @@ class Confirmorder extends Component {
         <View className='' style="height:0.1rem;background:#f0f0f080;" ></View>
         <View className='top'>
           {defaultUserAddress ? (
-            <View className='address' onClick={this.gotoAddress}>
-              <View className='contact-num'>
-                <Text className='name'>{defaultUserAddress.realname}</Text>
-                <Text>{defaultUserAddress.telephone}</Text>
-              </View>
-              <View className='content'>
-                <View className='location-img' />
-                <View>
-                  {defaultUserAddress.provinceStr}{defaultUserAddress.cityStr}{defaultUserAddress.areaStr}{defaultUserAddress.street}
+              <View className='address' onClick={this.gotoAddress}>
+                <View className='contact-num'>
+                  <Text className='name'>{defaultUserAddress.realname}</Text>
+                  <Text>{defaultUserAddress.telephone}</Text>
+                </View>
+                <View className='content'>
+                  <View className='location-img' />
+                  <View>
+                    {defaultUserAddress.provinceStr}{defaultUserAddress.cityStr}{defaultUserAddress.areaStr}{defaultUserAddress.street}
+                  </View>
                 </View>
               </View>
-            </View>
-          ) :
+            ) :
             (
               <View className='empty-address' onClick={this.gotoAddress}>
                 <View className='location'>请填写收货地址</View>
@@ -241,7 +243,36 @@ class Confirmorder extends Component {
             :null
           }
         </View>
-
+        <View className='deposit-info-buy'>
+          <View className='item'>
+            {Number(status) === 0 && (
+              <View className='item-left'>
+                参考到期买断价
+              </View>
+            )}
+            {(Number(status) === 2 || status === 1) && (
+              <View className='item-left'>
+                到期买断价
+              </View>
+            )}
+            { Number(status) === 1 ?
+              (
+                <View className='price'>
+                  该商品暂不支持买断
+                </View>
+              )
+              :
+              (
+                <View className='price'>¥{Number(restBuyOutPrice).toFixed(2)}</View>
+              )
+            }
+          </View>
+          { Number(status) === 0 && (
+            <View className='item frozen'>
+              <View> 规格为“租就送”，“免归还”，“一元买断”商品买断价为0元/1元</View>
+            </View>
+          )}
+        </View>
         {!confirmOrder.realNameStatus && (
           <View className='real-name' onClick={this.gotoRealName}>
             <View>实名认证</View>

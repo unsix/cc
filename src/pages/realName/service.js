@@ -27,3 +27,9 @@ export const userCertificationAuth = data =>
     method: 'POST',
     data,
   });
+export const decrypt = data =>
+  Request({
+    url: 'aliPay/components/decrypt',
+    method: 'GET',
+    data,
+  });

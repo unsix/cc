@@ -22,6 +22,8 @@ class Productlist extends Component {
   }
 
   componentDidMount = () => {
+    console.log(this.$router.params,'=======================999999999asdsdjalksjdlaksjdlaksjdlaskjdlkasjdlkajdsla99999999999999')
+    console.log('2130981029830912830912830912830912830918203981209381209')
     const { type } = this.$router.params;
     const { dispatch } = this.props;
     const newQueryInfo = {
@@ -33,7 +35,7 @@ class Productlist extends Component {
       pageNumber: 1,
       pageSize: 10,
     };
-    if (type === 'category') {
+    if (type === "category") {
       const { catId } = this.$router.params;
       newQueryInfo.operateCategoryId = Number(catId);
       newQueryInfo.content = null;

@@ -61,7 +61,7 @@ export default {
     },
     * userFrezzAgain({ payload }, { call, put }) {
       const res = yield call(orderDetailApi.userFrezzAgain, payload);
-      if (res) {
+      if (res && res.code === 1) {
         try {
           const payres = yield tradePay('orderStr', res.data.data.data);
           if (payres.resultCode !== '9000') {
@@ -106,6 +106,12 @@ export default {
             icon: 'none',
           });
         }
+      }
+      else {
+        Taro.showToast({
+          title:'该笔订单为转转惠租订单，请前往转转app惠租去支付',
+          icon:'none'
+        })
       }
     },
     * payReletAgain({ payload }, { call, put }) {
@@ -245,7 +251,7 @@ export default {
     // 结算单确认支付
     * confirmOrderSettlement({ payload }, { call, put }) {
       const res = yield call(orderDetailApi.confirmOrderSettlement, { ...payload, buyerId: getBuyerId() });
-      if (res && res.data !== '2') {
+      if (res && res.code === 99) {
         try {
           const payres = yield tradePay('tradeNO', res.data)
           // console.log('====', payres);

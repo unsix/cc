@@ -464,7 +464,7 @@ class Member extends Component{
                   <Text className='bol'>¥</Text>{ memberIfn.settingList[memValue-1].rechargeAmount}
                   <Text className='nian'>（{memberIfn.settingList[memValue-1].validityDay}个月）</Text>
                   <View className='agreement' onClick={this.ment}>
-                    开通即同意《惠租会员协议》
+                    开通即同意《刺猬优租会员协议》
                   </View>
                 </View>
                 <View className='pay'>
@@ -498,7 +498,7 @@ class Member extends Component{
                 1、购买会员并不保证一定免押金，为了最佳体验，建议芝麻信用600分以上且网络信用良好者购买（无过多网络信贷，且无网上逾期行为）。芝麻分对应免押额说明如下：600分-免1500  650分-免5000 700分-有机会全免
               </View>
               <View className='online titles'>
-                2、惠租会员购买后立即生效，享受会员权益
+                2、刺猬优租会员购买后立即生效，享受会员权益
               </View>
               <View className='online titles'>
                 3、会员自购买后可续费购买，续费购买后，会员期限叠加生效，折扣权益不叠加，免押额度增加取最大，包邮次数及租金豆叠加，风控查询不叠加

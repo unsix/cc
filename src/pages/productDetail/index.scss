@@ -53,6 +53,7 @@ page {
   .info-area {
     background-color: #fff;
     padding: 25px 30px 5px 0;
+    border-radius: 0 0 14px 14px;
     .title {
       font-size: 32px;
       color: #ccc;
@@ -168,6 +169,25 @@ page {
       }
     }
   }
+  .swiper-info{
+    box-sizing: border-box;
+    //box-shadow: border-box;
+    text-align: center;
+    //margin: 5px 0 0 0;
+    padding: 0;
+    margin: 0;
+    .item{
+      padding: 0;
+      margin: 0;
+      .img {
+        display: block;
+        box-sizing: border-box;
+        @include wh(750px,96px);
+      }
+    }
+    // background: url('../../images/home/yffresh.png');
+    // background-size: 100% 100%;
+  }
   .member_discount{
    background-color: #fff;
     padding-bottom: 20px;
@@ -231,13 +251,14 @@ page {
       height: 110px;
       display: flex;
       align-items: center;
+      border: none;
       &-title{
         font-family: PingFangSC-Medium;
         font-size: 26px;
         color: #333333;
       }
       &-dec{
-        width: 480px;
+        width: 470px;
         min-height: 45px;
         margin:  0 60px;
         padding:  30px 0;
@@ -290,17 +311,6 @@ page {
         letter-spacing: 0.5px;
       }
     }
-  }
-  .swiper-info{
-    box-sizing: border-box;
-    //box-shadow: border-box;
-    text-align: center;
-    margin: 20px 0 15px 0;
-    .img {
-      @include wh(676px,64px);
-    }
-    // background: url('../../images/home/yffresh.png');
-    // background-size: 100% 100%;
   }
   .store-info{
     box-sizing: border-box;
@@ -773,7 +783,7 @@ page {
     }
     &-content {
       padding: 0 40px;
-      height: 900px;
+      height: 870px;
       //color: red!important;
       &-item {
         @include bg('http://oss.huizustore.com/d27d652ffcd942e9a89af0e2e79879dd.png');
@@ -808,6 +818,13 @@ page {
             font-size: 30px;
             letter-spacing: 1.38px;
           }
+        }
+        &-name{
+          width: 150px;
+          margin: 0 auto;
+          overflow: hidden;/*超出部分隐藏*/
+          text-overflow:ellipsis;/* 超出部分显示省略号 */
+          white-space: nowrap;/*规定段落中的文本不进行换行 */
         }
         &-right {
           margin: 46px 0 0 25px;
@@ -1022,6 +1039,10 @@ page {
         .data-tags {
           @include fj(flex-start);
           margin: auto 30px;
+        }
+        .max-min-text{
+          font-size: 24px;
+          margin-left: 10px;
         }
         .ml-30 {
           margin-left: 30px

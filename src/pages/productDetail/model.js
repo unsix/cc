@@ -115,11 +115,11 @@ export default {
           return b.isMain - a.isMain;
         });
       }
-      
+
       let cyclePricesArr = [...payload.skus[0].cyclePrices];
-      if (cyclePricesArr.length) {
-        cyclePricesArr = cyclePricesArr.filter(info => info.days >= payload.minRentCycle && info.days <= payload.maxRentCycle);
-      }
+      // if (cyclePricesArr.length) {
+      //   cyclePricesArr = cyclePricesArr.filter(info => info.days >= payload.minRentCycle && info.days <= payload.maxRentCycle);
+      // }
       cyclePricesArr.length && cyclePricesArr.sort((a, b) => {
         if(a.price === b.price){
            return a.days - b.days;
@@ -141,7 +141,8 @@ export default {
         advancedDays,
         startDay: startTime,
         saveServers,
-        processRule:payload.processRule
+        processRule:payload.processRule,
+
       };
     },
 

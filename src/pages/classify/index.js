@@ -24,7 +24,7 @@ class Classify extends Component {
     const { dispatch } = this.props;
     dispatch({
       type: 'classify/fetchCategoryList',
-      payload: { categoryId: 0 },
+      payload: { categoryId: -2 },
       callback: (secondId) => {
         let categoryId = secondId;
         if (Number(id)) {
@@ -33,8 +33,10 @@ class Classify extends Component {
         dispatch({
           type: 'classify/fetchCategoryList',
           payload: { categoryId },
+          callback:()=>{
+            this.setState({ currentMenu: categoryId });
+          }
         });
-        this.setState({ currentMenu: categoryId });
       },
     });
   };

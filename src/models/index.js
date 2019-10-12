@@ -26,6 +26,7 @@ import deposit from  '../pages/deposit/model'
 import renewal from '../pages/renewal/model'
 import buyout from '../pages/buyout/model'
 import shareMember from '../pages/shareMember/model'
+import checkSuccess from '../pages/checkSuccess/model'
 export default [
   home,
   orderDetail,
@@ -54,5 +55,6 @@ export default [
   deposit,
   renewal,
   buyout,
-  shareMember
+  shareMember,
+  checkSuccess
 ]

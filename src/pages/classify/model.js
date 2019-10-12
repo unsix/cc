@@ -9,7 +9,7 @@ export default {
 
   effects: {
     *fetchCategoryList({ payload, callback }, { call, put }) {
-      const res = yield call(classifyApi.selectReceptionCategoryList, payload);
+      const res = yield call(classifyApi.selectReceptionCategoryList, {...payload, channel:3});
       if (res) {
         yield put({
           type: 'saveList',
@@ -26,7 +26,7 @@ export default {
     saveList(state, { payload }) {
       let newMenuList = [...state.menuList];
       let newRightList = [...state.rightList];
-      if (payload.categoryId === 0) {
+      if (payload.categoryId === -2) {
         newMenuList = payload.list;
       } else {
         newRightList = payload.list;

@@ -14,3 +14,10 @@ export const getUserAllAddressList = data =>
     method: 'GET',
     data,
   });
+
+export const saveZhifubaoAddress = data =>
+  Request({
+    url: 'aliPay/userAddress/saveZhifubaoAddress',
+    method: 'POST',
+    data,
+  });

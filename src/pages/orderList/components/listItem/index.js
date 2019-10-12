@@ -22,7 +22,7 @@ class ListItem extends Component {
       orderId:order.orderId,
       type:order.type
     }
-    console.log(obj)
+    // console.log(obj)
     const { onClickItem } = this.props;
     onClickItem(obj);
   }
@@ -81,8 +81,8 @@ class ListItem extends Component {
     })
   }
   onShowPopoverTap = () => {
-    const { onShowPopoverTap } = this.props;
-    onShowPopoverTap();
+    // const { onShowPopoverTap } = this.props;
+    // onShowPopoverTap();
     this.setState({
       show: true,
     })
@@ -112,7 +112,7 @@ class ListItem extends Component {
   }
   connectCService = (number) => {
     let { serviceTel } = this.props.data
-    console.log(serviceTel)
+    // console.log(serviceTel)
     let num = String(serviceTel);
     my.makePhoneCall({ number:num });
     // const { connectService } = this.props;

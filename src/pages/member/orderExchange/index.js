@@ -80,7 +80,7 @@ class orderExchange extends Component {
     dispatch({
       type:'members/wingRecords',
       payload:{
-        type:2
+        type:3
       }
     })
   }

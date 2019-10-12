@@ -7,7 +7,13 @@ export const IndexList = (data) => {
     data,
   });
 };
-
+export const getIndexActionListByPage = (data) => {
+  return Request({
+    url: 'aliPay/index/getIndexActionListByPage',
+    method: 'GET',
+    data,
+  });
+};
 export const getZhifubaoFlow = (data) => {
   return Request({
     url: 'aliPay/index/getZhifubaoFlow',
@@ -18,7 +24,7 @@ export const getZhifubaoFlow = (data) => {
 
 export const getIndexTabAndProduct = (data) => {
   return Request({
-    url: 'aliPay/index/getIndexTabAndProduct',
+    url: 'aliPay/index/getIndexTabAndProductByPage',
     method: 'GET',
     data,
   });

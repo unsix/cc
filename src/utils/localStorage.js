@@ -31,7 +31,16 @@ export function setUserName(name) {
     return Taro.setStorageSync(`${storageStr}-userName`, name);
   }
 }
-
+export function setAvatar(name) {
+  if(name){
+    return Taro.setStorageSync(`${storageStr}-avatar`, name);
+  }
+}
+export function getAvatar(str) {
+  const currStr =
+    typeof str === 'undefined' ? Taro.getStorageSync(`${storageStr}-avatar`) : Taro.getStorageSync(str);
+  return currStr;
+}
 export function getUserName(str) {
   const currStr =
     typeof str === 'undefined' ? Taro.getStorageSync(`${storageStr}-userName`) : Taro.getStorageSync(str);

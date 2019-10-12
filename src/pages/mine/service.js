@@ -14,7 +14,12 @@ export const exemptLogin = data =>
     method: 'GET',
     data,
   });
-
+export const exemptLoginNew = data =>
+  Request({
+    url: 'aliPay/user/exemptLoginNew',
+    method: 'POST',
+    data,
+  });
 export const recommendPoductList = data =>
   Request({
     url: 'aliPay/product/recommendPoductList',

@@ -11,13 +11,21 @@ page {
     margin-top: 60px;
     box-sizing: border-box;
     .btn {
-      background: #0199FE;
       border-radius: 40px;
       height: 80px;
       line-height: 80px;
       font-family: PingFangSC-Regular;
       font-size: 28px;
       color: #FFFFFF;
+      margin: 30px;
+    }
+    .btn_auth{
+      background:linear-gradient(133deg,rgba(252,118,107,1) 0%,rgba(250,80,98,1) 11%,rgba(253,65,87,1) 100%);
+    }
+    .btn_add{
+      color:rgba(255,115,112,1);
+      border:2px solid rgba(252,118,107,1);
     }
   }
 }
+

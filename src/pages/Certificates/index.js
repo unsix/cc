@@ -74,7 +74,7 @@ class Certificate extends Component {
               // });
               // console.log(JSON.parse(res.data))
               let data = JSON.parse(res.data)
-              console.log(data.data[0],'============  ')
+              // console.log(data.data[0],'============  ')
               this.setState({
                 idCardFront:data.data[0]
               })
@@ -206,7 +206,7 @@ class Certificate extends Component {
   render() {
     const { loading } = this.props;
     const {idCardFront,idCardBack, idCardHandHeld, } = this.state;
-    console.log(this.state)
+    // console.log(this.state)
     // eslint-disable-next-line no-undef
     loading ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
     return (

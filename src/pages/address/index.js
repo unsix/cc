@@ -32,14 +32,14 @@ class Address extends Component {
   }
 
   onEditAddress = (id) => {
-    
+
   }
 
   onDelete = (id) => {
     const { dispatch ,list } = this.props;
     // console.log(list,'listshangchu')
     if(list.length==1){
-      Taro.setStorageSync(`isShow_s`,1) 
+      Taro.setStorageSync(`isShow_s`,1)
       Taro.setStorageSync(`isShow`, 1);
     }else{
       Taro.setStorageSync(`isShow_s`, 2);
@@ -62,10 +62,10 @@ class Address extends Component {
   handleSelect = (index) => {
     const { dispatch, list } = this.props;
     const { type } = this.$router.params;
-    
+
     // console.log(list,'dewrf')
     if(list.length==1){
-      Taro.setStorageSync(`isShow_s`,1) 
+      Taro.setStorageSync(`isShow_s`,1)
       Taro.setStorageSync(`isShow`, 1);
     }else{
       Taro.setStorageSync(`isShow_s`, 2);
@@ -79,7 +79,34 @@ class Address extends Component {
       Taro.navigateBack();
     }
   }
-
+  alipayAddress = () => {
+    const { dispatch } = this.props
+    my.getAddress({
+      success: (res) => {
+        const obj = res.result
+        if(res.result){
+          dispatch({
+            type:'address/saveZhifubaoAddress',
+            payload:{
+              areaStr: obj.area,
+              cityStr: obj.city,
+              // id: 0,
+              isDefault: 0,
+              provinceStr: obj.prov,
+              realname: obj.fullname,
+              street: obj.address,
+              telephone: obj.mobilePhone,
+            },
+            callback:()=>{
+              dispatch({
+                type: 'address/getUserAllAddressList',
+              });
+            }
+          })
+        }
+      }
+    });
+  }
   render() {
     const { list, loading } = this.props;
 
@@ -98,7 +125,8 @@ class Address extends Component {
           </View>
         ))}
         <View className='address-page-btn'>
-          <Button className='btn' onClick={this.gotoAdd}>新增地址</Button>
+          <Button className='btn btn_auth' onClick={this.alipayAddress}>获取支付宝收货地址</Button>
+          <Button className='btn btn_add' onClick={this.gotoAdd}> + 新增地址</Button>
         </View>
       </View>
     )
@@ -106,3 +134,4 @@ class Address extends Component {
 }
 
 export default Address;
+

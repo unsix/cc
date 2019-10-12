@@ -53,8 +53,8 @@ class SendBack extends Component {
     const addressId = giveBackAddressList[currentGiveBackIndex].id;
     my.confirm({
       title: '亲',
-      content: '是否确认归还',
-      confirmButtonText: '确认',
+      content: '若还剩分期月租金未支付，则提前归还可能产生补偿金，请先确定在归还',
+      confirmButtonText: '归还',
       cancelButtonText: '取消',
       success: (result) => {
         if(result.confirm === true){

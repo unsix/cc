@@ -13,6 +13,14 @@ page {
     background-color: #fff;
     padding: 0 30px;
     &-item {
+      .phone-btn{
+        color: #FC766B;
+        font-family: PingFangSC-Regular;
+        border: none;
+        font-size: 30px;
+        height: 45px;
+        line-height: 45px;
+      }
       display: flex;
       justify-content: space-between;
       align-items: center;

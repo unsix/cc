@@ -6,9 +6,6 @@ import Search from './component/search/index';
 import Channel from './component/channel/index';
 import TagPage from './component/curtain/index'
 import flowImg from '../../images/home/flow.png';
-// import Rolling from '../../components/rolling/rolling';
-// import { debounce } from '../../utils/utils'
-// import {  set as setGlobalData, get as getGlobalData }  from  '../../utils/globalVariable'
 import './index.scss';
 
 let timer
@@ -38,36 +35,68 @@ class Home extends Component {
     const { dispatch } = this.props
     // const { shopType } = this.state
     this.canIUsesc();
-     dispatch({
-        type: 'home/getIndexList',
-        callback:(val)=>{
-          dispatch({
-            type:'home/getIndexTabAndProduct',
-            payload: {
-              tabId:val,
-              channel:1
-            },
-            callback:(type)=>{
-              this.setState({
-                shopType:type
-              })
-            }
-          })
-        }
-      })
-    // const { taskId } = this.$router.params
-    // console.log(this.$router.params,'===========12312321321')
-    // if(taskId){
-    //   this.setState({
-    //     isTagOpened:true
-    //   })
-    // }
+    dispatch({
+      type: 'home/getIndexActionListByPage',
+      payload:{
+        pageNum: 1,
+        pageSize: 6,
+      },
+      callback:(type)=>{
+        this.setState({
+          shopType:type
+        })
+      }
+    })
+    // dispatch({
+    //    type: 'home/getIndexList',
+    //    callback:(val)=>{
+    //      dispatch({
+    //        type:'home/getIndexTabAndProduct',
+    //        payload: {
+    //          tabId:val,
+    //          channel:1
+    //        },
+    //        callback:(type)=>{
+    //          this.setState({
+    //            shopType:type
+    //          })
+    //        }
+    //      })
+    //    }
+    //  })
   };
+
   componentDidHide () {
     // this.setState({
     //   isTagOpened:false
     // })
   }
+  setDispatch(queryInfo, fetchType) {
+    const { dispatch } = this.props;
+    const { shopType } = this.state
+    const info = { ...queryInfo};
+    if (fetchType === 'scroll') {
+      info.pageNum += 1;
+      info.fetchType = fetchType;
+    }
+    dispatch({
+      type: 'home/getIndexTabAndProduct',
+      payload: { ...info ,tabId:shopType},
+    });
+  }
+  onScrollToLower = () => {
+    // const { queryInfo } = this.props;
+    const { total, queryInfo, queryInfo: { pageNum, pageSize } } = this.props;
+    if (pageNum * pageSize - total >= 0) {
+      Taro.showToast({
+        title: '更多商品，敬请期待！',
+        icon: 'none',
+        duration: 1000,
+      });
+      return;
+    }
+    this.setDispatch(queryInfo, 'scroll');
+  };
   //悬浮红包
   gotoRed = () => {
     my.navigateToMiniProgram({
@@ -154,22 +183,30 @@ class Home extends Component {
     let formId = e.detail.formId
   }
   switchTab = (item,type) => {
-    const { dispatch } = this.props
-    this.setState({ shopType: item.name });
+    const { dispatch ,} = this.props
+    this.setState({ shopType: item.id });
+    const info = {
+      pageNum: 1,
+      pageSize: 10,
+    };
     dispatch({
-      type:'home/getIndexTabAndProduct',
-      payload: {
-        tabId:item.id,
-        channel:1
-      },
-    })
+      type: 'home/getIndexTabAndProduct',
+      payload: { ...info ,tabId:item.id},
+    });
+    // dispatch({
+    //   type:'home/getIndexTabAndProduct',
+    //   payload: {
+    //     tabId:item.id,
+    //     channel:4
+    //   },
+    // })
     if(type === 'modal') {
       this.setState({
         isOpened: !this.state.isOpened,
       })
-      my.pageScrollTo({
-        scrollTop: 750
-      })
+      // my.pageScrollTo({
+      //   scrollTop: 750
+      // })
     }
   }
   close = () => {
@@ -193,212 +230,207 @@ class Home extends Component {
   }
 
   onPageScroll (e) {
-      let query = my.createSelectorQuery();
-      const { scrollTop } = this.state
-      query.select('#id').boundingClientRect();
-      query.exec(res=> {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          if(scrollTop!==0 || res[0].top >=0 ){
-            this.setState({
-              scrollTop:res[0].top
-            })
-          }
-        }, 100);
-      });
-  }
-  shareOnClose = (val) => {
-    this.setState({
-      isTagOpened:val
-    })
-  }
-  shareFetchAuth = () => {
-    const { dispatch } = this.props
-    const { taskId,id } = this.$router.params
-    // console.log(taskId,id)
-    dispatch({
-      type:'home/fetchAuthCode',
-      callback:()=>{
-        dispatch({
-          type:'home/newcomerVerification',
-          payload:{
-            taskId:taskId,
-            inviteUid:id,
-          },
-          callback:()=>{
-            this.setState({
-              isTagOpened:false
-            })
-            Taro.redirectTo({
-              url:`/pages/shareMember/index`
-            })
-          }
-        })
-      }
-    })
+    let query = my.createSelectorQuery();
+    const { scrollTop } = this.state
+    query.select('#id').boundingClientRect();
+    query.exec(res=> {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        if(scrollTop!==0 || res[0].top >=0 ){
+          this.setState({
+            scrollTop:res[0].top
+          })
+        }
+      }, 100);
+    });
   }
   render() {
-    const { bannerList,  oldNewDegreeList, loinBanner, loading ,waterbanner ,products,tabArray,iconList} = this.props;
+    const { bannerList,  oldNewDegreeList, loinBanner, loading ,waterbanner ,products,tabList,iconList,
+      total, queryInfo: { pageNum, pageSize }} = this.props;
     const { shopType , isOpened ,  scrollTop,isTagOpened} = this.state
+    const systemInfo = Taro.getSystemInfoSync();
+    let fixedHeight = 0;
+    if (systemInfo.model.indexOf('iPhone X') > -1) {
+      fixedHeight = fixedHeight + 30;
+    }
+    const scrollHeight = Taro.getSystemInfoSync().windowHeight - fixedHeight;
     loading ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
     return (
-      <View className='home-page'>
-        <View className='red_envelopes'>
-          <Image onClick={this.gotoRed} className='envelopes'  src='http://oss.huizustore.com/545b093f92ad4a77b50c39358f5b8082.png' />
-        </View>
-        {/* <favorite>收藏小程序，下次使用更方便</favorite> */}
-        <lifestyle publicId="2019011262875377" />
-        <View className='home-top'>
-          <Search
-            value=''
-          />
-          <View className='swiper'>
-            <swiper
-              circular
-              indicator-dots
-              indicator-active-color='#DBDBDB'
-              autoplay='{{true}}'
-              interval='{{3000}}'
-            >
-              {!!bannerList && !!bannerList.length && bannerList.map(banner => (
-                <swiper-item key={banner.id}>
-                  <View className='item' onClick={this.onGoToMore.bind(this, banner.jumpUrl)}>
-                    <Image className='img' mode='aspectFit' src={banner.imgSrc} />
-                  </View>
-                </swiper-item>
-              ))}
-            </swiper>
-          </View>
-        </View>
-        <View className='home-flow'>
-          <View className='home-flow-box'>
-            <Image className='home-flow-box-img' mode='aspectFit' src={flowImg} />
-          </View>
-        </View>
-
-        <View className='home-menu'>
-          {
-            iconList && iconList.length && iconList.map((menu) => {
-              return (
-                <View key={menu.id} className='home-menu-view' onClick={this.handleGotoClassify.bind(this, menu.jumpUrl)}>
-                  <View className='home-menu-view-box'>
-                    <Image className='home-menu-view-box-img' mode='aspectFit' src={menu.imgSrc} />
-                  </View>
-                  <Text className='home-menu-view-text'>{menu.iconName}</Text>
-                </View>
-              )
-            })
-          }
-        </View>
-        <View className='extension'>
-          <View className='item-view-spe' onClick={this.onGoWater.bind(this,waterbanner[0].jumpUrl)} >
-            <Image className='item-img' src={waterbanner[0].imgUrl} />
-          </View>
-          <View className='item'>
-            <View className='item-view' onClick={this.onGoWater.bind(this,waterbanner[1].jumpUrl)} >
-              <Image className='item-img' src={waterbanner[1].imgUrl} />
-            </View>
-            <View className='item-view mt15' onClick={this.onGoWater.bind(this,waterbanner[2].jumpUrl)}>
-              <Image  className='item-img' src={waterbanner[2].imgUrl} />
-            </View>
-          </View>
-        </View>
-        <View className='home-share ' onClick={this.skip.bind(this, loinBanner)}>
-          <Image className='home-share-img' mode='aspectFit' src={loinBanner[0].imgSrc} />
-        </View>
-        <View
-          className={`tabs-list ${scrollTop <= 0 && 'tabs-list-fixed' }`}
+      <View>
+        <ScrollView
+          className='products'
+          scrollY
+          scrollWithAnimation
+          scrollTop='0'
+          style={`height: ${scrollHeight}px;`}
+          onScrollToLower={this.onScrollToLower}
         >
-          <View>
-            <ScrollView
-              scrollIntoView={shopType}
-              className={`shop-list-nav ${scrollTop <= 0 && 'shop-list-nav-fixed'}`}
-              scrollWithAnimation
-              scrollX
-              id='id'
-            >
-              {
-                tabArray.map(item => {
-                  return (
-                    <View  onClick={this.switchTab.bind(this, item)}  key={item.id} id={item.id} className='shop-nav-container'>
-                      <Text
-                        // className='text'
-                        className={`text ${shopType === item.name && 'text-active'}`}
-                      >
-                        {item.name}
-                      </Text>
-                    </View>
-                  )
-                })
-              }
-            </ScrollView>
-          </View>
-          {scrollTop<=0?
-            (
-              <View>
-                <View className='switch' onClick={this.toggleFilter}>
-                  <Image  className='switch-img' src='http://oss.huizustore.com/d2493a3b85424499843739321575ea3b.png' />
-                </View>
-              </View>
-            ):
-            (
-              <View>
-                <View className='switch' onClick={this.toggleFilter}>
-                  <Image  className='switch-img' src='http://oss.huizustore.com/4ed0cb1f26f1493e9be616631da3a3f9.png' />
-                </View>
-              </View>
-            )
-          }
-        </View>
-        <Form report-submit='true' onSubmit={this.formSubmit}>
-          <View className='home-channel' >
-              <Channel
-                formType='submit'
-                products={products}
-                // tab={info.tab}
-                oldNewDegreeList={oldNewDegreeList}
-                onGotoProduct={this.onGotoProduct}
-                onGoToMore={this.onGoToMore}
+          <View className='home-page'>
+            <View className='red_envelopes'>
+              <Image onClick={this.gotoRed} className='envelopes'  src='http://oss.huizustore.com/545b093f92ad4a77b50c39358f5b8082.png' />
+            </View>
+            {/* <favorite>收藏小程序，下次使用更方便</favorite> */}
+            <lifestyle publicId="2019011262875377" />
+            <View className='home-top'>
+              <Search
+                value=''
               />
-            {/*))}*/}
-          </View>
-        </Form>
-        <View className='query_modal'>
-          <AtModal isOpened={isOpened} className='content'>
-            <AtModalHeader>
-              <View className='title'>分类
-                <View className='close' onClick={this.close}>
-                  <Image className='close-img' src={require('../../images/home/close.png')} />
-                </View>
+              <View className='swiper'>
+                <swiper
+                  circular
+                  indicator-dots
+                  indicator-active-color='#DBDBDB'
+                  autoplay='{{true}}'
+                  interval='{{3000}}'
+                >
+                  {!!bannerList && !!bannerList.length && bannerList.map(banner => (
+                    <swiper-item key={banner.id}>
+                      <View className='item' onClick={this.onGoToMore.bind(this, banner.jumpUrl)}>
+                        <Image className='img' mode='aspectFit' src={banner.imgSrc} />
+                      </View>
+                    </swiper-item>
+                  ))}
+                </swiper>
               </View>
-            </AtModalHeader>
-            <AtModalContent>
+            </View>
+            <View className='home-flow'>
+              <View className='home-flow-box'>
+                <Image className='home-flow-box-img' mode='aspectFit' src={flowImg} />
+              </View>
+            </View>
+
+            <View className='home-menu'>
               {
-                tabArray.map(item => {
+                iconList && iconList.length && iconList.map((menu) => {
                   return (
-                    <View  onClick={this.switchTab.bind(this, item,'modal')}  key={item.id} id={item.id} className='container'>
-                      <Text
-                        // className='text'
-                        className={`text ${shopType === item.name && 'text-active'}`}
-                      >
-                        {item.name}
-                      </Text>
+                    <View key={menu.id} className='home-menu-view' onClick={this.handleGotoClassify.bind(this, menu.jumpUrl)}>
+                      <View className='home-menu-view-box'>
+                        <Image className='home-menu-view-box-img' mode='aspectFit' src={menu.imgSrc} />
+                      </View>
+                      <Text className='home-menu-view-text'>{menu.iconName}</Text>
                     </View>
                   )
                 })
               }
-            </AtModalContent>
-          </AtModal>
-        </View>
-        <View className='home-bottom'>
-          <Text className='text'> - 再拖就没有了 - </Text>
-        </View>
-        {/*<TagPage*/}
-        {/*  onClick={this.shareFetchAuth}*/}
-        {/*  onClose={this.shareOnClose}*/}
-        {/*  isOpened={isTagOpened}*/}
-        {/*  data='http://oss.huizustore.com/09ed26c0f6e543e8b15578c44a121b93.png'*/}
-        {/*/>*/}
+            </View>
+            { waterbanner && waterbanner.length &&(
+              <View className='extension'>
+                <View className='item-view-spe' onClick={this.onGoWater.bind(this,waterbanner[0].jumpUrl)} >
+                  <Image className='item-img' src={waterbanner[0].imgUrl} />
+                </View>
+                <View className='item'>
+                  <View className='item-view' onClick={this.onGoWater.bind(this,waterbanner[1].jumpUrl)} >
+                    <Image className='item-img' src={waterbanner[1].imgUrl} />
+                  </View>
+                  <View className='item-view mt15' onClick={this.onGoWater.bind(this,waterbanner[2].jumpUrl)}>
+                    <Image  className='item-img' src={waterbanner[2].imgUrl} />
+                  </View>
+                </View>
+              </View>
+            )}
+            <View className='home-share ' onClick={this.skip.bind(this, loinBanner)}>
+              <Image className='home-share-img' mode='aspectFit' src={loinBanner[0].imgSrc} />
+            </View>
+            <View
+              className={`tabs-list ${scrollTop <= 0 && 'tabs-list-fixed' }`}
+            >
+              <View>
+                <ScrollView
+                  // scrollIntoView={shopType}
+                  className={`shop-list-nav ${scrollTop <= 0 && 'shop-list-nav-fixed'}`}
+                  // scrollWithAnimation
+                  scrollX
+                  id='id'
+                >
+                  {
+                    tabList.map(item => {
+                      return (
+                        <View  onClick={this.switchTab.bind(this, item)}  key={item.id} id={item.id} className='shop-nav-container'>
+                          <Text
+                            // className='text'
+                            className={`text ${shopType === item.id  && 'text-active'}`}
+                          >
+                            {item.name}
+                          </Text>
+                        </View>
+                      )
+                    })
+                  }
+                </ScrollView>
+              </View>
+              {scrollTop<=0?
+                (
+                  <View>
+                    <View className='switch' onClick={this.toggleFilter}>
+                      <Image  className='switch-img' src='http://oss.huizustore.com/d2493a3b85424499843739321575ea3b.png' />
+                    </View>
+                  </View>
+                ):
+                (
+                  <View>
+                    <View className='switch' onClick={this.toggleFilter}>
+                      <Image  className='switch-img' src='http://oss.huizustore.com/4ed0cb1f26f1493e9be616631da3a3f9.png' />
+                    </View>
+                  </View>
+                )
+              }
+            </View>
+            <Form report-submit='true' onSubmit={this.formSubmit}>
+              <View className='home-channel' >
+                <Channel
+                  formType='submit'
+                  products={products}
+                  // tab={info.tab}
+                  oldNewDegreeList={oldNewDegreeList}
+                  onGotoProduct={this.onGotoProduct}
+                  onGoToMore={this.onGoToMore}
+                />
+                {/*))}*/}
+                {pageNum * pageSize - total >= 0 && (
+                  <View className='home-bottom'>
+                    <Text className='text'> - 我们是有底线的 - </Text>
+                  </View>
+                )}
+              </View>
+            </Form>
+            <View className='query_modal'>
+              <AtModal isOpened={isOpened} className='content'>
+                <AtModalHeader>
+                  <View className='title'>分类
+                    <View className='close' onClick={this.close}>
+                      <Image className='close-img' src={require('../../images/home/close.png')} />
+                    </View>
+                  </View>
+                </AtModalHeader>
+                <AtModalContent>
+                  {
+                    tabList.map(item => {
+                      return (
+                        <View  onClick={this.switchTab.bind(this, item,'modal')}  key={item.id} id={item.id} className='container'>
+                          <Text
+                            // className='text'
+                            className={`text ${shopType === item.id && 'text-active'}`}
+                          >
+                            {item.name}
+                          </Text>
+                        </View>
+                      )
+                    })
+                  }
+                </AtModalContent>
+              </AtModal>
+            </View>
+            {/*<View className='home-bottom'>*/}
+            {/*  <Text className='text'> -  - </Text>*/}
+            {/*</View>*/}
+            {/*<TagPage*/}
+            {/*  onClick={this.shareFetchAuth}*/}
+            {/*  onClose={this.shareOnClose}*/}
+            {/*  isOpened={isTagOpened}*/}
+            {/*  data='http://oss.huizustore.com/09ed26c0f6e543e8b15578c44a121b93.png'*/}
+            {/*/>*/}
+          </View>
+        </ScrollView>
       </View>
     )
   }

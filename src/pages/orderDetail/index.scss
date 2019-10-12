@@ -122,7 +122,7 @@ page {
           }
         }
       }
-    } 
+    }
   }
 
   @mixin lp($color: #999999, $rightSize: 28px, $rightWeight:bold, $leftSize: 28px){
@@ -157,10 +157,58 @@ page {
     .gray-info {
       @include lp(#999, 30px);
     }
+    .buyout{
+      margin: 20px 0 0 0;
+      .item{
+        @include fj(space-between);
+        //padding: 6px 0 ;
+        @include wh(690px,60px);
+        align-items: center;
+        //justify-content: center;
+        margin: 0 auto;
+        font-size:26px;
+        font-weight:500;
+        color:rgba(51,51,51,1);
+        .frozen{
+          color:rgba(159,159,159,1);
+          //color: red;
+        }
+        &-left{
+
+        }
+        &-right{
+
+        }
+      }
+    }
+    .buy-con{
+      border-top: 2px solid #F5F5F5;
+      .item{
+        @include fj(space-between);
+        //padding: 6px 0 ;
+        @include wh(690px,60px);
+        align-items: center;
+        //justify-content: center;
+        margin: 0 auto;
+        font-size:24px;
+        font-weight:500;
+        color:rgba(51,51,51,1);
+        .frozen{
+          color:rgba(159,159,159,1);
+          //color: red;
+        }
+        &-left{
+
+        }
+        &-right{
+
+        }
+      }
+    }
     .black-info {
       @include lp(#333333, 30px);
     }
-    
+
     .dividing {
       height: 1px;
       border-bottom: 1px #E4E4E4 solid;

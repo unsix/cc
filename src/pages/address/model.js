@@ -17,6 +17,12 @@ export default {
         });
       }
     },
+    * saveZhifubaoAddress({payload,callback}, { call, put }) {
+      const res = yield call(addressApi.saveZhifubaoAddress, { ...payload,uid: getUid() });
+      if (res) {
+        callback()
+      }
+    },
     * effectsDemo(_, { call, put }) {
       const { status, data } = yield call(addressApi.demo, {});
       if (status === 'ok') {

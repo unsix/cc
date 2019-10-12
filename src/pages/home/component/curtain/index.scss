@@ -8,6 +8,20 @@
     text-align: center;
     .box{
       @include wh(100%,605px);
+      position: relative;
+    }
+    .authorize{
+      position: absolute;
+      bottom: 50px;
+      left:168px;
+      @include wh(270px,64px);
+      background-image: linear-gradient(180deg, #5858BF 0%, #353575 100%);
+      border-radius: 32px;
+      text-align: center;
+      line-height: 64px;
+      font-family: PingFangSC-Medium;
+      font-size: 24px;
+      color: #FFFFFF;
     }
     .img{
       @include wh(428px,605px);

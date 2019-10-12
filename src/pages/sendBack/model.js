@@ -12,7 +12,6 @@ export default {
     expressName: null,
     expressNo: null,
   },
-
   effects: {
     * fetchExpressList(_, { call, put }) {
       const res = yield call(sendBackApi.expressList);
@@ -42,6 +41,10 @@ export default {
           payload: nextStatus,
         });
         yield put({
+          type: 'renewal/setOrderStatus',
+          payload: nextStatus,
+        });
+        yield put({
           type: 'orderList/setOrderStatus',
           payload: {
             orderId: payload.orderId,
@@ -66,7 +69,6 @@ export default {
       }
     },
   },
-
   reducers: {
     saveProductAndOrder(state, { payload }) {
       return {
@@ -111,5 +113,4 @@ export default {
       return { ...state, ...payload };
     },
   },
-
 };

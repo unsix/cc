@@ -138,22 +138,54 @@ page {
       }
     }
   }
-    .deposit-des {
-      background-color: #fff;
-      padding: 30px ;
-      line-height: 40px;
-      color: #0199FE;
-      font-size: 24px;
+  .deposit-des {
+    background-color: #fff;
+    padding: 30px ;
+    line-height: 40px;
+    color: #0199FE;
+    font-size: 24px;
+  }
+  .deposit:nth-child(2){
+    padding: 0 ;
+  }
+  .deposit{
+    margin-top: 0;
+    padding-top: 0;
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+  }
+  .deposit-info-buy {
+    margin: 20px 0 0 0;
+    background-color: #fff;
+    //padding: 30px;
+    //border-bottom: 1px #E4E4E4 solid;
+    box-sizing: border-box;
+    .item {
+      box-sizing: border-box;
+      @include fj(space-between);
+      //@include wh(690px,90px);
+      padding: 30px;
+      align-items: center;
+      color: #333;
+      font-size: 28px;
+      .price {
+        font-weight: 600;
+      }
     }
-    .deposit:nth-child(2){
-      padding: 0 ;
+    .frozen{
+      border-top: 1px #E4E4E4 solid;
+      font-size:24px;
+      color:rgba(159,159,159,1);
     }
-    .deposit{
-      margin-top: 0;
-      padding-top: 0;
-      margin-bottom: 30px;
-      padding-bottom: 30px;
-    }
+  }
+  //.deposit-des-buy {
+  //  background-color: #fff;
+  //  padding: 30px ;
+  //  line-height: 40px;
+  //  color: #0199FE;
+  //  font-size: 24px;
+  //  margin: 20px 0 0 0;
+  //}
   .real-name {
     background-color: #fff;
     border-top: 1px #FFC1C1 solid;
@@ -228,4 +260,3 @@ page {
     }
   }
 }
-

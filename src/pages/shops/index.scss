@@ -82,6 +82,12 @@ page {
           color: #333;
           font-size: 26px;
           margin-bottom: 16px;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          overflow: hidden;
+          line-height: 40px;
+          width: 250px;
         }
         .rent-info {
           color: #999;

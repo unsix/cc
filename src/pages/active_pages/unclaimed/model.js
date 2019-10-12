@@ -53,7 +53,7 @@ export default {
     },
     //form id
     * userFormIdPool({payload,callback},{call,put}){
-      const res =  yield call(claimedApi.userFormIdPool, { ...payload, sysUserId: getUid()});
+      const res =  yield call(claimedApi.userFormIdPool, { ...payload, sysUserId: getUid(),channel:3});
       if (res) {
         // if(res.code === 1){
         //

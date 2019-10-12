@@ -1,13 +1,21 @@
 @import "../../../../styles/mixin";
 .search-com {
   //position: relative;
-  margin: 13px 0 12px 0;
+  //position: absolute;
+  //top: 0;
+  box-sizing: border-box;
+  width: 750px;
+  //padding: 30px 0 30px 0;
   display: flex;
+  justify-content: center;
   .search_r{
-    @include wh(572px,auto);
+    @include wh(638px,auto);
     position: relative;
+    background: none;
+    border-radius:31px;
+    background:rgba(255,255,255,0.78);
     .search-icon {
-      @include wh(50px,50px);
+      @include wh(27px,27px);
       position: absolute;
       top: 33px;
       left: 20px;
@@ -15,19 +23,26 @@
     }
   }
   .class-img{
-    margin: 0 30px;
-    @include wh(42px,70px);
+    margin:  5px 0 0 30px;
+    @include wh(42px,30px);
+  }
+  .class-text{
+    margin:  0 0 0 32px;
+    font-size:18px;
+    font-family:PingFang-SC-Bold;
+    font-weight:bold;
+    color: #fff;
   }
   .search-input {
     display: block;
-    width: 100%;
-    height: 66px;
+    @include wh(638px,auto);
+    height: 64px;
     line-height: 72px;
-    border-radius: 72px;
-    padding: 10px 30px;
     box-sizing: border-box;
     padding-left: 70px;
     font-size: 23.49px;
     color: #9F9F9F;
+    border-radius:31px!important;
+    background: none;
   }
 }

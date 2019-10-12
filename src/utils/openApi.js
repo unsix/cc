@@ -1,14 +1,43 @@
-import Taro from '@tarojs/taro';
+
 import { getUid } from './localStorage';
 import { baseUrl } from '../config';
 export const getAuthCode = () => {
   return new Promise((res, rej) => {
     my.getAuthCode({
-      scopes: 'auth_user',
+      scopes: 'auth_base',
       success: (data) => {
         res(data);
+        // console.log(data,'============auth')
       },
       fail: (data) => {
+        rej(data);
+      },
+    });
+  });
+}
+
+export const getOpenUserInfo = () => {
+  return new Promise((res, rej) => {
+    my.getOpenUserInfo({
+      success: (data) => {
+        res(data);
+        // console.log(res(data),res,'==============')
+      },
+      fail: (data) => {
+        rej(data);
+      },
+    });
+  });
+}
+export const getPhoneNumber = () => {
+  return new Promise((res, rej) => {
+    my.getPhoneNumber({
+      success: (data) => {
+        res(data.response);
+      },
+      fail: (data) => {
+        // console.log(data);
+        // console.log('getPhoneNumber_fail');
         rej(data);
       },
     });
@@ -29,19 +58,19 @@ export const tradePay = (key, orderStr) => {
     my.tradePay(obj);
   });
 }
- 
+
 export const apNsf = (context) => {
   return new Promise((res, rej) => {
     const obj = {
-      pid: '2088431153943214',
-      appId: '2019011162880259',
+      pid: '2088431914594550',
+      appId: '2019051965009493";',
       bizContext: {
         risk_type: 'riskinfo_nsf_common',
-        pid: '2088431153943214',
+        pid: '2088431914594550',
         ...context,
       },
       success: (data) => {
-        console.log(data)
+        // console.log(data)
         // let objc = {
         //   uid:getUid(),
         //   riskResult:data.riskResultDesc,

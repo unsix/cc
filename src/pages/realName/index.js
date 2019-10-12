@@ -2,13 +2,14 @@ import Taro, { Component } from '@tarojs/taro';
 import { View, Input, Image, Form, Button } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import { baseUrl } from '../../config/index';
-import { getUid, getTelephone, getUserName } from '../../utils/localStorage';
+import { getUid, getTelephone, getUserName, setTelephone } from '../../utils/localStorage'
 import './index.scss';
 
 @connect(({ realName, loading }) => ({
   ...realName,
   loading: loading.models.realName,
 }))
+
 class Realname extends Component {
   config = {
     navigationBarTitleText: '实名认证',
@@ -19,11 +20,7 @@ class Realname extends Component {
 
   state = {
     validateImage: `${baseUrl}aliPay/user/certification/validateCode?uid=${getUid()}`,
-    userName: null,
-    smsCode: null,
     mobile: null,
-    idcard: null,
-    codeKey: null,
     validateCode: null,
     count: 0,
   }
@@ -53,9 +50,9 @@ class Realname extends Component {
   }
 
   submitSmsCode = () => {
-    const { dispatch } = this.props
+    const { dispatch ,telephone} = this.props
     const { mobile, validateCode } = this.state;
-    const newMob = mobile || getTelephone();
+    const newMob = mobile || getTelephone() || telephone;
     if (!newMob) {
       this.showToast('手机号不能为空');
       return;
@@ -71,6 +68,7 @@ class Realname extends Component {
         type: 'realName',
         code: validateCode.toUpperCase(),
         uid: getUid(),
+        channel:2
       },
       callback: (res) => {
         this.reloadValidate();
@@ -94,7 +92,7 @@ class Realname extends Component {
 
   formSubmit = (e) => {
     const { userName, idcard, mobile, smsCode } = e.detail.value;
-    const { dispatch, codeTime, codeKey } = this.props;
+    const { dispatch, codeTime, codeKey ,telephone} = this.props;
     let formId = e.detail.formId
     dispatch({
       type:'unclaimed/userFormIdPool',
@@ -103,7 +101,7 @@ class Realname extends Component {
         userFormId:formId
       }
     })
-    if (!userName) {
+    if (!userName  ) {
       this.showToast('请输入姓名');
       return;
     }
@@ -112,11 +110,11 @@ class Realname extends Component {
       return;
     }
     if(!getTelephone()){
-      if (!mobile || mobile.length !== 11) {
+      if ((!mobile && !telephone ) || mobile.length !== 11) {
         this.showToast('请输入正确的手机号');
         return;
       }
-      if (!smsCode) {
+      if (!smsCode && !telephone) {
         this.showToast('请输入短信验证码');
         return;
       }
@@ -125,7 +123,7 @@ class Realname extends Component {
       dispatch({
         type: 'realName/userCertificationAuth',
         payload: {
-          userName, idcard, codeTime, codeKey,
+          userName, idcard, codeTime, codeKey,channel:2,
           // mobile:getTelephone(),
           uid: getUid(),
         },
@@ -138,7 +136,7 @@ class Realname extends Component {
       dispatch({
         type: 'realName/userCertificationAuth',
         payload: {
-          userName, idcard, mobile, smsCode, codeTime, codeKey,
+          userName, idcard, mobile:mobile?mobile:telephone, smsCode, codeTime, codeKey,channel:2,
           uid: getUid(),
         },
         callback: () => {
@@ -148,10 +146,14 @@ class Realname extends Component {
     }
   }
 
-
-
+  onGetAuthorizePhone = () => {
+    const  { dispatch } = this.props
+    dispatch({
+      type:'realName/getPhoneNumber'
+    })
+  }
   render() {
-    const { loading } = this.props;
+    const { loading ,telephone} = this.props;
     const { validateImage, count } = this.state;
     // eslint-disable-next-line no-undef
     loading ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
@@ -160,30 +162,47 @@ class Realname extends Component {
         <View className='realName-page'>
           <View className='content'>
             <View className='content-item'>
+            </View>
+            <View className='content-item'>
               <View>姓名</View>
-              <Input className='content-item-input' placeholder='请输入姓名' disabled value={getUserName()} name='userName' />
+              {getUserName()?
+                (
+                  <Input className='content-item-input'  placeholder='请输入姓名' disabled value={getUserName()} name='userName' />
+                )
+                :
+                (
+                  <Input className='content-item-input'  placeholder='请输入姓名'  name='userName' />
+                )
+              }
             </View>
             <View className='content-item'>
               <View>身份证</View>
               <Input className='content-item-input' placeholder='请输入18位身份证号' name='idcard' />
             </View>
-            {!getTelephone()?
+            {!getTelephone() && !telephone?
               (
-              <View className='content-item'>
-                <View>手机号</View>
-                <Input className='content-item-input' placeholder='请输入手机号' value={getTelephone()} name='mobile' onInput={this.handleMobile} />
-              </View>
+                <View className='content-item'>
+                  <Button
+                    className='phone-btn'
+                    open-type="getAuthorize"
+                    scope='phoneNumber'
+                    onClick={this.onGetAuthorizePhone}
+                  >
+                    点击获取手机号
+                  </Button>
+                  <Input className='content-item-input' placeholder='请输入手机号' value={telephone} name='mobile' onInput={this.handleMobile} />
+                </View>
               )
               :
               (
                 <View className='content-item'>
                   <View>已绑定手机号</View>
-                  <Input className='content-item-input' placeholder='请输入手机号' value={getTelephone()} name='mobile' disabled />
+                  <Input className='content-item-input' placeholder='请输入手机号' value={getTelephone()?getTelephone():telephone} name='mobile' disabled />
                 </View>
               )
             }
             {
-              !getTelephone()?
+              !getTelephone() && !telephone?
                 (
                   <View>
                     <View className='content-item'>
@@ -216,7 +235,7 @@ class Realname extends Component {
                           )}
                       </View>
                     </View>
-                 </View>
+                  </View>
                 )
                 :
                 null

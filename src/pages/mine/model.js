@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro';
 import * as mineApi from './service';
-import { getAuthCode, apNsf } from '../../utils/openApi';
-import { setUid, setBuyerId, setUserName, setTelephone, getUid } from '../../utils/localStorage';
+import { getAuthCode, apNsf ,getOpenUserInfo} from '../../utils/openApi';
+import { setUid, setBuyerId, setUserName, setTelephone, getUid ,setAvatar} from '../../utils/localStorage';
 
 export default {
   namespace: 'mine',
@@ -11,7 +11,6 @@ export default {
   },
 
   effects: {
-
     * fetchAuthCode({ callback }, { call, put }) {
         let res = null;
         try {
@@ -22,27 +21,78 @@ export default {
             icon: 'none',
           });
         }
-
-      if (res) {
-        const exeRes = yield call(mineApi.exemptLogin, { authCode: res.authCode });
-        if (exeRes) {
-          yield put({
-            type: 'saveUser',
-            payload: exeRes.data,
-          });
-          //userrisk
-          const apRes = yield apNsf({
-            user_id: exeRes.data.userId,
-            mobile_no: exeRes.data.telephone || 'null',
-          })
-          // console.log('=====', apRes);
-        }
-        if (callback) {
-          callback();
-        };
+        if (res) {
+          const obj = {
+            authCode: res.authCode,
+            type:3
+          }
+          let newObj = null
+          try {
+            newObj = yield getOpenUserInfo();
+          } catch (e) {
+            Taro.showToast({
+              title: '授权失败，请重试',
+              icon: 'none',
+            });
+          }
+          if(newObj){
+           let userInfo = JSON.parse(newObj.response).response
+           let alipayUserInfoNewDTO = {
+             authCode:obj.authCode,
+             type:3,
+             avatar:userInfo.avatar ,
+             city: userInfo.city,
+             gender:userInfo.gender ,
+             nickName: userInfo.nickName,
+             province: userInfo.province,
+           }
+            const exeRes = yield call(mineApi.exemptLoginNew, { ...alipayUserInfoNewDTO});
+            if (exeRes) {
+              yield put({
+                type: 'saveUser',
+                payload: exeRes.data,
+              });
+              //userrisk
+              // const apRes = yield apNsf({
+              //   user_id: exeRes.data.userId,
+              //   mobile_no: exeRes.data.telephone || 'null',
+              // })
+              // console.log('=====', apRes);
+              if (callback){
+                callback()
+              }
+            }
+          }
       }
     },
-
+    * fetchAuthCodeProduct({ callback }, { call, put }) {
+      let res = null;
+      try {
+        res = yield getAuthCode();
+      } catch (e) {
+        Taro.showToast({
+          title: '授权失败，请重试',
+          icon: 'none',
+        });
+      }
+      if (res) {
+        const obj = {
+          authCode: res.authCode,
+          type:3
+        }
+          const exeRes = yield call(mineApi.exemptLoginNew, { ...obj});
+          if (exeRes) {
+            yield put({
+              type: 'saveUser',
+              payload: exeRes.data,
+            });
+            if (callback){
+              callback()
+            }
+          // }
+        }
+      }
+    },
     * recommendPoductList(_, { call, put }) {
       const res = yield call(mineApi.recommendPoductList);
       if (res) {
@@ -92,6 +142,7 @@ export default {
 
   reducers: {
     saveUser(state, { payload }) {
+      setAvatar(payload.avatar),
       setUserName(payload.userName);
       setTelephone(payload.telephone);
       setUid(payload.uid);

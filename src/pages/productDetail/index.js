@@ -8,8 +8,10 @@ import { customerServiceTel } from '../../assets/Constant';
 
 import ParseComponent from './wxParseComponent'
 import NoData from '../../components/noData/index'
+import {  getUid } from '../../utils/localStorage';
 
 import './index.scss';
+import TagPage from '../home/component/curtain'
 let  isclick = true;
 @connect(({ productDetail, loading }) => ({
   ...productDetail,
@@ -19,7 +21,7 @@ let  isclick = true;
 }))
 class Productdetail extends Component {
   config = {
-    navigationBarTitleText: '惠租',
+    navigationBarTitleText: '刺猬优租',
     usingComponents: {
       "popup": "../../npm/mini-antui/es/popup/index",
       "modal": "../../npm/mini-antui/es/modal/index",
@@ -65,7 +67,7 @@ class Productdetail extends Component {
     //   },
     // });
     my.navigateToMiniProgram({
-      appId: '2018122562686742',
+      appId: '2019080566123044',
       path: 'pages/index/index?originAppId=2019011162880259&newUserTemplate=20190428000000168854'
     });
   }
@@ -89,7 +91,6 @@ class Productdetail extends Component {
       }, 500);
 
     }
-
   }
   onSKUPopupClose = () => {
     this.setState({ showSKUPopup: false });
@@ -121,7 +122,7 @@ class Productdetail extends Component {
     const { dispatch } = this.props
     const { itemId } = this.$router.params
     dispatch({
-      type: 'mine/fetchAuthCode',
+      type: 'mine/fetchAuthCodeProduct',
       callback:()=> {
         this.setState({ showCoupons: true });
         dispatch({
@@ -143,7 +144,7 @@ class Productdetail extends Component {
   }
 
   handleSkuClick = (valueId, preId) => {
-    console.log(valueId,preId)
+    // console.log(valueId,preId)
     if (valueId === preId) {
       return
     }
@@ -155,7 +156,7 @@ class Productdetail extends Component {
   }
 
   handleDayChange = (days) => {
-    console.log(days)
+    // console.log(days)
     const { dispatch } = this.props;
     // console.log(days)
     dispatch({
@@ -241,13 +242,13 @@ class Productdetail extends Component {
       logisticId: '',
       uid: 'abc',
       logisticForm: '1',
-      from: '1',
+      from: '3',
     };
     // console.log(obj)
     // return false;
     Taro.setStorageSync(`isShow`, 0);
     dispatch({
-      type: 'mine/fetchAuthCode',
+      type: 'mine/fetchAuthCodeProduct',
       callback:()=>{
         dispatch({
           type:'unclaimed/userFormIdPool',
@@ -309,7 +310,7 @@ class Productdetail extends Component {
   }
   gotodetail = (id) =>{
     // console.log(id,'shjkhd')
-    
+
     Taro.navigateTo({
       url: `/pages/productDetail/index?itemId=${id}`
     })
@@ -320,10 +321,10 @@ class Productdetail extends Component {
     my.makePhoneCall({ number: num });
   }
   //会员
-    member = () => {
-      Taro.navigateTo({
-        url: '/pages/member/home/index'
-      })
+  member = () => {
+    Taro.navigateTo({
+      url: '/pages/member/home/index'
+    })
   }
   //优惠劵更多
   GoMoreCoupon = () => {
@@ -346,9 +347,11 @@ class Productdetail extends Component {
     const { showzimServicePopup, showSKUPopup, showServicePopup, showServicePhone, showCoupons, showAdditionalPopup, mainActive, editRentDays, daysValue ,display } = this.state;
     const { loading, orderLoading, mineLoading, detail, currentSku, oldNewDegreeList, serviceMarkList, currentDays, advancedDays, startDay, saveServers, recommendproductsList, images_ismain ,processRule,productCoupon} = this.props;
 
-    currentSku.cyclePrices && currentSku.cyclePrices.sort(function (a, b) {
-      return a.days - b.days;
-    })
+    if(currentSku.cyclePrices && currentSku.cyclePrices.length>2){
+      currentSku.cyclePrices && currentSku.cyclePrices.sort(function (a, b) {
+        return a.days - b.days;
+      })
+    }
     let currentValidCyclePrices = [];
     if (currentSku.cyclePrices && currentSku.cyclePrices.length) {
       currentValidCyclePrices = currentSku.cyclePrices.filter(function (info) {
@@ -362,7 +365,7 @@ class Productdetail extends Component {
     }
     // console.log(totelRentPrice)
     let couponValue = 0;
-    if (detail.allCoupons && detail.allCoupons.length) {
+    if (!!detail.allCoupons && !!detail.allCoupons.length) {
       couponValue = detail.allCoupons[0].value.toFixed(2);
     } else if (detail.platformCoupon && detail.platformCoupon.length) {
       couponValue = detail.platformCoupon[0].value.toFixed(2);
@@ -372,9 +375,9 @@ class Productdetail extends Component {
     (loading || orderLoading || mineLoading  ) ? my.showLoading({ constent: '加载中...' }) : my.hideLoading();
     return (
       <View className='productDetail-page'>
-        <View className='red_envelopes'>
-          <Image onClick={this.gotoRed} className='envelopes'  src='http://oss.huizustore.com/545b093f92ad4a77b50c39358f5b8082.png' />
-        </View>
+        {/*<View className='red_envelopes'>*/}
+        {/*  <Image onClick={this.gotoRed} className='envelopes'  src='http://oss.huizustore.com/545b093f92ad4a77b50c39358f5b8082.png' />*/}
+        {/*</View>*/}
         <View className='swiper'>
           <swiper
             circular
@@ -405,16 +408,16 @@ class Productdetail extends Component {
                 }
               </Text>
               <Text className='unit'>/天</Text>
-              <Text className='member-price'>
-                <Text >¥</Text>
-                {(Math.round(currentSku.currentCyclePrice.price*detail.membersDisCount * 100) / 100)}/天
-                <Image className='img' src='http://oss.huizustore.com/89326548e3dd4672985b27d8434da7d3.png' />
-              </Text>
+              {/*<Text className='member-price'>*/}
+              {/*  <Text >¥</Text>*/}
+              {/*  {(Math.round(currentSku.currentCyclePrice.price*detail.membersDisCount * 100) / 100)}/天*/}
+              {/*  <Image className='img' src='http://oss.huizustore.com/89326548e3dd4672985b27d8434da7d3.png' />*/}
+              {/*</Text>*/}
             </View>
             <View>
               <View className='dec_situation'>
                 <View className='volume'>{detail.minRentCycle}天起租</View>
-                <View className='volume'>会员折扣</View>
+                {/*<View className='volume'>会员折扣</View>*/}
               </View>
             </View>
           </View>
@@ -430,114 +433,149 @@ class Productdetail extends Component {
             </Text>
           </View>
         </View>
-        <View className='swiper-info'>
-          <View className='item' onClick={this.member}>
-            <Image className='img' mode='aspectFit' src='http://oss.huizustore.com/763cc18011114328986e206b649c5ef0.png' />
+        {/*{detail.vipurlbanner && (*/}
+        {/*  <View className='swiper-info'>*/}
+        {/*    <View className='item' onClick={this.member}>*/}
+        {/*      <Image className='img' src={detail.vipurlbanner} />*/}
+        {/*    </View>*/}
+        {/*  </View>*/}
+        {/*)}*/}
+        <View className='receive-info'>
+          {getUid()?
+            (
+              <View  className='receive-info-coupon' onClick={this.onShowCoupons}>
+                <View className='receive-info-coupon-title'>
+                  领劵
+                </View>
+                <View className='receive-info-coupon-dec'>
+                  {detail.maxplatformCoupon && (
+                    <View className='receive-info-coupon-dec-con'>
+                      <View className='name'>满{detail.maxplatformCoupon.minPurchase}减{detail.maxplatformCoupon.value}</View>
+                      <View className='type'>平台劵</View>
+                    </View>
+                  )}
+                  {detail.maxShopCoupons && (
+                    <View className='receive-info-coupon-dec-con'>
+                      <View className='name'>满{detail.maxShopCoupons.minPurchase}减{detail.maxShopCoupons.value}</View>
+                      <View className='type'>店铺劵</View>
+                    </View>
+                  )}
+                  {!detail.maxplatformCoupon && !detail.maxShopCoupons && (
+                    <View className='receive-info-coupon-dec-con'>
+                      <View className='name'>暂无优惠劵</View>
+                      <View className='type'>可用</View>
+                    </View>
+                  )}
+                </View>
+                <View className='spot' />
+              </View>
+            )
+            :
+            (
+              <Button  className='receive-info-coupon' onClick={this.onShowCoupons}>
+                <View className='receive-info-coupon-title'>
+                  领劵
+                </View>
+                <View className='receive-info-coupon-dec'>
+                  {detail.maxplatformCoupon && (
+                    <View className='receive-info-coupon-dec-con'>
+                      <View className='name'>满{detail.maxplatformCoupon.minPurchase}减{detail.maxplatformCoupon.value}</View>
+                      <View className='type'>平台劵</View>
+                    </View>
+                  )}
+                  {detail.maxShopCoupons && (
+                    <View className='receive-info-coupon-dec-con'>
+                      <View className='name'>满{detail.maxShopCoupons.minPurchase}减{detail.maxShopCoupons.value}</View>
+                      <View className='type'>店铺劵</View>
+                    </View>
+                  )}
+                  {!detail.maxplatformCoupon && !detail.maxShopCoupons && (
+                    <View className='receive-info-coupon-dec-con'>
+                      <View className='name'>暂无优惠劵</View>
+                      <View className='type'>可用</View>
+                    </View>
+                  )}
+                </View>
+                <View className='spot' />
+              </Button>
+            )
+          }
+          <View className='receive-info-deliver'>
+            <View className='receive-info-deliver-title'>
+              发货
+            </View>
+            <View className='receive-info-deliver-dec'>
+              运费：到付
+            </View>
+            <View className='receive-info-deliver-volume'>销量 {detail.salesVolume}</View>
           </View>
         </View>
-          <View className='receive-info'>
-            <View className='receive-info-coupon' onClick={this.onShowCoupons}>
-              <View className='receive-info-coupon-title'>
-                领劵
-              </View>
-              <View className='receive-info-coupon-dec'>
-                {detail.maxplatformCoupon && (
-                  <View className='receive-info-coupon-dec-con'>
-                    <View className='name'>满{detail.maxplatformCoupon.minPurchase}减{detail.maxplatformCoupon.value}</View>
-                    <View className='type'>平台劵</View>
-                  </View>
-                )}
-                {detail.maxShopCoupons && (
-                  <View className='receive-info-coupon-dec-con'>
-                    <View className='name'>满{detail.maxShopCoupons.minPurchase}减{detail.maxShopCoupons.value}</View>
-                    <View className='type'>店铺劵</View>
-                  </View>
-                )}
-                {!detail.maxplatformCoupon && !detail.maxShopCoupons && (
-                  <View className='receive-info-coupon-dec-con'>
-                    <View className='name'>暂无优惠劵</View>
-                    <View className='type'>可用</View>
-                  </View>
-                )}
-              </View>
-              <View className='spot' />
-            </View>
-            <View className='receive-info-deliver'>
-              <View className='receive-info-deliver-title'>
-                发货
-              </View>
-              <View className='receive-info-deliver-dec'>
-                运费：到付
-              </View>
-              <View className='receive-info-deliver-volume'>销量 {detail.salesVolume}</View>
-            </View>
+        <View className='rental-procedure'>
+          <View className='rental-procedure-title'>
+            租赁流程
           </View>
-          <View className='rental-procedure'>
-            <View className='rental-procedure-title'>
-              租赁流程
-            </View>
-            <View className='rental-procedure-image'>
-              <Image className='img' src='http://oss.huizustore.com/b182cdb14827419982f12beaa81a727f.png' />
-            </View>
-            <View>
-              <collapse
-                className="demo-collapse"
+          <View className='rental-procedure-image'>
+            <Image className='img' src='http://oss.huizustore.com/b182cdb14827419982f12beaa81a727f.png' />
+          </View>
+          <View>
+            <collapse
+              className="demo-collapse"
+              collapseKey="collapse2"
+              activeKey="{{['item-21', 'item-23']}}"
+              onChange="onChange"
+              accordion="{{true}}"
+            >
+              <collapse-item
+                className='collapse'
+                itemKey="item-21"
                 collapseKey="collapse2"
-                activeKey="{{['item-21', 'item-23']}}"
-                onChange="onChange"
-                accordion="{{true}}"
               >
-                <collapse-item
-                  className='collapse'
-                  itemKey="item-21"
-                  collapseKey="collapse2"
-                >
-                  <view className="item-content content1">
-                    <View>
-                      <Image className='img_1' src='http://oss.huizustore.com/03415e9068cb48bfa87acc1060e9d26f.png' />
-                    </View>
-                    <View className='border'></View>
-                  </view>
-                </collapse-item>
-                <collapse-item
-                  itemKey="item-22"
-                  collapseKey="collapse2"
-                >
-                  <View className="item-content content2">
-                    <Image className='img_2' src='http://oss.huizustore.com/31f290eeb3da4fbab5b1c84b0a78d71a.png' />
-                    <View className='border'></View>
+                <view className="item-content content1">
+                  <View>
+                    <Image className='img_1' src='http://oss.huizustore.com/03415e9068cb48bfa87acc1060e9d26f.png' />
                   </View>
-                </collapse-item>
-                <collapse-item
-                  itemKey="item-23"
-                  collapseKey="collapse2"
-                >
-                  <View className="item-content content3">
-                    {detail.buyCyclePrices && !!detail.buyCyclePrices.length?
-                      (
-                        <View className='con'>
-                          <View className='left'>
-                            买断规则
-                          </View>
-                          <View className='right'>
-                            {detail.buyCyclePrices.map(item=>(
-                              <View className='text'>
-                                {item.days}天内 买断价格={detail.skus[0].marketPrice + item.price}-已付租金
-                              </View>
-                            ))}
-                          </View>
+                  <View className='border'></View>
+                </view>
+              </collapse-item>
+              <collapse-item
+                itemKey="item-22"
+                collapseKey="collapse2"
+              >
+                <View className="item-content content2">
+                  <Image className='img_2' src='http://oss.huizustore.com/31f290eeb3da4fbab5b1c84b0a78d71a.png' />
+                  <View className='border'></View>
+                </View>
+              </collapse-item>
+              <collapse-item
+                itemKey="item-23"
+                collapseKey="collapse2"
+              >
+                <View className="item-content content3">
+                  {detail.buyCyclePrices && !!detail.buyCyclePrices.length?
+                    (
+                      <View className='con'>
+                        <View className='left'>
+                          买断规则
                         </View>
-                      ):
-                      (
-                        <Image className='img_3' src='http://oss.huizustore.com/30785e4857e04fffb244dd0afda36012.png' />
-                      )
-                    }
-                    <View className='border'></View>
-                  </View>
-                </collapse-item>
-              </collapse>
-            </View>
+                        <View className='right'>
+                          {detail.buyCyclePrices.map(item=>(
+                            <View className='text'>
+                              {item.days}天内 买断价格={detail.skus[0].marketPrice + item.price}-已付租金
+                            </View>
+                          ))}
+                        </View>
+                      </View>
+                    ):
+                    (
+                      <Image className='img_3' src='http://oss.huizustore.com/bf1dd6a4264b461eb4ebcd6e6a3dd243.png' />
+                    )
+                  }
+                  <View className='border'></View>
+                </View>
+              </collapse-item>
+            </collapse>
           </View>
+        </View>
         <View className='shop'>
           <View className='avatar'>
             <Image className='img' src={detail.shop.logo} />
@@ -741,18 +779,18 @@ class Productdetail extends Component {
               <View className='home-img' />
               <View>首页</View>
             </View>
-            <View className='item' onClick={this.gotoWhere.bind(this, 'shop')}>
-              <View className='shop-img' />
-              <View>店铺</View>
-            </View>
+            {/*<View className='item' onClick={this.gotoWhere.bind(this, 'shop')}>*/}
+            {/*  <View className='shop-img' />*/}
+            {/*  <View>店铺</View>*/}
+            {/*</View>*/}
             <View className='item' onClick={this.onShowPhoneModal}>
               <View className='message-img' />
               <View>客服</View>
             </View>
           </View>
           <View className='right-area'>
-              {/*<View className='black-botton' onClick={this.onShareMember}>0元领会员</View>*/}
-              <View className='red-botton'   onClick={this.onShowSKUClick}>立即租赁</View>
+            {/*<View className='black-botton' onClick={this.onShareMember}>0元领会员</View>*/}
+            <View className='red-botton'   onClick={this.onShowSKUClick}>立即租赁</View>
           </View>
         </View>
         <popup show={showServicePopup} position='bottom' zIndex={999} disableScroll onClose={this.onServicePopupClose}>
@@ -775,128 +813,121 @@ class Productdetail extends Component {
         </popup>
         {/*<View className='popup-coupon'>*/}
         <View className='coupon-popup'>
-        <AtFloatLayout
-          isOpened={showCoupons}
-
-            // show='true'
-            // className='popup-coupon'
-            // position='bottom'
-            // zIndex={2002}
-          onClose={this.onCouponClose}
-            // onClose={this.onCouponClose}
-          // className='product-float'
-          className='product-float'
+          <AtFloatLayout
+            isOpened={showCoupons}
+            onClose={this.onCouponClose}
+            className='product-float'
           >
-              <View className='coupon-popup-close' onClick={this.onCouponClose}>
-                <Image className='coupon-popup-close-img' src='http://oss.huizustore.com/04cba394b2e843dd9c067ea40156d24e.png' />
+            <View className='coupon-popup-close' onClick={this.onCouponClose}>
+              <Image className='coupon-popup-close-img' src='http://oss.huizustore.com/04cba394b2e843dd9c067ea40156d24e.png' />
+            </View>
+            <View className='coupon-popup-title'>优惠券领取</View>
+            <View className='coupon-popup-dec'>
+              <View>
+                可领取优惠劵
               </View>
-              <View className='coupon-popup-title'>优惠券领取</View>
-              <View className='coupon-popup-dec'>
-                <View>
-                  可领取优惠劵
-                </View>
-                {/*<View onClick={this.GoMoreCoupon}>*/}
-                {/*  更多*/}
-                {/*  <Text className='bol'>*/}
-                {/*    >*/}
-                {/*  </Text>*/}
-                {/*</View>*/}
-              </View>
-              <ScrollView
-                scrollY
-                scrollTop='0'
-                scrollWithAnimation
-                className='coupon-popup-content'
-              >
-                {!!productCoupon && !!productCoupon.shopCoupon && !!productCoupon.shopCoupon.length>0 && productCoupon.shopCoupon.map(coupon => (
-                  <View className='coupon-popup-content-item' key={coupon.id}>
-                    <View className='coupon-popup-content-item-left'>
-                      <View><Text className='coupon-popup-content-item-price'><Text className='bol'>¥</Text>{coupon.value}</Text></View>
-                      <View>{coupon.name}</View>
-                    </View>
-                    <View className='coupon-popup-content-item-right'>
-                      <View className='coupon-popup-content-item-right-content'>
-                        <View className='coupon-popup-content-item-right-content-name'>店铺劵</View>
-                        <View className='coupon-popup-content-item-right-content-dec'>满{coupon.minPurchase}-{coupon.value}</View>
-                        {coupon.type===0 &&(
-                          <View>
-                            {!!coupon.end && (
-                              <View className='coupon-popup-content-item-right-content-time'>{coupon.start.substr(0, 10)}~{coupon.end.substr(0, 10)}</View>
-                            )}
-                          </View>
-                        )}
-                      </View>
-                      <View>
-                        {
-                          coupon.status === 0?
-                            (
-                              <View
-                                className='coupon-popup-content-item-right-draw'
-                                onClick={this.handleGetCoupon.bind(this, coupon.couponId)}
-                              >
-                                立即领取
-                              </View>
-                            ):
-                            (
-                              <View
-                                className='coupon-popup-content-item-right-draw coupon-popup-content-item-right-draw-al'
-                              >
-                                已领取
-                              </View>
-                            )
-                        }
-                      </View>
-                    </View>
-                  </View>
-                ))}
-                {!!productCoupon && !!productCoupon.platformCoupon && !!productCoupon.platformCoupon.length>0 && productCoupon.platformCoupon.map(coupon => (
-                  <View className='coupon-popup-content-item' key={coupon.id}>
-                    <View className='coupon-popup-content-item-left'>
-                      <View><Text className='coupon-popup-content-item-price'><Text className='bol'>¥</Text>{coupon.value}</Text></View>
-                      <View>{coupon.name}</View>
-                    </View>
-                    <View className='coupon-popup-content-item-right'>
-                      <View className='coupon-popup-content-item-right-content'>
-                        <View className='coupon-popup-content-item-right-content-name'>平台劵</View>
-                        <View className='coupon-popup-content-item-right-content-dec'>满{coupon.minPurchase}-{coupon.value}</View>
-                        {coupon.type===0 &&(
-                          <View>
-                            {!!coupon.end && (
-                              <View className='coupon-popup-content-item-right-content-time'>{coupon.start.substr(0, 10)}~{coupon.end.substr(0, 10)}</View>
-                            )}
-                          </View>
-                        )}
-                      </View>
-                      <View>
-                        {
-                          coupon.status === 0?
-                            (
-                              <View
-                                className='coupon-popup-content-item-right-draw'
-                                onClick={this.handleGetCoupon.bind(this, coupon.couponId)}
-                              >
-                                立即领取
-                              </View>
-                            ):
-                            (
-                              <View
-                                className='coupon-popup-content-item-right-draw coupon-popup-content-item-right-draw-al'
-                              >
-                                已领取
-                              </View>
-                            )
-                        }
-                      </View>
-                    </View>
-                  </View>
-                ))}
-                { productCoupon && !productCoupon.shopCoupon.length  && !productCoupon.platformCoupon.length  && (
-                  <NoData className='NoData' type='receive-coupon' display={display} />
-                )}
-              </ScrollView>
-              {/*<View className='coupon-popup-bottom'>*/}
-              {/*  <View className='coupon-popup-bottom-submit' onClick={this.onCouponClose}>确定</View>*/}
+              {/*<View onClick={this.GoMoreCoupon}>*/}
+              {/*  更多*/}
+              {/*  <Text className='bol'>*/}
+              {/*    >*/}
+              {/*  </Text>*/}
               {/*</View>*/}
+            </View>
+            <ScrollView
+              scrollY
+              scrollTop='0'
+              scrollWithAnimation
+              className='coupon-popup-content'
+            >
+              {!!productCoupon && !!productCoupon.shopCoupon && !!productCoupon.shopCoupon.length>0 && productCoupon.shopCoupon.map(coupon => (
+                <View className='coupon-popup-content-item' key={coupon.id}>
+                  <View className='coupon-popup-content-item-left'>
+                    <View><Text className='coupon-popup-content-item-price'><Text className='bol'>¥</Text>{coupon.value}</Text></View>
+                    <View className='coupon-popup-content-item-name'>{coupon.name}</View>
+                  </View>
+                  <View className='coupon-popup-content-item-right'>
+                    <View className='coupon-popup-content-item-right-content'>
+                      <View className='coupon-popup-content-item-right-content-name'>店铺劵</View>
+                      <View className='coupon-popup-content-item-right-content-dec'>满{coupon.minPurchase}-{coupon.value}</View>
+                      {coupon.type===0 &&(
+                        <View>
+                          {!!coupon.end && (
+                            <View className='coupon-popup-content-item-right-content-time'>{coupon.start.substr(0, 10)}~{coupon.end.substr(0, 10)}</View>
+                          )}
+                        </View>
+                      )}
+                    </View>
+                    <View>
+                      {
+                        coupon.status === 0?
+                          (
+                            <View
+                              className='coupon-popup-content-item-right-draw'
+                              onClick={this.handleGetCoupon.bind(this, coupon.couponId)}
+                            >
+                              立即领取
+                            </View>
+                          ):
+                          (
+                            <View
+                              className='coupon-popup-content-item-right-draw coupon-popup-content-item-right-draw-al'
+                            >
+                              已领取
+                            </View>
+                          )
+                      }
+                    </View>
+                  </View>
+                </View>
+              ))}
+              {!!productCoupon && !!productCoupon.platformCoupon && !!productCoupon.platformCoupon.length>0 && productCoupon.platformCoupon.map(coupon => (
+                <View className='coupon-popup-content-item' key={coupon.id}>
+                  <View className='coupon-popup-content-item-left'>
+                    <View><Text className='coupon-popup-content-item-price'><Text className='bol'>¥</Text>{coupon.value}</Text></View>
+                    <View className='coupon-popup-content-item-name'>{coupon.name}</View>
+                  </View>
+                  <View className='coupon-popup-content-item-right'>
+                    <View className='coupon-popup-content-item-right-content'>
+                      <View className='coupon-popup-content-item-right-content-name'>平台劵</View>
+                      <View className='coupon-popup-content-item-right-content-dec'>满{coupon.minPurchase}-{coupon.value}</View>
+                      {coupon.type===0 &&(
+                        <View>
+                          {!!coupon.end && (
+                            <View className='coupon-popup-content-item-right-content-time'>{coupon.start.substr(0, 10)}~{coupon.end.substr(0, 10)}</View>
+                          )}
+                        </View>
+                      )}
+                    </View>
+                    <View>
+                      {
+                        coupon.status === 0?
+                          (
+                            <View
+                              className='coupon-popup-content-item-right-draw'
+                              onClick={this.handleGetCoupon.bind(this, coupon.couponId)}
+                            >
+                              立即领取
+                            </View>
+                          ):
+                          (
+                            <View
+                              className='coupon-popup-content-item-right-draw coupon-popup-content-item-right-draw-al'
+                            >
+                              已领取
+                            </View>
+                          )
+                      }
+                    </View>
+                  </View>
+                </View>
+              ))}
+              { productCoupon && !productCoupon.shopCoupon.length  && !productCoupon.platformCoupon.length  && (
+                <NoData className='NoData' type='receive-coupon' display={display} />
+              )}
+            </ScrollView>
+            {/*<View className='coupon-popup-bottom'>*/}
+            {/*  <View className='coupon-popup-bottom-submit' onClick={this.onCouponClose}>确定</View>*/}
+            {/*</View>*/}
           </AtFloatLayout>
         </View>
         {/*</View>*/}
@@ -966,7 +997,7 @@ class Productdetail extends Component {
                     {currentSku.cyclePrices && currentSku.cyclePrices.length && (
                       <View className='item'>
                         <View className='item-text'>租期
-                          {/*(最少{detail.minRentCycle}天，最多{detail.maxRentCycle}天)*/}
+                          <Text className='max-min-text'>(最少{detail.minRentCycle}天，最多{detail.maxRentCycle}天)</Text>
                         </View>
                         <View className='item-tags'>
                           {currentValidCyclePrices.map(cycle => (
@@ -1040,7 +1071,6 @@ class Productdetail extends Component {
                                 </View>
                               </View>
                             </View>
-
                           ))}
                         </View>
                       </View>
@@ -1051,7 +1081,25 @@ class Productdetail extends Component {
               <View className='bottom'>
                 <Form report-submit='true' onSubmit={this.formSubmit}>
                   {/*<Button className='red-botton'  formType='submit' onClick={this.onShowSKUClick}>立即租用</Button>*/}
-                  <Button className='submit' formType='submit' >确定</Button>
+                  {getUid()?
+                    (
+                      <Button
+                        className='submit'
+                        formType='submit'
+                      >
+                        确定
+                      </Button>
+                    )
+                    :
+                    (
+                      <Button
+                        className='submit'
+                        formType='submit'
+                      >
+                        确定
+                      </Button>
+                    )
+                  }
                 </Form>
               </View>
             </View>
